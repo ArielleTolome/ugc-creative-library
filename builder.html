@@ -1,0 +1,933 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prompt Builder · UGC Creative System</title><style>
+:root{--bg:#090c11;--bg2:#111520;--bg3:#181d28;--border:#232a38;--border2:#2c3549;--text:#dce8f5;--muted:#6f8099;--muted2:#4a5a72;--accent:#6366f1;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--blue:#3b82f6;--pink:#ec4899;--teal:#14b8a6;--orange:#f97316;--purple:#8b5cf6;--cyan:#06b6d4;--lime:#84cc16;--sw:256px;--hh:52px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px;overflow-x:hidden}
+/* Topbar */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--hh);background:rgba(9,12,17,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 16px;z-index:200}
+.burger{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;min-height:44px;min-width:44px}
+.burger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;transition:all .25s}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.tb-brand{flex:1;font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-count{font-size:12px;color:var(--muted);white-space:nowrap}
+/* Overlay */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}.overlay.show{opacity:1;pointer-events:all}
+/* Sidebar */
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:400;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);padding-bottom:40px}
+.sidebar.open{transform:translateX(0)}
+@media(min-width:1060px){.sidebar{transform:translateX(0)}.overlay{display:none!important}.burger{display:none}.main{margin-left:var(--sw)}}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sb-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.sb-logo{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.sb-title{font-size:12px;font-weight:800}.sb-ver{font-size:10px;color:var(--muted)}
+.sb-cls{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;min-height:44px;min-width:44px}
+@media(min-width:1060px){.sb-cls{display:none}}
+.sb-sec{padding:4px 8px 0}.sb-lbl{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);padding:5px 8px 2px}
+.sbl{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:11.5px;cursor:pointer;transition:all .12s;min-height:34px}
+.sbl:hover{background:var(--bg3);color:var(--text)}.sbl .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sbl-home{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:11.5px;min-height:34px}
+.sbl-home:hover{background:var(--bg3);color:var(--text)}
+/* Main */
+.main{padding-top:var(--hh)}
+/* Hero */
+.hero{padding:24px 16px 20px;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-bottom:1px solid var(--border)}
+@media(min-width:600px){.hero{padding:32px 32px}}@media(min-width:900px){.hero{padding:36px 48px}}
+.hero-ey{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.hero-title{font-size:22px;font-weight:900;letter-spacing:-.03em;margin-bottom:5px}
+@media(min-width:600px){.hero-title{font-size:28px}}
+.hero-sub{color:var(--muted);font-size:12.5px;max-width:620px;margin-bottom:14px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:8px}
+.hstat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 13px;text-align:center}
+.hstat-n{font-size:19px;font-weight:900;line-height:1}.hstat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+/* Content */
+.content{padding:16px 16px 32px}
+@media(min-width:600px){.content{padding:20px 32px 40px}}@media(min-width:900px){.content{padding:24px 48px 48px}}
+/* Section label */
+.section-ey{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.section-title{font-size:16px;font-weight:800;margin-bottom:14px}
+/* Builder grid */
+.builder-grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:600px){.builder-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.builder-grid{grid-template-columns:1fr 1fr 1fr}}
+/* Field */
+.field{display:flex;flex-direction:column;gap:4px}
+.field-label{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field-label span{color:var(--accent);font-style:normal}
+.field select{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:12.5px;padding:8px 10px;width:100%;cursor:pointer;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236f8099' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.field select:focus{outline:none;border-color:var(--accent)}
+.field select:hover{border-color:var(--border2)}
+/* Offer frame special */
+.field-offer select{border-color:rgba(99,102,241,.3);background-color:rgba(99,102,241,.05)}
+/* Output area */
+.output-wrap{margin-top:28px}
+.output-box{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;overflow:hidden}
+.output-box-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.output-box-title{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.output-text{padding:20px;font-size:15px;line-height:1.75;color:var(--text);min-height:120px;font-style:italic;white-space:pre-wrap;word-break:break-word}
+.output-text.empty{color:var(--muted);font-style:normal;font-size:13px}
+.output-actions{padding:12px 16px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:none;border-radius:8px;font-size:12px;font-weight:700;padding:8px 16px;cursor:pointer;transition:all .15s;min-height:36px}
+.btn-copy{background:var(--accent);color:#fff}
+.btn-copy:hover{opacity:.85}
+.btn-copy.copied{background:var(--green)}
+.btn-random{background:var(--bg3);border:1px solid var(--border2);color:var(--text)}
+.btn-random:hover{border-color:var(--purple);color:var(--purple)}
+.btn-save{background:var(--bg3);border:1px solid var(--border2);color:var(--text)}
+.btn-save:hover{border-color:var(--green);color:var(--green)}
+.btn-clear{background:transparent;border:1px solid var(--border);color:var(--muted);margin-left:auto}
+.btn-clear:hover{border-color:var(--red);color:var(--red)}
+/* Saved prompts */
+.saved-section{margin-top:40px}
+.saved-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.saved-title{font-size:14px;font-weight:800}
+.saved-count{font-size:10px;color:var(--muted);background:var(--bg3);padding:2px 8px;border-radius:6px}
+.btn-clear-all{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;cursor:pointer;transition:all .15s}
+.btn-clear-all:hover{border-color:var(--red);color:var(--red)}
+.saved-empty{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:24px;text-align:center;color:var(--muted);font-size:13px}
+.saved-list{display:flex;flex-direction:column;gap:10px}
+.saved-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.saved-item-text{font-size:12.5px;line-height:1.6;color:var(--text);font-style:italic}
+.saved-item-meta{font-size:10px;color:var(--muted)}
+.saved-item-actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn-sm{border:none;border-radius:6px;font-size:11px;font-weight:700;padding:5px 10px;cursor:pointer;transition:all .15s}
+.btn-sm-copy{background:var(--bg3);border:1px solid var(--border2);color:var(--text)}
+.btn-sm-copy:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm-copy.copied{background:var(--green);color:#fff;border-color:var(--green)}
+.btn-sm-del{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-sm-del:hover{border-color:var(--red);color:var(--red)}
+/* Tips */
+.tips-section{margin-top:40px}
+.tips-grid{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:600px){.tips-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.tips-grid{grid-template-columns:1fr 1fr 1fr 1fr}}
+.tip-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.tip-n{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.tip-text{font-size:12px;line-height:1.5;color:var(--muted)}
+.tip-text strong{color:var(--text)}
+/* Divider */
+.divider{height:1px;background:var(--border);margin:36px 0}
+/* Sticky section header */
+.sticky-sec{position:sticky;top:var(--hh);z-index:90;background:var(--bg3);border-bottom:1px solid var(--border);padding:10px 16px}
+@media(min-width:600px){.sticky-sec{padding:10px 32px}}@media(min-width:900px){.sticky-sec{padding:10px 48px}}
+.sticky-sec-inner{display:flex;align-items:center;gap:10px}
+.sticky-sec-title{font-size:13px;font-weight:800}
+.sticky-sec-muted{font-size:11px;color:var(--muted)}
+</style></head>
+<body>
+
+<div class="topbar">
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="tb-brand">🛠️ Prompt Builder</div>
+  <div class="tb-count">14 Fields · 500K+ Combos</div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div><div class="sb-logo">Pigeonfi · Rachel</div><div class="sb-title">Prompt Builder</div><div class="sb-ver">14 ingredient fields</div></div>
+    <button class="sb-cls" id="sb-cls">✕</button>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Navigate</div>
+    <a class="sbl-home sbl" href="index.html">🏠 <span>Home</span></a>
+    <a class="sbl-home sbl" href="library.html">📚 <span>Vol. 1 Library</span></a>
+    <a class="sbl-home sbl" href="vol2.html">🔥 <span>Vol. 2 Angles</span></a>
+    <a class="sbl-home sbl" href="cookbook.html">👨‍🍳 <span>Cookbook</span></a>
+    <a class="sbl-home sbl" href="scripts.html">📝 <span>Scripts</span></a>
+    <a class="sbl-home sbl" href="calendar.html">📅 <span>Calendar</span></a>
+    <a class="sbl-home sbl" href="ab-testing.html">🧪 <span>A/B Testing</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Builder</div>
+    <a class="sbl" href="#builder"><span class="dot" style="background:var(--accent)"></span>Ingredient Picker</a>
+    <a class="sbl" href="#saved"><span class="dot" style="background:var(--green)"></span>Saved Prompts</a>
+    <a class="sbl" href="#tips"><span class="dot" style="background:var(--yellow)"></span>Tips</a>
+  </div>
+</nav>
+
+<div class="main">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-ey">Interactive Tool</div>
+    <div class="hero-title">🛠️ Prompt Builder</div>
+    <div class="hero-sub">Pick your ingredients — format, age, accent, wardrobe, location, camera, energy — and instantly assemble a production-ready input prompt. Randomize for unexpected combinations.</div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n">14</div><div class="hstat-l">Ingredient Fields</div></div>
+      <div class="hstat"><div class="hstat-n">25</div><div class="hstat-l">Accents</div></div>
+      <div class="hstat"><div class="hstat-n">25</div><div class="hstat-l">Occupations</div></div>
+      <div class="hstat"><div class="hstat-n">500K+</div><div class="hstat-l">Combinations</div></div>
+    </div>
+  </div>
+
+  <!-- Sticky section -->
+  <div class="sticky-sec" id="builder">
+    <div class="sticky-sec-inner">
+      <div class="sticky-sec-title">🎛️ Ingredient Picker</div>
+      <div class="sticky-sec-muted">Select all 14 fields — output assembles in real time</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- Builder Form -->
+    <div class="builder-grid" id="builder-form">
+
+      <!-- Field 1: Format -->
+      <div class="field">
+        <div class="field-label"><span>01</span> Format / Generator</div>
+        <select id="f-format">
+          <option value="">— Pick format —</option>
+          <option value="Raw UGC Testimonial">Raw UGC Testimonial</option>
+          <option value="DR Hook">DR Hook</option>
+          <option value="Polished Testimonial">Polished Testimonial</option>
+          <option value="Voiceover B-Roll">Voiceover B-Roll</option>
+          <option value="Before/After">Before/After</option>
+          <option value="POV Discovery Cam">POV Discovery Cam</option>
+          <option value="Ambient Slice">Ambient Slice</option>
+          <option value="Reaction Cam">Reaction Cam</option>
+          <option value="Branded Lifestyle">Branded Lifestyle</option>
+          <option value="Split-Screen Comparison">Split-Screen Comparison</option>
+          <option value="Tutorial / How-To">Tutorial / How-To</option>
+          <option value="Day-in-the-Life">Day-in-the-Life</option>
+        </select>
+      </div>
+
+      <!-- Field 2: Vertical -->
+      <div class="field">
+        <div class="field-label"><span>02</span> Vertical</div>
+        <select id="f-vertical">
+          <option value="">— Pick vertical —</option>
+          <option value="Final Expense">Final Expense</option>
+          <option value="Auto Insurance">Auto Insurance</option>
+          <option value="Medicare">Medicare</option>
+          <option value="ACA Health Insurance">ACA Health Insurance</option>
+        </select>
+      </div>
+
+      <!-- Field 3: Age Range -->
+      <div class="field">
+        <div class="field-label"><span>03</span> Age Range</div>
+        <select id="f-age">
+          <option value="">— Pick age —</option>
+          <option value="22-28">22–28</option>
+          <option value="28-35">28–35</option>
+          <option value="35-45">35–45</option>
+          <option value="45-55">45–55</option>
+          <option value="55-65">55–65</option>
+          <option value="65-75">65–75</option>
+          <option value="75+">75+</option>
+        </select>
+      </div>
+
+      <!-- Field 4: Ethnicity -->
+      <div class="field">
+        <div class="field-label"><span>04</span> Ethnicity / Appearance</div>
+        <select id="f-ethnicity">
+          <option value="">— Pick ethnicity —</option>
+          <option value="White American">White American</option>
+          <option value="Black American">Black American</option>
+          <option value="Latino/Latina">Latino/Latina</option>
+          <option value="Asian American">Asian American</option>
+          <option value="Middle Eastern American">Middle Eastern American</option>
+          <option value="South Asian American">South Asian American</option>
+          <option value="Pacific Islander">Pacific Islander</option>
+          <option value="Mixed / Ambiguous">Mixed / Ambiguous</option>
+        </select>
+      </div>
+
+      <!-- Field 5: Gender -->
+      <div class="field">
+        <div class="field-label"><span>05</span> Gender</div>
+        <select id="f-gender">
+          <option value="">— Pick gender —</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Non-binary / Ambiguous">Non-binary / Ambiguous</option>
+        </select>
+      </div>
+
+      <!-- Field 6: Accent -->
+      <div class="field">
+        <div class="field-label"><span>06</span> Accent</div>
+        <select id="f-accent">
+          <option value="">— Pick accent —</option>
+          <option value="Thick Pacific Northwest">Thick Pacific Northwest</option>
+          <option value="Neutral Midwest">Neutral Midwest</option>
+          <option value="Warm Southern (General)">Warm Southern (General)</option>
+          <option value="Deep South / Mississippi Delta">Deep South / Mississippi Delta</option>
+          <option value="Texas">Texas</option>
+          <option value="Appalachian / Mountain South">Appalachian / Mountain South</option>
+          <option value="Calm Professional Midwest">Calm Professional Midwest</option>
+          <option value="New York City">New York City</option>
+          <option value="Brooklyn / Outer Boroughs">Brooklyn / Outer Boroughs</option>
+          <option value="Northeast / New England">Northeast / New England</option>
+          <option value="Philadelphia / South Jersey">Philadelphia / South Jersey</option>
+          <option value="Mid-Atlantic / DC">Mid-Atlantic / DC</option>
+          <option value="Atlanta / New South">Atlanta / New South</option>
+          <option value="Miami / South Florida">Miami / South Florida</option>
+          <option value="San Antonio / South Texas">San Antonio / South Texas</option>
+          <option value="California / SoCal">California / SoCal</option>
+          <option value="Bay Area / NorCal">Bay Area / NorCal</option>
+          <option value="Pacific Islander / Hawaiian">Pacific Islander / Hawaiian</option>
+          <option value="Upper Midwest / Minnesota">Upper Midwest / Minnesota</option>
+          <option value="Chicago / Great Lakes">Chicago / Great Lakes</option>
+          <option value="Detroit">Detroit</option>
+          <option value="General American (No Accent)">General American (No Accent)</option>
+          <option value="Light Creole / New Orleans">Light Creole / New Orleans</option>
+          <option value="Nigerian-American (Gen 2)">Nigerian-American (Gen 2)</option>
+          <option value="Indian-American (Gen 2)">Indian-American (Gen 2)</option>
+        </select>
+      </div>
+
+      <!-- Field 7: Occupation -->
+      <div class="field">
+        <div class="field-label"><span>07</span> Occupation / Identity</div>
+        <select id="f-occupation">
+          <option value="">— Pick occupation —</option>
+          <option value="Truck driver">Truck driver</option>
+          <option value="Auto mechanic">Auto mechanic</option>
+          <option value="Nurse / RN">Nurse / RN</option>
+          <option value="Barbershop owner">Barbershop owner</option>
+          <option value="Yoga instructor">Yoga instructor</option>
+          <option value="Freelance photographer">Freelance photographer</option>
+          <option value="Farmhand">Farmhand</option>
+          <option value="Retired pharmacist">Retired pharmacist</option>
+          <option value="Union worker">Union worker</option>
+          <option value="Postal worker">Postal worker</option>
+          <option value="Teacher">Teacher</option>
+          <option value="Construction foreman">Construction foreman</option>
+          <option value="Small business owner">Small business owner</option>
+          <option value="Freelancer / gig worker">Freelancer / gig worker</option>
+          <option value="Retired professional">Retired professional</option>
+          <option value="Stay-at-home parent">Stay-at-home parent</option>
+          <option value="Active retiree">Active retiree</option>
+          <option value="College student">College student</option>
+          <option value="Recent graduate">Recent graduate</option>
+          <option value="Military veteran">Military veteran</option>
+          <option value="Faith community leader">Faith community leader</option>
+          <option value="Financial advisor">Financial advisor</option>
+          <option value="Real estate agent">Real estate agent</option>
+          <option value="Doctor / physician">Doctor / physician</option>
+          <option value="Physical therapist">Physical therapist</option>
+        </select>
+      </div>
+
+      <!-- Field 8: Wardrobe -->
+      <div class="field">
+        <div class="field-label"><span>08</span> Wardrobe (Top)</div>
+        <select id="f-wardrobe">
+          <option value="">— Pick wardrobe —</option>
+          <option value="red flannel shirt and beanie">Red flannel shirt + beanie</option>
+          <option value="navy work uniform">Navy work uniform</option>
+          <option value="hospital scrubs (navy)">Hospital scrubs (navy)</option>
+          <option value="white lab coat over scrubs">White lab coat over scrubs</option>
+          <option value="business casual attire">Business casual</option>
+          <option value="oversized hoodie">Oversized hoodie</option>
+          <option value="plain white t-shirt">Plain white t-shirt</option>
+          <option value="blazer over casual top">Blazer over casual top</option>
+          <option value="church clothes / Sunday best">Church clothes / Sunday best</option>
+          <option value="athletic wear">Athletic wear</option>
+          <option value="yoga and athleisure wear">Yoga/athleisure</option>
+          <option value="cardigan over collared shirt">Cardigan over collared shirt</option>
+          <option value="chef whites and apron">Chef whites / apron</option>
+          <option value="agricultural work clothes">Agricultural work clothes</option>
+          <option value="pajamas and robe (morning)">Pajamas / robe (morning)</option>
+          <option value="tool belt and work shirt">Tool belt + work shirt</option>
+          <option value="postal delivery uniform">Postal/delivery uniform</option>
+          <option value="military uniform">Military uniform</option>
+          <option value="power blouse (solid, structured)">Power blouse (solid, structured)</option>
+          <option value="full suit and tie">Full suit + tie</option>
+        </select>
+      </div>
+
+      <!-- Field 9: Location -->
+      <div class="field">
+        <div class="field-label"><span>09</span> Location</div>
+        <select id="f-location">
+          <option value="">— Pick location —</option>
+          <option value="kitchen counter (morning)">Kitchen counter (morning)</option>
+          <option value="living room couch (evening)">Living room couch (evening)</option>
+          <option value="home office desk">Home office desk</option>
+          <option value="back porch / deck">Back porch / deck</option>
+          <option value="car interior (parked)">Car interior (parked)</option>
+          <option value="car interior (driving)">Car interior (driving)</option>
+          <option value="hospital hallway (busy)">Hospital hallway (busy)</option>
+          <option value="hospital break room">Hospital break room</option>
+          <option value="coffee shop (working)">Coffee shop (working)</option>
+          <option value="church parking lot">Church parking lot</option>
+          <option value="farmer's market">Farmer's market</option>
+          <option value="neighborhood sidewalk">Neighborhood sidewalk</option>
+          <option value="park bench">Park bench</option>
+          <option value="backyard garden">Backyard garden</option>
+          <option value="construction site exterior">Construction site exterior</option>
+          <option value="auto shop / garage">Auto shop / garage</option>
+          <option value="small business storefront">Small business storefront</option>
+          <option value="barbershop / salon">Barbershop / salon</option>
+          <option value="doctor's office exam room">Doctor's office exam room</option>
+          <option value="pharmacy counter area">Pharmacy counter area</option>
+          <option value="senior center (activity room)">Senior center (activity room)</option>
+          <option value="AARP meeting room">AARP meeting room</option>
+          <option value="school classroom">School classroom</option>
+          <option value="farm / field exterior">Farm / field exterior</option>
+          <option value="gym / fitness center">Gym / fitness center</option>
+        </select>
+      </div>
+
+      <!-- Field 10: Energy Level -->
+      <div class="field">
+        <div class="field-label"><span>10</span> Energy Level</div>
+        <select id="f-energy">
+          <option value="">— Pick energy —</option>
+          <option value="45% quiet/heavy">45% — quiet/heavy</option>
+          <option value="60% calm/measured">60% — calm/measured</option>
+          <option value="75% warm/deliberate" selected>75% — warm/deliberate (default)</option>
+          <option value="85% confident/direct">85% — confident/direct</option>
+          <option value="100% high-energy/urgent">100% — high-energy/urgent</option>
+        </select>
+      </div>
+
+      <!-- Field 11: Camera Style -->
+      <div class="field">
+        <div class="field-label"><span>11</span> Camera Style</div>
+        <select id="f-camera">
+          <option value="">— Pick camera style —</option>
+          <option value="direct to camera, static">Direct to camera, static</option>
+          <option value="direct to camera, handheld">Direct to camera, handheld</option>
+          <option value="handheld tracking (follow shot)">Handheld tracking (follow shot)</option>
+          <option value="low-angle looking up">Low-angle looking up</option>
+          <option value="eye-level neutral">Eye-level neutral</option>
+          <option value="close-up on face (tight)">Close-up on face (tight)</option>
+          <option value="medium shot (chest up)">Medium shot (chest up)</option>
+          <option value="selfie angle (held phone)">Selfie angle (held phone)</option>
+          <option value="in-car dashboard mount">In-car dashboard mount</option>
+          <option value="walking shot (self-filmed from hip)">Walking shot (self-filmed from hip)</option>
+          <option value="sitting / relaxed wide">Sitting / relaxed wide</option>
+          <option value="talking head with background action">Talking head with background action</option>
+          <option value="reaction cam">Reaction cam</option>
+          <option value="screen recording POV">Screen recording POV</option>
+          <option value="mirror selfie">Mirror selfie</option>
+        </select>
+      </div>
+
+      <!-- Field 12: Hook Type -->
+      <div class="field">
+        <div class="field-label"><span>12</span> Hook Type</div>
+        <select id="f-hook">
+          <option value="">— Pick hook type —</option>
+          <option value="Confession opener">Confession opener</option>
+          <option value="Warning/consequence">Warning/consequence</option>
+          <option value="Discovery">Discovery</option>
+          <option value="Number/stat">Number/stat</option>
+          <option value="Direct address">Direct address</option>
+          <option value="Storytelling">Storytelling</option>
+          <option value="Myth-busting">Myth-busting</option>
+          <option value="Counter-intuitive claim">Counter-intuitive claim</option>
+          <option value="Empathy / shared experience">Empathy / shared experience</option>
+          <option value="Urgency/scarcity">Urgency/scarcity</option>
+        </select>
+      </div>
+
+      <!-- Field 13: Offer Frame (2 columns wide) -->
+      <div class="field field-offer" style="grid-column:1 / -1">
+        <div class="field-label"><span>13</span> Offer Frame <span style="color:var(--muted);font-style:italic;font-weight:400;text-transform:none;letter-spacing:0">— auto-populates from vertical, editable</span></div>
+        <select id="f-offer">
+          <option value="">— Select vertical first —</option>
+        </select>
+      </div>
+
+      <!-- Field 14: CTA Style -->
+      <div class="field">
+        <div class="field-label"><span>14</span> CTA Style</div>
+        <select id="f-cta">
+          <option value="">— Pick CTA —</option>
+          <option value="soft — link below, no pressure">Soft (link below, no pressure)</option>
+          <option value="benefit-forward — see how much you save">Benefit-forward (see how much you save)</option>
+          <option value="urgency — apply tonight, rates change">Urgency (apply tonight, rates change)</option>
+          <option value="social proof — same thing I use">Social proof (same thing I use)</option>
+          <option value="direct instruction — tap, fill, done">Direct instruction (tap, fill, done)</option>
+        </select>
+      </div>
+
+    </div><!-- /builder-grid -->
+
+    <!-- Output Area -->
+    <div class="output-wrap" id="output-wrap">
+      <div class="output-box">
+        <div class="output-box-head">
+          <div class="output-box-title">⚡ Assembled Prompt</div>
+          <div style="font-size:10px;color:var(--muted)">Updates in real-time as you pick ingredients</div>
+        </div>
+        <div class="output-text empty" id="output-text">Pick your ingredients above — your assembled prompt will appear here, ready to paste into the JSON generator.</div>
+        <div class="output-actions">
+          <button class="btn btn-copy" id="btn-copy" onclick="copyPrompt()">Copy Prompt</button>
+          <button class="btn btn-random" onclick="randomize()">🎲 Generate Variation</button>
+          <button class="btn btn-save" onclick="savePrompt()">💾 Save Prompt</button>
+          <button class="btn btn-clear" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved Prompts -->
+    <div class="saved-section" id="saved">
+      <div class="saved-header">
+        <div>
+          <div class="section-ey">Saved to Browser</div>
+          <div class="saved-title">💾 Saved Prompts</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="saved-count" id="saved-count">0 / 20</span>
+          <button class="btn-clear-all" onclick="clearAllSaved()">Clear All</button>
+        </div>
+      </div>
+      <div id="saved-list"></div>
+    </div>
+
+    <!-- Tips -->
+    <div class="tips-section" id="tips">
+      <div class="divider"></div>
+      <div class="section-ey">Quick Reference</div>
+      <div class="section-title">💡 Creative Tips</div>
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-n">Tip 01</div>
+          <div class="tip-text"><strong>Match accent to location.</strong> A Texas accent in a NYC background reads wrong. Regional coherence builds trust subconsciously.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-n">Tip 02</div>
+          <div class="tip-text"><strong>Occupation drives wardrobe.</strong> Don't mix. A nurse in a tool belt breaks immersion immediately — don't make viewers think.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-n">Tip 03</div>
+          <div class="tip-text"><strong>Energy level should match format.</strong> Raw UGC: 75%. DR Hook: 90–100%. Ambient Slice: 45–60%. Mismatched energy reads as fake.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-n">Tip 04</div>
+          <div class="tip-text"><strong>Age targeting by vertical.</strong> FE and Medicare prefer 55–75. ACA and Auto are wider. Use age range to hit the right audience lens.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-n">Tip 05</div>
+          <div class="tip-text"><strong>Hook type by format.</strong> Confession hooks work best for Raw UGC. Number/stat hooks are made for DR Hook. Match the pattern.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-n">Tip 06</div>
+          <div class="tip-text"><strong>Morning locations feel authentic.</strong> Kitchen, porch, car — they signal spontaneous real-talk. Evening couch = reflective. Hospital = credibility.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-n">Tip 07</div>
+          <div class="tip-text"><strong>Professional locations need matching wardrobe.</strong> Hospital hallway requires scrubs. Mismatch kills credibility and looks generated.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-n">Tip 08</div>
+          <div class="tip-text"><strong>The random generator creates weird combos.</strong> That's intentional. Unexpected combinations surface angles you'd never think to try manually.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:40px;text-align:center;color:var(--muted);font-size:11px;border-top:1px solid var(--border);padding-top:20px">
+      Pigeonfi · Rachel · Prompt Builder · 14 ingredient fields · 500K+ combinations<br>
+      <a href="index.html" style="color:var(--accent);text-decoration:none">← Back to Library Home</a>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+// ─── Sidebar toggle ──────────────────────────────────────────────────────────
+const burger=document.getElementById('burger');
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
+const sbCls=document.getElementById('sb-cls');
+function openSidebar(){sidebar.classList.add('open');overlay.classList.add('show');burger.classList.add('open')}
+function closeSidebar(){sidebar.classList.remove('open');overlay.classList.remove('show');burger.classList.remove('open')}
+burger.addEventListener('click',()=>sidebar.classList.contains('open')?closeSidebar():openSidebar());
+overlay.addEventListener('click',closeSidebar);
+sbCls.addEventListener('click',closeSidebar);
+document.querySelectorAll('.sbl').forEach(l=>{l.addEventListener('click',()=>{if(window.innerWidth<1060)closeSidebar()})});
+
+// ─── Offer frame options per vertical ────────────────────────────────────────
+const OFFER_FRAMES = {
+  'Final Expense': [
+    '$18-22/month locked rate',
+    'No medical questions required',
+    'Permanent coverage — never cancelled',
+    'Apply in 9 minutes'
+  ],
+  'Auto Insurance': [
+    'Save $80-130/month on your current rate',
+    '7-minute side-by-side comparison',
+    'Same coverage, different carrier',
+    'Rate locked — can\'t go up after you apply'
+  ],
+  'Medicare': [
+    '$0 premium plan available in your area',
+    'Dental + vision included',
+    'Free Medicare advisor call — no sales pressure',
+    'Keep your same doctors'
+  ],
+  'ACA Health Insurance': [
+    '$0-$30/month after subsidy',
+    'Free subsidy calculator — see your number',
+    '60-second eligibility check',
+    'SEP available now — enroll outside open enrollment'
+  ]
+};
+
+// ─── Occupation → suggested location / wardrobe ───────────────────────────────
+const OCC_LOCATION = {
+  'Truck driver': ['car interior (parked)', 'car interior (driving)', 'neighborhood sidewalk'],
+  'Auto mechanic': ['auto shop / garage', 'construction site exterior', 'neighborhood sidewalk'],
+  'Nurse / RN': ['hospital hallway (busy)', 'hospital break room', 'home office desk'],
+  'Barbershop owner': ['barbershop / salon', 'small business storefront', 'neighborhood sidewalk'],
+  'Yoga instructor': ['gym / fitness center', 'back porch / deck', 'home office desk'],
+  'Freelance photographer': ['coffee shop (working)', 'home office desk', 'neighborhood sidewalk'],
+  'Farmhand': ['farm / field exterior', 'backyard garden', 'back porch / deck'],
+  'Retired pharmacist': ['pharmacy counter area', 'kitchen counter (morning)', 'living room couch (evening)'],
+  'Union worker': ['construction site exterior', 'car interior (parked)', 'neighborhood sidewalk'],
+  'Postal worker': ['neighborhood sidewalk', 'car interior (driving)', 'small business storefront'],
+  'Teacher': ['school classroom', 'home office desk', 'coffee shop (working)'],
+  'Construction foreman': ['construction site exterior', 'auto shop / garage', 'car interior (parked)'],
+  'Small business owner': ['small business storefront', 'home office desk', 'coffee shop (working)'],
+  'Freelancer / gig worker': ['home office desk', 'coffee shop (working)', 'living room couch (evening)'],
+  'Retired professional': ['living room couch (evening)', 'kitchen counter (morning)', 'senior center (activity room)'],
+  'Stay-at-home parent': ['kitchen counter (morning)', 'living room couch (evening)', 'backyard garden'],
+  'Active retiree': ['park bench', 'AARP meeting room', 'senior center (activity room)'],
+  'College student': ['school classroom', 'coffee shop (working)', 'home office desk'],
+  'Recent graduate': ['coffee shop (working)', 'home office desk', 'neighborhood sidewalk'],
+  'Military veteran': ['home office desk', 'back porch / deck', 'neighborhood sidewalk'],
+  'Faith community leader': ['church parking lot', 'living room couch (evening)', 'neighborhood sidewalk'],
+  'Financial advisor': ['home office desk', 'coffee shop (working)', 'small business storefront'],
+  'Real estate agent': ['small business storefront', 'home office desk', 'car interior (parked)'],
+  'Doctor / physician': ["doctor's office exam room", 'hospital hallway (busy)', 'hospital break room'],
+  'Physical therapist': ['gym / fitness center', "doctor's office exam room", 'hospital break room']
+};
+
+const OCC_WARDROBE = {
+  'Truck driver': ['red flannel shirt and beanie', 'plain white t-shirt', 'oversized hoodie'],
+  'Auto mechanic': ['tool belt and work shirt', 'navy work uniform', 'plain white t-shirt'],
+  'Nurse / RN': ['hospital scrubs (navy)', 'white lab coat over scrubs'],
+  'Barbershop owner': ['plain white t-shirt', 'business casual attire', 'blazer over casual top'],
+  'Yoga instructor': ['yoga and athleisure wear', 'athletic wear'],
+  'Freelance photographer': ['plain white t-shirt', 'business casual attire', 'oversized hoodie'],
+  'Farmhand': ['agricultural work clothes', 'red flannel shirt and beanie'],
+  'Retired pharmacist': ['white lab coat over scrubs', 'cardigan over collared shirt', 'business casual attire'],
+  'Union worker': ['navy work uniform', 'tool belt and work shirt', 'plain white t-shirt'],
+  'Postal worker': ['postal delivery uniform'],
+  'Teacher': ['business casual attire', 'cardigan over collared shirt', 'blazer over casual top'],
+  'Construction foreman': ['tool belt and work shirt', 'navy work uniform', 'red flannel shirt and beanie'],
+  'Small business owner': ['business casual attire', 'blazer over casual top', 'plain white t-shirt'],
+  'Freelancer / gig worker': ['plain white t-shirt', 'oversized hoodie', 'business casual attire'],
+  'Retired professional': ['cardigan over collared shirt', 'business casual attire', 'pajamas and robe (morning)'],
+  'Stay-at-home parent': ['plain white t-shirt', 'oversized hoodie', 'pajamas and robe (morning)'],
+  'Active retiree': ['athletic wear', 'cardigan over collared shirt', 'plain white t-shirt'],
+  'College student': ['oversized hoodie', 'plain white t-shirt', 'athletic wear'],
+  'Recent graduate': ['business casual attire', 'plain white t-shirt', 'blazer over casual top'],
+  'Military veteran': ['military uniform', 'plain white t-shirt', 'business casual attire'],
+  'Faith community leader': ['church clothes / Sunday best', 'business casual attire'],
+  'Financial advisor': ['full suit and tie', 'business casual attire', 'blazer over casual top'],
+  'Real estate agent': ['business casual attire', 'blazer over casual top', 'power blouse (solid, structured)'],
+  'Doctor / physician': ['white lab coat over scrubs', 'hospital scrubs (navy)'],
+  'Physical therapist': ['hospital scrubs (navy)', 'athletic wear', 'white lab coat over scrubs']
+};
+
+// ─── Weighted age by vertical ─────────────────────────────────────────────────
+const AGE_WEIGHTS = {
+  'Final Expense': ['45-55','45-55','55-65','55-65','55-65','65-75','65-75','75+'],
+  'Medicare': ['55-65','55-65','65-75','65-75','65-75','75+','75+'],
+  'Auto Insurance': ['22-28','28-35','35-45','35-45','45-55','55-65'],
+  'ACA Health Insurance': ['22-28','22-28','28-35','28-35','35-45','35-45','45-55']
+};
+const AGE_ALL = ['22-28','28-35','35-45','45-55','55-65','65-75','75+'];
+
+// ─── All field lists for randomization ───────────────────────────────────────
+const FORMATS = ['Raw UGC Testimonial','DR Hook','Polished Testimonial','Voiceover B-Roll','Before/After','POV Discovery Cam','Ambient Slice','Reaction Cam','Branded Lifestyle','Split-Screen Comparison','Tutorial / How-To','Day-in-the-Life'];
+const VERTICALS = ['Final Expense','Auto Insurance','Medicare','ACA Health Insurance'];
+const ETHNICITIES = ['White American','Black American','Latino/Latina','Asian American','Middle Eastern American','South Asian American','Pacific Islander','Mixed / Ambiguous'];
+const GENDERS = ['Male','Female','Non-binary / Ambiguous'];
+const ACCENTS = ['Thick Pacific Northwest','Neutral Midwest','Warm Southern (General)','Deep South / Mississippi Delta','Texas','Appalachian / Mountain South','Calm Professional Midwest','New York City','Brooklyn / Outer Boroughs','Northeast / New England','Philadelphia / South Jersey','Mid-Atlantic / DC','Atlanta / New South','Miami / South Florida','San Antonio / South Texas','California / SoCal','Bay Area / NorCal','Pacific Islander / Hawaiian','Upper Midwest / Minnesota','Chicago / Great Lakes','Detroit','General American (No Accent)','Light Creole / New Orleans','Nigerian-American (Gen 2)','Indian-American (Gen 2)'];
+const OCCUPATIONS = Object.keys(OCC_LOCATION);
+const HOOKS = ['Confession opener','Warning/consequence','Discovery','Number/stat','Direct address','Storytelling','Myth-busting','Counter-intuitive claim','Empathy / shared experience','Urgency/scarcity'];
+const ENERGIES = ['45% quiet/heavy','60% calm/measured','75% warm/deliberate','75% warm/deliberate','75% warm/deliberate','85% confident/direct','100% high-energy/urgent'];
+const CAMERAS = ['direct to camera, static','direct to camera, handheld','handheld tracking (follow shot)','low-angle looking up','eye-level neutral','close-up on face (tight)','medium shot (chest up)','selfie angle (held phone)','in-car dashboard mount','walking shot (self-filmed from hip)','sitting / relaxed wide','talking head with background action','reaction cam','screen recording POV','mirror selfie'];
+const CTAS = ['soft — link below, no pressure','benefit-forward — see how much you save','urgency — apply tonight, rates change','social proof — same thing I use','direct instruction — tap, fill, done'];
+
+// ─── Populate offer frame based on vertical ───────────────────────────────────
+document.getElementById('f-vertical').addEventListener('change', function() {
+  updateOfferOptions(this.value);
+  assemblePrompt();
+});
+
+function updateOfferOptions(vertical) {
+  const sel = document.getElementById('f-offer');
+  sel.innerHTML = '';
+  if (!vertical) {
+    sel.innerHTML = '<option value="">— Select vertical first —</option>';
+    return;
+  }
+  const frames = OFFER_FRAMES[vertical] || [];
+  frames.forEach((f,i) => {
+    const opt = document.createElement('option');
+    opt.value = f;
+    opt.textContent = f;
+    if (i === 0) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+// ─── Assemble prompt ──────────────────────────────────────────────────────────
+function getVal(id) { return document.getElementById(id).value; }
+
+function assemblePrompt() {
+  const age = getVal('f-age');
+  const ethnicity = getVal('f-ethnicity');
+  const gender = getVal('f-gender');
+  const accent = getVal('f-accent');
+  const wardrobe = getVal('f-wardrobe');
+  const location = getVal('f-location');
+  const camera = getVal('f-camera');
+  const energy = getVal('f-energy');
+  const hook = getVal('f-hook');
+  const offer = getVal('f-offer');
+  const cta = getVal('f-cta');
+  const format = getVal('f-format');
+  const vertical = getVal('f-vertical');
+  const occupation = getVal('f-occupation');
+
+  const el = document.getElementById('output-text');
+
+  // Need at least a few fields
+  const filled = [age, ethnicity, gender, accent, wardrobe, location, camera, energy].filter(Boolean).length;
+  if (filled < 3) {
+    el.className = 'output-text empty';
+    el.textContent = 'Pick your ingredients above — your assembled prompt will appear here, ready to paste into the JSON generator.';
+    return;
+  }
+
+  // Build gender/ethnicity phrase
+  let personDesc = '';
+  if (age) personDesc += age + ' year old ';
+  if (ethnicity) {
+    const ethMap = {'White American':'White American','Black American':'Black American','Latino/Latina':'Latino/Latina','Asian American':'Asian American','Middle Eastern American':'Middle Eastern American','South Asian American':'South Asian American','Pacific Islander':'Pacific Islander','Mixed / Ambiguous':'mixed/ambiguous appearance'};
+    personDesc += (ethMap[ethnicity] || ethnicity) + ' ';
+  }
+  if (gender) {
+    personDesc += gender.toLowerCase();
+  } else {
+    personDesc = personDesc.trim();
+  }
+  if (occupation) personDesc += ', working as a ' + occupation.toLowerCase();
+
+  // Build scene
+  let scene = '';
+  if (accent) scene += 'with a ' + accent + ' accent';
+  if (wardrobe) scene += (scene ? ', ' : '') + 'wearing ' + wardrobe;
+  if (location) scene += (scene ? ', ' : '') + 'filmed at ' + location;
+
+  // Camera + energy
+  let camEnergy = '';
+  if (camera) camEnergy += camera;
+  if (energy) camEnergy += (camEnergy ? ', ' : '') + energy + ' energy';
+  if (format) camEnergy += (camEnergy ? ', ' : '') + format.toLowerCase() + ' format';
+
+  // Hook line
+  let hookLine = '';
+  if (hook || offer || cta) {
+    const parts = [];
+    if (hook) parts.push('using a ' + hook.toLowerCase() + ' opener');
+    if (offer) parts.push('delivering the offer frame: "' + offer + '"');
+    if (cta) parts.push('closing with ' + cta);
+    hookLine = parts.join(' → ');
+  }
+
+  // Vertical context
+  let verticalContext = '';
+  if (vertical) verticalContext = 'Vertical: ' + vertical + '.';
+
+  // Assemble
+  let prompt = '';
+  if (personDesc.trim()) prompt += personDesc.trim();
+  if (scene) prompt += (prompt ? ' — ' : '') + scene;
+  if (camEnergy) prompt += (prompt ? '. ' : '') + camEnergy.charAt(0).toUpperCase() + camEnergy.slice(1);
+  if (hookLine) prompt += (prompt ? '. ' : '') + hookLine.charAt(0).toUpperCase() + hookLine.slice(1) + '.';
+  if (verticalContext) prompt += ' ' + verticalContext;
+
+  el.className = 'output-text';
+  el.textContent = prompt;
+}
+
+// ─── Wire all selects to assemblePrompt ───────────────────────────────────────
+['f-format','f-age','f-ethnicity','f-gender','f-accent','f-occupation','f-wardrobe','f-location','f-energy','f-camera','f-hook','f-offer','f-cta'].forEach(id => {
+  document.getElementById(id).addEventListener('change', assemblePrompt);
+});
+
+// ─── Copy prompt ──────────────────────────────────────────────────────────────
+function copyPrompt() {
+  const text = document.getElementById('output-text').textContent;
+  const el = document.getElementById('output-text');
+  if (el.classList.contains('empty') || !text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy');
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Prompt'; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {});
+}
+
+// ─── Clear all fields ─────────────────────────────────────────────────────────
+function clearAll() {
+  ['f-format','f-vertical','f-age','f-ethnicity','f-gender','f-accent','f-occupation','f-wardrobe','f-location','f-camera','f-hook','f-cta'].forEach(id => {
+    document.getElementById(id).selectedIndex = 0;
+  });
+  document.getElementById('f-energy').value = '75% warm/deliberate';
+  updateOfferOptions('');
+  assemblePrompt();
+}
+
+// ─── Random pick helper ───────────────────────────────────────────────────────
+function pick(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+
+function setSelectByValue(id, value) {
+  const sel = document.getElementById(id);
+  for (let i = 0; i < sel.options.length; i++) {
+    if (sel.options[i].value === value) { sel.selectedIndex = i; return true; }
+  }
+  return false;
+}
+
+// ─── Randomize all fields ─────────────────────────────────────────────────────
+function randomize() {
+  // Format
+  const format = pick(FORMATS);
+  setSelectByValue('f-format', format);
+
+  // Vertical
+  const vertical = pick(VERTICALS);
+  setSelectByValue('f-vertical', vertical);
+
+  // Age — weighted by vertical
+  const agePool = AGE_WEIGHTS[vertical] || AGE_ALL;
+  const age = pick(agePool);
+  setSelectByValue('f-age', age);
+
+  // Ethnicity
+  setSelectByValue('f-ethnicity', pick(ETHNICITIES));
+
+  // Gender
+  setSelectByValue('f-gender', pick(GENDERS));
+
+  // Accent
+  setSelectByValue('f-accent', pick(ACCENTS));
+
+  // Occupation
+  const occupation = pick(OCCUPATIONS);
+  setSelectByValue('f-occupation', occupation);
+
+  // Wardrobe — from occupation map
+  const wardrobePool = OCC_WARDROBE[occupation] || ['plain white t-shirt','business casual attire'];
+  const wardrobe = pick(wardrobePool);
+  setSelectByValue('f-wardrobe', wardrobe);
+
+  // Location — from occupation map
+  const locPool = OCC_LOCATION[occupation] || ['home office desk'];
+  const location = pick(locPool);
+  setSelectByValue('f-location', location);
+
+  // Energy — weighted toward 75%
+  setSelectByValue('f-energy', pick(ENERGIES));
+
+  // Camera
+  setSelectByValue('f-camera', pick(CAMERAS));
+
+  // Hook
+  setSelectByValue('f-hook', pick(HOOKS));
+
+  // Offer — rebuild options then pick
+  updateOfferOptions(vertical);
+  const offerFrames = OFFER_FRAMES[vertical] || [];
+  if (offerFrames.length) {
+    document.getElementById('f-offer').value = pick(offerFrames);
+  }
+
+  // CTA
+  setSelectByValue('f-cta', pick(CTAS));
+
+  assemblePrompt();
+}
+
+// ─── Saved prompts ────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'ugc-builder-saved';
+const MAX_SAVED = 20;
+
+function loadSaved() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { return []; } }
+function storeSaved(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+function savePrompt() {
+  const text = document.getElementById('output-text').textContent;
+  const el = document.getElementById('output-text');
+  if (el.classList.contains('empty') || !text || text.length < 20) {
+    alert('Build a prompt first before saving!'); return;
+  }
+  const saved = loadSaved();
+  if (saved.length >= MAX_SAVED) { alert('Saved prompt limit (20) reached. Delete some first.'); return; }
+  const entry = { id: Date.now(), text, ts: new Date().toLocaleString() };
+  saved.unshift(entry);
+  storeSaved(saved);
+  renderSaved();
+}
+
+function deletePrompt(id) {
+  const saved = loadSaved().filter(s => s.id !== id);
+  storeSaved(saved);
+  renderSaved();
+}
+
+function clearAllSaved() {
+  if (!confirm('Clear all saved prompts?')) return;
+  storeSaved([]);
+  renderSaved();
+}
+
+function copySaved(id, btn) {
+  const saved = loadSaved().find(s => s.id === id);
+  if (!saved) return;
+  navigator.clipboard.writeText(saved.text).then(() => {
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  }).catch(() => {});
+}
+
+function renderSaved() {
+  const saved = loadSaved();
+  const container = document.getElementById('saved-list');
+  const countEl = document.getElementById('saved-count');
+  countEl.textContent = saved.length + ' / 20';
+
+  if (!saved.length) {
+    container.innerHTML = '<div class="saved-empty">No saved prompts yet. Build one above and hit 💾 Save Prompt.</div>';
+    return;
+  }
+
+  container.innerHTML = '';
+  const list = document.createElement('div');
+  list.className = 'saved-list';
+  saved.forEach(s => {
+    const truncated = s.text.length > 180 ? s.text.slice(0,180) + '…' : s.text;
+    const item = document.createElement('div');
+    item.className = 'saved-item';
+    item.innerHTML = `
+      <div class="saved-item-text">${truncated}</div>
+      <div class="saved-item-meta">Saved ${s.ts}</div>
+      <div class="saved-item-actions">
+        <button class="btn-sm btn-sm-copy" onclick="copySaved(${s.id}, this)">Copy</button>
+        <button class="btn-sm btn-sm-del" onclick="deletePrompt(${s.id})">Delete</button>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+  container.appendChild(list);
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+renderSaved();
+assemblePrompt();
+</script>
+</body></html>
