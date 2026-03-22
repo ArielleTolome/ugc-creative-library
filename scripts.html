@@ -1,0 +1,1088 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Script Templates · UGC Creative System</title><style>
+:root{--bg:#090c11;--bg2:#111520;--bg3:#181d28;--border:#232a38;--border2:#2c3549;--text:#dce8f5;--muted:#6f8099;--muted2:#4a5a72;--accent:#6366f1;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--blue:#3b82f6;--pink:#ec4899;--teal:#14b8a6;--orange:#f97316;--purple:#8b5cf6;--cyan:#06b6d4;--lime:#84cc16;--sw:256px;--hh:52px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px;overflow-x:hidden}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--hh);background:rgba(9,12,17,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 16px;z-index:200}
+.burger{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;min-height:44px;min-width:44px}
+.burger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;transition:all .25s}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.tb-brand{flex:1;font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-count{font-size:12px;color:var(--muted);white-space:nowrap}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}.overlay.show{opacity:1;pointer-events:all}
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:400;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);padding-bottom:40px}
+.sidebar.open{transform:translateX(0)}
+@media(min-width:1060px){.sidebar{transform:translateX(0)}.overlay{display:none!important}.burger{display:none}.main{margin-left:var(--sw)}}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sb-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.sb-logo{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.sb-title{font-size:12px;font-weight:800}.sb-ver{font-size:10px;color:var(--muted)}
+.sb-cls{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;min-height:44px;min-width:44px}
+@media(min-width:1060px){.sb-cls{display:none}}
+.sb-sec{padding:4px 8px 0}.sb-lbl{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);padding:5px 8px 2px}
+.sbl{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:11.5px;cursor:pointer;transition:all .12s;min-height:34px}
+.sbl:hover{background:var(--bg3);color:var(--text)}.sbl .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sbl .cnt{margin-left:auto;font-size:9.5px;font-weight:700;color:var(--muted2);background:var(--bg3);padding:1px 5px;border-radius:8px}
+.sbl-home{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:11.5px;min-height:34px}
+.sbl-home:hover{background:var(--bg3);color:var(--text)}
+.main{padding-top:var(--hh)}
+.hero{padding:24px 16px 20px;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-bottom:1px solid var(--border)}
+@media(min-width:600px){.hero{padding:32px 32px}}@media(min-width:900px){.hero{padding:36px 48px}}
+.hero-ey{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.hero-title{font-size:22px;font-weight:900;letter-spacing:-.03em;margin-bottom:5px}
+@media(min-width:600px){.hero-title{font-size:28px}}
+.hero-sub{color:var(--muted);font-size:12.5px;max-width:620px;margin-bottom:14px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:8px}
+.hstat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 13px;text-align:center}
+.hstat-n{font-size:19px;font-weight:900;line-height:1}.hstat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+/* Section headers */
+.sec-header{padding:20px 16px 6px;border-bottom:1px solid var(--border);background:var(--bg3);position:sticky;top:var(--hh);z-index:90}
+@media(min-width:600px){.sec-header{padding:16px 32px}}@media(min-width:900px){.sec-header{padding:16px 48px}}
+.sec-header-inner{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sec-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sec-title{font-size:16px;font-weight:800}
+.sec-count{font-size:11px;color:var(--muted);margin-left:auto}
+.content{padding:16px 16px 32px}
+@media(min-width:600px){.content{padding:20px 32px 40px}}@media(min-width:900px){.content{padding:24px 48px 48px}}
+/* Script Cards */
+.script-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:20px;overflow:hidden}
+.sc-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sc-badge{font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em}
+.sc-title{font-size:15px;font-weight:800;flex:1}
+.sc-id{font-size:10px;font-weight:700;color:var(--muted2);font-family:monospace}
+.sc-char{padding:10px 18px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:12px;color:var(--muted);font-style:italic}
+.sc-body{padding:16px 18px}
+.sc-line{margin-bottom:12px}
+.sc-label{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.sc-text{font-size:13.5px;line-height:1.65;color:var(--text)}
+.sc-beat{font-size:12px;color:var(--muted);font-style:italic;margin-top:4px}
+.sc-note{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--muted);margin-top:8px}
+.sc-note strong{color:var(--accent);font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px}
+.sc-footer{padding:10px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.copy-btn{background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .15s}
+.copy-btn:hover{background:var(--accent);color:white;border-color:var(--accent)}
+.copy-btn.copied{background:var(--green);color:white;border-color:var(--green)}
+/* Label colors */
+.lbl-hook{color:var(--red)}
+.lbl-body{color:var(--text)}
+.lbl-bridge{color:var(--text)}
+.lbl-pivot{color:var(--yellow)}
+.lbl-result{color:var(--green)}
+.lbl-close{color:var(--green)}
+.lbl-cta{color:var(--accent)}
+.lbl-agitate{color:var(--orange)}
+.lbl-solution{color:var(--teal)}
+.lbl-proof{color:var(--blue)}
+.lbl-data{color:var(--blue)}
+.lbl-open{color:var(--muted)}
+.lbl-admission{color:var(--orange)}
+.lbl-personal{color:var(--yellow)}
+.lbl-before{color:var(--red)}
+.lbl-turn{color:var(--yellow)}
+.lbl-after{color:var(--green)}
+.lbl-expand{color:var(--muted)}
+.lbl-overlay{color:var(--cyan)}
+.lbl-scene{color:var(--purple)}
+/* Badge colors by format */
+.badge-ugc{background:rgba(99,102,241,.15);color:#a5b4fc}
+.badge-dr{background:rgba(239,68,68,.15);color:#fca5a5}
+.badge-pol{background:rgba(16,185,129,.15);color:#6ee7b7}
+.badge-amb{background:rgba(139,92,246,.15);color:#c4b5fd}
+.badge-ba{background:rgba(245,158,11,.15);color:#fcd34d}
+.badge-hook{background:rgba(236,72,153,.15);color:#f9a8d4}
+/* Badge colors by vertical */
+.badge-fe{background:rgba(139,92,246,.12);color:#c4b5fd}
+.badge-auto{background:rgba(59,130,246,.12);color:#93c5fd}
+.badge-med{background:rgba(16,185,129,.12);color:#6ee7b7}
+.badge-aca{background:rgba(245,158,11,.12);color:#fcd34d}
+/* Ambient scene block */
+.scene-block{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;margin-bottom:10px}
+.scene-block-lbl{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:5px}
+.overlay-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.overlay-item{display:flex;gap:10px;align-items:flex-start}
+.overlay-n{font-size:10px;font-weight:800;color:var(--cyan);width:20px;flex-shrink:0;margin-top:2px}
+.overlay-text{flex:1}
+.overlay-main{font-size:13px;font-weight:700;color:var(--text)}
+.overlay-broll{font-size:11.5px;color:var(--muted);font-style:italic;margin-top:2px}
+/* nav links */
+a.sbl-active{background:var(--bg3);color:var(--text)}
+</style></head>
+<body>
+<div class="topbar">
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="tb-brand">📝 Script Templates</div>
+  <div class="tb-count">24 Scripts · 6 Formats · 4 Verticals</div>
+</div>
+<div class="overlay" id="overlay"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div><div class="sb-logo">Pigeonfi · Rachel</div><div class="sb-title">Script Templates</div><div class="sb-ver">24 production-ready scripts</div></div>
+    <button class="sb-cls" id="sb-cls">✕</button>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Navigate</div>
+    <a class="sbl-home sbl" href="index.html">🏠 <span>Home</span></a>
+    <a class="sbl-home sbl" href="library.html">📚 <span>Vol. 1 Library</span></a>
+    <a class="sbl-home sbl" href="vol2.html">🔥 <span>Vol. 2 Angles</span></a>
+    <a class="sbl-home sbl" href="cookbook.html">👨‍🍳 <span>Cookbook</span></a>
+    <a class="sbl-home sbl" href="calendar.html">📅 <span>Calendar</span></a>
+    <a class="sbl-home sbl" href="ab-testing.html">🧪 <span>A/B Testing</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Raw UGC Scripts</div>
+    <a class="sbl" href="#ugc-fe"><span class="dot" style="background:var(--purple)"></span>FE-UGC-01 · $22 Decision<span class="cnt">FE</span></a>
+    <a class="sbl" href="#ugc-auto"><span class="dot" style="background:var(--blue)"></span>AUTO-UGC-01 · Parking Lot<span class="cnt">Auto</span></a>
+    <a class="sbl" href="#ugc-med"><span class="dot" style="background:var(--green)"></span>MEDICARE-UGC-01 · Letter Pile<span class="cnt">Med</span></a>
+    <a class="sbl" href="#ugc-aca"><span class="dot" style="background:var(--yellow)"></span>ACA-UGC-01 · Freelancer<span class="cnt">ACA</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">DR Hook Scripts</div>
+    <a class="sbl" href="#dr-fe"><span class="dot" style="background:var(--purple)"></span>FE-DR-01 · GoFundMe Funeral<span class="cnt">FE</span></a>
+    <a class="sbl" href="#dr-auto"><span class="dot" style="background:var(--blue)"></span>AUTO-DR-01 · Loyalty Penalty<span class="cnt">Auto</span></a>
+    <a class="sbl" href="#dr-med"><span class="dot" style="background:var(--green)"></span>MEDICARE-DR-01 · OOP Trap<span class="cnt">Med</span></a>
+    <a class="sbl" href="#dr-aca"><span class="dot" style="background:var(--yellow)"></span>ACA-DR-01 · COBRA Trap<span class="cnt">ACA</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Polished Testimonials</div>
+    <a class="sbl" href="#pol-fe"><span class="dot" style="background:var(--purple)"></span>FE-POL-01 · Responsible Thing<span class="cnt">FE</span></a>
+    <a class="sbl" href="#pol-auto"><span class="dot" style="background:var(--blue)"></span>AUTO-POL-01 · Math Embarrassed<span class="cnt">Auto</span></a>
+    <a class="sbl" href="#pol-med"><span class="dot" style="background:var(--green)"></span>MEDICARE-POL-01 · Letters<span class="cnt">Med</span></a>
+    <a class="sbl" href="#pol-aca"><span class="dot" style="background:var(--yellow)"></span>ACA-POL-01 · Built for Me<span class="cnt">ACA</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Ambient Slice</div>
+    <a class="sbl" href="#amb-fe"><span class="dot" style="background:var(--purple)"></span>FE-AMB-01 · Sunday Coffee<span class="cnt">FE</span></a>
+    <a class="sbl" href="#amb-auto"><span class="dot" style="background:var(--blue)"></span>AUTO-AMB-01 · Comparison Tab<span class="cnt">Auto</span></a>
+    <a class="sbl" href="#amb-med"><span class="dot" style="background:var(--green)"></span>MEDICARE-AMB-01 · Zero Premium<span class="cnt">Med</span></a>
+    <a class="sbl" href="#amb-aca"><span class="dot" style="background:var(--yellow)"></span>ACA-AMB-01 · Calculator<span class="cnt">ACA</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Before / After</div>
+    <a class="sbl" href="#ba-fe"><span class="dot" style="background:var(--purple)"></span>FE-BA-01 · Mom Passed<span class="cnt">FE</span></a>
+    <a class="sbl" href="#ba-auto"><span class="dot" style="background:var(--blue)"></span>AUTO-BA-01 · Compared<span class="cnt">Auto</span></a>
+    <a class="sbl" href="#ba-med"><span class="dot" style="background:var(--green)"></span>MEDICARE-BA-01 · Advisor Call<span class="cnt">Med</span></a>
+    <a class="sbl" href="#ba-aca"><span class="dot" style="background:var(--yellow)"></span>ACA-BA-01 · Before I Checked<span class="cnt">ACA</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Bonus Scripts</div>
+    <a class="sbl" href="#bon-1"><span class="dot" style="background:var(--pink)"></span>FE-HOOK-01 · Church Pew<span class="cnt">FE</span></a>
+    <a class="sbl" href="#bon-2"><span class="dot" style="background:var(--cyan)"></span>AUTO-POL-02 · New Driver<span class="cnt">Auto</span></a>
+    <a class="sbl" href="#bon-3"><span class="dot" style="background:var(--teal)"></span>MEDICARE-BA-02 · Spouse<span class="cnt">Med</span></a>
+    <a class="sbl" href="#bon-4"><span class="dot" style="background:var(--lime)"></span>ACA-DR-02 · Gig Worker<span class="cnt">ACA</span></a>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="hero">
+    <div class="hero-ey">Production Reference · Script Templates</div>
+    <div class="hero-title">📝 Ready-to-Use Ad Scripts</div>
+    <div class="hero-sub">Complete word-for-word scripts for every format × vertical combination. Each script includes character notes, director guidance, and color-coded section labels. Copy and paste directly into production briefs.</div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n">24</div><div class="hstat-l">Total Scripts</div></div>
+      <div class="hstat"><div class="hstat-n">6</div><div class="hstat-l">Formats</div></div>
+      <div class="hstat"><div class="hstat-n">4</div><div class="hstat-l">Verticals</div></div>
+      <div class="hstat"><div class="hstat-n">100%</div><div class="hstat-l">Copy-Ready</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ RAW UGC ═══ -->
+  <div class="sec-header" id="raw-ugc">
+    <div class="sec-header-inner">
+      <div class="sec-label">Format 01</div>
+      <div class="sec-title">Raw UGC Testimonial Scripts</div>
+      <div class="sec-count">4 scripts</div>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- FE-UGC-01 -->
+    <div class="script-card" id="ugc-fe">
+      <div class="sc-head">
+        <span class="sc-badge badge-ugc">Raw UGC</span>
+        <span class="sc-badge badge-fe">Final Expense</span>
+        <span class="sc-title">The $22 Decision</span>
+        <span class="sc-id">FE-UGC-01</span>
+      </div>
+      <div class="sc-char">Character: 61yo Black man, warm Southern accent · Back porch, evening · Handheld camera, warm lamp light</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>75% energy. Handheld with slight movement. Let the lamp light be warm. Don't rush anything.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"I put this off for eight years. Eight years."</div>
+          <div class="sc-beat">↳ [BEAT] Let that land. Slight headshake. Hold 1.5 seconds before continuing.</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-body">BODY</div>
+          <div class="sc-text">"My mother passed last year. Didn't have anything in place. Me and my two sisters had to scramble. I'm not letting my kids go through that."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-bridge">BRIDGE</div>
+          <div class="sc-text">"A friend at church told me about this. Twenty-two dollars a month. No medical questions. I applied on my phone in about nine minutes."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-close">CLOSE</div>
+          <div class="sc-text">"Rate's locked. Permanent. My family is taken care of. Twenty-two dollars."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Link's right there. Do it tonight."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>Don't rush the "eight years" pause. The headshake does more than the words. The church reference adds community trust — keep it.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('ugc-fe')">Copy Script</button></div>
+    </div>
+
+    <!-- AUTO-UGC-01 -->
+    <div class="script-card" id="ugc-auto">
+      <div class="sc-head">
+        <span class="sc-badge badge-ugc">Raw UGC</span>
+        <span class="sc-badge badge-auto">Auto Insurance</span>
+        <span class="sc-title">The Parking Lot Comparison</span>
+        <span class="sc-id">AUTO-UGC-01</span>
+      </div>
+      <div class="sc-char">Character: 38yo Latina woman, neutral California accent · Sitting in car, parking lot, between errands · Selfie angle, ambient outside sounds</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>80% energy. Selfie angle feels spontaneous. Slight ambient noise is authenticity. Don't let her look too comfortable — she should feel like she pulled over.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"I'm literally in the parking lot right now because I just checked my car insurance and I need to tell you something."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-body">BODY</div>
+          <div class="sc-text">"I've been with the same company for six years. Same car. Same address. Never had an accident. My rate went up again."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-pivot">PIVOT</div>
+          <div class="sc-text">"Ran a comparison on my phone. Six minutes. Same coverage. Ninety-one dollars less a month."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-result">REACTION</div>
+          <div class="sc-text">"Ninety-one dollars. I'm literally sitting here."</div>
+          <div class="sc-beat">↳ [BEAT] Look off camera briefly. Real disbelief.</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Link is right there. Run the comparison. Do it right now if you want."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>The parking lot spontaneity is the whole ad. The "I'm literally sitting here" line should feel genuinely stunned, not performed.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('ugc-auto')">Copy Script</button></div>
+    </div>
+
+    <!-- MEDICARE-UGC-01 -->
+    <div class="script-card" id="ugc-med">
+      <div class="sc-head">
+        <span class="sc-badge badge-ugc">Raw UGC</span>
+        <span class="sc-badge badge-med">Medicare</span>
+        <span class="sc-title">The Letter Pile</span>
+        <span class="sc-id">MEDICARE-UGC-01</span>
+      </div>
+      <div class="sc-char">Character: 68yo white woman, warm Midwest accent · Kitchen table, Medicare mail visible · 60% energy, medium shot, morning light</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>60% energy. Medium shot. Let the mail pile be clearly visible in frame. Morning light, natural kitchen sounds. Unhurried.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"If you've turned sixty-five and the mail has started... you know what I mean."</div>
+          <div class="sc-beat">↳ [SHOW] Gesture at the pile of letters.</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-body">BODY</div>
+          <div class="sc-text">"I had no idea how to read any of it. I called a Medicare advisor — free, nothing to buy — and she walked me through everything in one call."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-result">RESULT</div>
+          <div class="sc-text">"Zero premium. Same doctors. Dental included. The letters make sense now."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Number's in the link below. The call is free. She spent forty minutes with me."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>The letter pile is visual proof — audience recognition. The "forty minutes" detail creates trust. Keep it specific.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('ugc-med')">Copy Script</button></div>
+    </div>
+
+    <!-- ACA-UGC-01 -->
+    <div class="script-card" id="ugc-aca">
+      <div class="sc-head">
+        <span class="sc-badge badge-ugc">Raw UGC</span>
+        <span class="sc-badge badge-aca">ACA Health</span>
+        <span class="sc-title">The Freelancer Confession</span>
+        <span class="sc-id">ACA-UGC-01</span>
+      </div>
+      <div class="sc-char">Character: 29yo Black woman, Brooklyn accent · Home office desk, coffee in hand · 85% energy, direct to camera, slightly leaning forward</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>85% energy. Direct to camera. She's leaning forward — engaged, not relaxed. Coffee in hand is casual authenticity.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"I was uninsured for two years doing this freelance thing. Two years. Because I assumed I couldn't afford it."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-body">BODY</div>
+          <div class="sc-text">"I finally checked the marketplace. With my income, my subsidy was so high my plan was literally free. Free."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-result">REACTION</div>
+          <div class="sc-text">"I cried a little. That's embarrassing but it's true."</div>
+          <div class="sc-beat">↳ [KEY MOMENT] This line is the ad. Don't let her laugh it off. Let it be real.</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-close">CLOSE</div>
+          <div class="sc-text">"If you're freelancing, gig working, doing your own thing — you need to check this before you assume it's out of reach."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Link below. The calculator takes thirty seconds."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"I cried a little" is the moment. Do not edit it out. That vulnerability is the conversion driver.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('ugc-aca')">Copy Script</button></div>
+    </div>
+  </div><!-- /content -->
+
+  <!-- ═══ DR HOOK ═══ -->
+  <div class="sec-header" id="dr-hook">
+    <div class="sec-header-inner">
+      <div class="sec-label">Format 02</div>
+      <div class="sec-title">DR Hook Scripts</div>
+      <div class="sec-count">4 scripts</div>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- FE-DR-01 -->
+    <div class="script-card" id="dr-fe">
+      <div class="sc-head">
+        <span class="sc-badge badge-dr">DR Hook</span>
+        <span class="sc-badge badge-fe">Final Expense</span>
+        <span class="sc-title">The GoFundMe Funeral</span>
+        <span class="sc-id">FE-DR-01</span>
+      </div>
+      <div class="sc-char">Character: 57yo white woman, direct Midwest delivery · Home, slightly urgent · 90% energy, locked-off camera, direct eye contact</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>90% energy. Locked-off camera — no movement. Direct eye contact. Zero warmth until the CTA. This is information delivery.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"The average American funeral costs eleven thousand eight hundred and forty-seven dollars. Your family has that liquid right now?"</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-agitate">AGITATE</div>
+          <div class="sc-text">"Because what happens if they don't is a GoFundMe. I've seen it. You've seen it."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-solution">SOLUTION</div>
+          <div class="sc-text">"Final expense coverage is twenty-two dollars a month. No medical questions. No exam. Rate locks permanently."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-proof">PROOF</div>
+          <div class="sc-text">"Same carriers you know. A-rated. I've had mine for three years."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Link below. Apply tonight. Nine minutes."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>Zero warmth until the CTA. The warmth is in the solution, not the problem. The "GoFundMe" reference is the emotional gut punch — let it sit.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('dr-fe')">Copy Script</button></div>
+    </div>
+
+    <!-- AUTO-DR-01 -->
+    <div class="script-card" id="dr-auto">
+      <div class="sc-head">
+        <span class="sc-badge badge-dr">DR Hook</span>
+        <span class="sc-badge badge-auto">Auto Insurance</span>
+        <span class="sc-title">The Loyalty Penalty Exposed</span>
+        <span class="sc-id">AUTO-DR-01</span>
+      </div>
+      <div class="sc-char">Character: 44yo white man, no-accent direct delivery · Home office · 95% energy, forward lean, slightly confrontational</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>95% energy. Forward lean. Slightly confrontational delivery — he's exposing something. "Price inelastic" should land like a punch.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"Your insurance company has a name for customers who haven't switched in years. They call you 'price inelastic.' That means they know you won't leave so they keep raising your rate."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-data">DATA</div>
+          <div class="sc-text">"The average loyal customer overpays $127 a month compared to a new customer with identical coverage."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-solution">SOLUTION</div>
+          <div class="sc-text">"Comparison site. Seven minutes. Same coverage. New carrier pricing."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Link below. Run it. If the numbers match, switch. If they don't, you lost seven minutes."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"Price inelastic" is the hook within the hook. Let it sit after delivery. The audience should feel the insult of the term.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('dr-auto')">Copy Script</button></div>
+    </div>
+
+    <!-- MEDICARE-DR-01 -->
+    <div class="script-card" id="dr-med">
+      <div class="sc-head">
+        <span class="sc-badge badge-dr">DR Hook</span>
+        <span class="sc-badge badge-med">Medicare</span>
+        <span class="sc-title">The Original Medicare Trap</span>
+        <span class="sc-id">MEDICARE-DR-01</span>
+      </div>
+      <div class="sc-char">Character: 65yo white man, calm authority, professional delivery · 70% energy, measured pace</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>70% energy. Measured. Let every stat breathe. This is calm authority — not alarm. The numbers do the alarming.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"Original Medicare has no out-of-pocket maximum. None. One hospital stay can cost you eleven thousand dollars and Medicare won't stop the billing."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-expand">EXPAND</div>
+          <div class="sc-text">"Most people don't find this out until they're already in the hospital."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-solution">SOLUTION</div>
+          <div class="sc-text">"Medicare Advantage plans have out-of-pocket maximums, often include dental and vision, and the premium can be zero dollars a month."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-close">CLOSE</div>
+          <div class="sc-text">"One free call to a licensed advisor. They're paid by the carrier not by you. Zero pressure."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Number's in the link. Call before open enrollment closes."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>The "$11,000" stat is the hook. Make sure it's the first number they hear. "Paid by the carrier not by you" kills the sales objection before it forms.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('dr-med')">Copy Script</button></div>
+    </div>
+
+    <!-- ACA-DR-01 -->
+    <div class="script-card" id="dr-aca">
+      <div class="sc-head">
+        <span class="sc-badge badge-dr">DR Hook</span>
+        <span class="sc-badge badge-aca">ACA Health</span>
+        <span class="sc-title">The COBRA Trap</span>
+        <span class="sc-id">ACA-DR-01</span>
+      </div>
+      <div class="sc-char">Character: 36yo woman, direct, slightly frustrated energy · 85% energy, close-up medium shot, slight urgency</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>85% energy. Close-up medium shot. The word "Stop" should feel like grabbing someone's arm. She's doing them a favor by interrupting them.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"If you just lost your job and you're about to sign up for COBRA — stop."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-data">DATA</div>
+          <div class="sc-text">"COBRA averages $617 a month for a single person. The ACA marketplace for that same person with that income might be twenty to forty dollars."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-bridge">BRIDGE</div>
+          <div class="sc-text">"You have 63 days after losing employer coverage to enroll in the marketplace. That clock is running."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Calculator is in the link. Run your numbers before you sign that COBRA paperwork."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"Stop" is the first word. It should feel like grabbing someone's arm. The 63-day deadline is urgency without being fake — use it.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('dr-aca')">Copy Script</button></div>
+    </div>
+  </div><!-- /content -->
+
+  <!-- ═══ POLISHED ═══ -->
+  <div class="sec-header" id="polished">
+    <div class="sec-header-inner">
+      <div class="sec-label">Format 03</div>
+      <div class="sec-title">Polished Testimonial Scripts</div>
+      <div class="sec-count">4 scripts</div>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- FE-POL-01 -->
+    <div class="script-card" id="pol-fe">
+      <div class="sc-head">
+        <span class="sc-badge badge-pol">Polished</span>
+        <span class="sc-badge badge-fe">Final Expense</span>
+        <span class="sc-title">The Responsible Thing</span>
+        <span class="sc-id">FE-POL-01</span>
+      </div>
+      <div class="sc-char">Character: 64yo Black man, Southern professional delivery · Clean home study · 60% energy, medium shot, composed, measured</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>60% energy. Composed. Medium shot, clean background. He has gravitas — let him use it. No rush, no urgency. Quiet authority.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-open">OPEN</div>
+          <div class="sc-text">"I spent thirty-five years doing the responsible thing. Showed up every day. Raised my family. Handled my business."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-pivot">PIVOT</div>
+          <div class="sc-text">"Getting final expense coverage was just the next responsible thing on the list."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-body">DETAILS</div>
+          <div class="sc-text">"Twenty dollars a month. Rate locked. No medical questions. My family will not scramble when I'm gone."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CLOSE + CTA</div>
+          <div class="sc-text">"If you've been putting this off — it takes nine minutes and a phone. The link's right there."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>The word "scramble" carries weight in FE — it's the specific fear. His composure sells more than any urgency would.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('pol-fe')">Copy Script</button></div>
+    </div>
+
+    <!-- AUTO-POL-01 -->
+    <div class="script-card" id="pol-auto">
+      <div class="sc-head">
+        <span class="sc-badge badge-pol">Polished</span>
+        <span class="sc-badge badge-auto">Auto Insurance</span>
+        <span class="sc-title">The Math That Embarrassed Me</span>
+        <span class="sc-id">AUTO-POL-01</span>
+      </div>
+      <div class="sc-char">Character: 52yo white woman, professional delivery · Home office · 65% energy, slight self-deprecating warmth</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>65% energy. Composed but warm. The self-deprecation should feel genuine, not performed. She's amused at herself.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-open">OPEN</div>
+          <div class="sc-text">"I manage a budget professionally. I've been doing it for twenty years."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-admission">ADMISSION</div>
+          <div class="sc-text">"I had not looked at my car insurance in seven years. When I finally ran a comparison, I found $134 a month in savings. With identical coverage."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-close">CLOSE</div>
+          <div class="sc-text">"Seven years. I'm not going to tell you how much that adds up to."</div>
+          <div class="sc-beat">↳ [BEAT] Small, knowing smile. Let it breathe.</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"The link is below. The comparison takes seven minutes. Do the math."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"I'm not going to tell you how much that adds up to" — this forces the viewer to do the math in their head. The pause lets them feel it.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('pol-auto')">Copy Script</button></div>
+    </div>
+
+    <!-- MEDICARE-POL-01 -->
+    <div class="script-card" id="pol-med">
+      <div class="sc-head">
+        <span class="sc-badge badge-pol">Polished</span>
+        <span class="sc-badge badge-med">Medicare</span>
+        <span class="sc-title">What the Letters Don't Tell You</span>
+        <span class="sc-id">MEDICARE-POL-01</span>
+      </div>
+      <div class="sc-char">Character: 69yo white woman, composed Midwest · Kitchen table · 55% energy, warm authority, morning feel</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>55% energy. The lowest energy format — warm authority. Morning light. She's educating, not selling. The trust is in the calm.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-open">OPEN</div>
+          <div class="sc-text">"When you turn sixty-five, you receive a lot of mail about Medicare. What the mail doesn't tell you is that there are plans with zero premium that often have better benefits than what you're being offered."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-personal">PERSONAL</div>
+          <div class="sc-text">"I was paying $148 a month for my supplement. My advisor found me a zero-premium plan that includes dental. Same network."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-close">CLOSE</div>
+          <div class="sc-text">"The call is free. The advisor is paid by the carrier regardless of which plan you choose. There's no pressure."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Number is in the link. Takes one call."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>The "paid by the carrier regardless" line removes the sales anxiety. Deliver it matter-of-factly. It's the most important objection kill in Medicare creative.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('pol-med')">Copy Script</button></div>
+    </div>
+
+    <!-- ACA-POL-01 -->
+    <div class="script-card" id="pol-aca">
+      <div class="sc-head">
+        <span class="sc-badge badge-pol">Polished</span>
+        <span class="sc-badge badge-aca">ACA Health</span>
+        <span class="sc-title">Built for People Like Me</span>
+        <span class="sc-id">ACA-POL-01</span>
+      </div>
+      <div class="sc-char">Character: 41yo Black man, professional · Home office, creative industry background · 70% energy, grounded, peer-level authority</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>70% energy. Grounded, peer-level. He's not a testimonial — he's a colleague sharing a discovery. Bookshelf or creative workspace visible.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-open">OPEN</div>
+          <div class="sc-text">"I've been self-employed for six years. Health insurance was always the thing I was managing around — the variable I kept trying to control."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-pivot">PIVOT</div>
+          <div class="sc-text">"ACA marketplace. My income, my subsidy. Twenty-four dollars a month."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-close">CLOSE</div>
+          <div class="sc-text">"It was built for people in exactly my situation. I just didn't realize that for six years."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Calculator in the link. Thirty seconds to see your number."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"The variable I kept trying to control" is the resonance line for any self-employed person. The six-year regret is relatable, not depressing.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('pol-aca')">Copy Script</button></div>
+    </div>
+  </div><!-- /content -->
+
+  <!-- ═══ AMBIENT ═══ -->
+  <div class="sec-header" id="ambient">
+    <div class="sec-header-inner">
+      <div class="sec-label">Format 04</div>
+      <div class="sec-title">Ambient Slice Scripts</div>
+      <div class="sec-count">4 scripts · No voiceover</div>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- FE-AMB-01 -->
+    <div class="script-card" id="amb-fe">
+      <div class="sc-head">
+        <span class="sc-badge badge-amb">Ambient</span>
+        <span class="sc-badge badge-fe">Final Expense</span>
+        <span class="sc-title">Sunday Morning Coffee</span>
+        <span class="sc-id">FE-AMB-01</span>
+      </div>
+      <div class="sc-char">Character: 63yo Black man · Sunday morning porch · Zero voiceover — ambient sounds only, text overlays</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>Zero voice. Let the Sunday morning peace sell the relief. Phone notification close-up is the visual hook. Birds, coffee, quiet yard.</div>
+        <div class="scene-block">
+          <div class="scene-block-lbl">Scene Setup</div>
+          <div class="sc-text" style="font-size:12px">Man sits on porch with coffee. Phone dings. Close-up of screen: "Your Final Expense application is approved." He nods slowly, takes a sip.</div>
+        </div>
+        <ul class="overlay-list">
+          <li class="overlay-item"><span class="overlay-n">01</span><div class="overlay-text"><div class="overlay-main">"Applied last night."</div><div class="overlay-broll">B-Roll: Sipping coffee, birds audible, quiet morning</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">02</span><div class="overlay-text"><div class="overlay-main">"$20/month. Rate locked forever."</div><div class="overlay-broll">B-Roll: Coffee steam rising, peaceful yard, unhurried morning</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">03</span><div class="overlay-text"><div class="overlay-main">"My family is taken care of."</div><div class="overlay-broll">B-Roll: Family photo on porch railing, slight breeze</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">04</span><div class="overlay-text"><div class="overlay-main">"Nine minutes. Link below."</div><div class="overlay-broll">End card on peaceful porch scene</div></div></li>
+        </ul>
+        <div class="sc-note"><strong>Performance Note</strong>Zero voice. Let the Sunday morning peace sell the relief. The notification close-up is the visual proof — it must be in frame and legible.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('amb-fe')">Copy Script</button></div>
+    </div>
+
+    <!-- AUTO-AMB-01 -->
+    <div class="script-card" id="amb-auto">
+      <div class="sc-head">
+        <span class="sc-badge badge-amb">Ambient</span>
+        <span class="sc-badge badge-auto">Auto Insurance</span>
+        <span class="sc-title">The Comparison Tab</span>
+        <span class="sc-id">AUTO-AMB-01</span>
+      </div>
+      <div class="sc-char">Character: Anyone · Laptop at home · Screen recording + reaction face · Zero narration</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>The screen is the whole ad. Slow push on the comparison results. The face at the end is the proof. Genuine surprise — can't be faked.</div>
+        <div class="scene-block">
+          <div class="scene-block-lbl">Scene Setup</div>
+          <div class="sc-text" style="font-size:12px">Person at laptop. Multiple browser tabs open. Screen recording shows comparison site — two columns, same coverage specs, old rate vs new rate highlighted.</div>
+        </div>
+        <ul class="overlay-list">
+          <li class="overlay-item"><span class="overlay-n">01</span><div class="overlay-text"><div class="overlay-main">"Hadn't checked in 4 years."</div><div class="overlay-broll">Screen: Opening comparison site, entering info</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">02</span><div class="overlay-text"><div class="overlay-main">"Same coverage. Different carrier."</div><div class="overlay-broll">Screen: Results loading — two columns, same specs, different price</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">03</span><div class="overlay-text"><div class="overlay-main">"$97/month difference."</div><div class="overlay-broll">Reaction: Creator's face — genuine surprise, hand to mouth</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">04</span><div class="overlay-text"><div class="overlay-main">"Seven minutes. Link below."</div><div class="overlay-broll">End card on results screen</div></div></li>
+        </ul>
+        <div class="sc-note"><strong>Performance Note</strong>The screen recording is the credibility. The face reaction is the conversion. If the surprise doesn't read as genuine, reshoot. Do not fake it.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('amb-auto')">Copy Script</button></div>
+    </div>
+
+    <!-- MEDICARE-AMB-01 -->
+    <div class="script-card" id="amb-med">
+      <div class="sc-head">
+        <span class="sc-badge badge-amb">Ambient</span>
+        <span class="sc-badge badge-med">Medicare</span>
+        <span class="sc-title">The Zero Premium Moment</span>
+        <span class="sc-id">MEDICARE-AMB-01</span>
+      </div>
+      <div class="sc-char">Character: Anyone on phone call · Kitchen table with Medicare paperwork · Writes "$0" on notepad by hand</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>Writing "$0" by hand is the key visual. Make sure it's in frame and legible. The small smile on the close-up is everything.</div>
+        <div class="scene-block">
+          <div class="scene-block-lbl">Scene Setup</div>
+          <div class="sc-text" style="font-size:12px">Kitchen table. Medicare paperwork spread out. Creator is on a phone call — we see one side. Nodding, listening. Then picks up pen and writes "$0/mo" on a notepad.</div>
+        </div>
+        <ul class="overlay-list">
+          <li class="overlay-item"><span class="overlay-n">01</span><div class="overlay-text"><div class="overlay-main">"Called about my Medicare plan."</div><div class="overlay-broll">B-Roll: Phone conversation, nodding, pen in hand</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">02</span><div class="overlay-text"><div class="overlay-main">"Same doctors. Better benefits."</div><div class="overlay-broll">Close-up: Writing "$0/mo" on notepad — hand visible</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">03</span><div class="overlay-text"><div class="overlay-main">"Zero premium."</div><div class="overlay-broll">Reaction: Small smile, disbelief → quiet relief</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">04</span><div class="overlay-text"><div class="overlay-main">"One free call. Link below."</div><div class="overlay-broll">Hold on "$0/mo" notepad, steady shot</div></div></li>
+        </ul>
+        <div class="sc-note"><strong>Performance Note</strong>The handwritten "$0" is the proof artifact. It's more real than a screenshot. The smile should be subtle — disbelief turning to relief, not excitement.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('amb-med')">Copy Script</button></div>
+    </div>
+
+    <!-- ACA-AMB-01 -->
+    <div class="script-card" id="amb-aca">
+      <div class="sc-head">
+        <span class="sc-badge badge-amb">Ambient</span>
+        <span class="sc-badge badge-aca">ACA Health</span>
+        <span class="sc-title">The Calculator Result</span>
+        <span class="sc-id">ACA-AMB-01</span>
+      </div>
+      <div class="sc-char">Character: Freelancer at desk · ACA marketplace calculator on screen · Hands-over-mouth reaction</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>The hand-over-mouth reaction cannot be faked. Either it's real or reshoot. The calculator result screen must show $0/month clearly. No voiceover.</div>
+        <div class="scene-block">
+          <div class="scene-block-lbl">Scene Setup</div>
+          <div class="sc-text" style="font-size:12px">Freelancer at desk. marketplace.gov calculator open. Types in income. Waits. Result loads: "$0/month after subsidy." Hands go over mouth.</div>
+        </div>
+        <ul class="overlay-list">
+          <li class="overlay-item"><span class="overlay-n">01</span><div class="overlay-text"><div class="overlay-main">"Uninsured for 2 years."</div><div class="overlay-broll">Screen: marketplace.gov calculator — income field being filled</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">02</span><div class="overlay-text"><div class="overlay-main">"Checked the subsidy calculator."</div><div class="overlay-broll">Screen: Loading animation, results about to appear</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">03</span><div class="overlay-text"><div class="overlay-main">"Zero dollars a month."</div><div class="overlay-broll">Screen: "$0/month" result — hold 2 seconds. Then cut to reaction.</div></div></li>
+          <li class="overlay-item"><span class="overlay-n">04</span><div class="overlay-text"><div class="overlay-main">"Link below. 30-second calculator."</div><div class="overlay-broll">Reaction: Hands over mouth, genuine disbelief. End card.</div></div></li>
+        </ul>
+        <div class="sc-note"><strong>Performance Note</strong>The hand-over-mouth cannot be faked. If the creator doesn't feel genuine surprise, the ad dies. Real result, real reaction. No exceptions.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('amb-aca')">Copy Script</button></div>
+    </div>
+  </div><!-- /content -->
+
+  <!-- ═══ BEFORE/AFTER ═══ -->
+  <div class="sec-header" id="before-after">
+    <div class="sec-header-inner">
+      <div class="sec-label">Format 05</div>
+      <div class="sec-title">Before / After Scripts</div>
+      <div class="sec-count">4 scripts</div>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- FE-BA-01 -->
+    <div class="script-card" id="ba-fe">
+      <div class="sc-head">
+        <span class="sc-badge badge-ba">Before / After</span>
+        <span class="sc-badge badge-fe">Final Expense</span>
+        <span class="sc-title">Before My Mom Passed / After</span>
+        <span class="sc-id">FE-BA-01</span>
+      </div>
+      <div class="sc-char">Character: Any adult 45–65 · Direct to camera, home setting · 75% energy, quiet urgency</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>The BEFORE should feel specific and normal, not dramatic. The TURN is the pivot — deliver it with weight. The AFTER should feel quiet relief, not celebration.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-before">BEFORE</div>
+          <div class="sc-text">"A year ago I hadn't thought about it. My mom was fine. We were fine."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-turn">THE TURN</div>
+          <div class="sc-text">"She passed in March. Eleven thousand dollars. We had ten days."</div>
+          <div class="sc-beat">↳ [PAUSE] Let those three sentences land separately.</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-after">AFTER</div>
+          <div class="sc-text">"I got covered the same month. Twenty dollars. Rate locked. My kids will never have ten days like we had."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Link below. Nine minutes."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"We had ten days" is the most powerful phrase in FE creative. The brevity of the TURN is intentional — don't elaborate. Let the viewer fill it in.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('ba-fe')">Copy Script</button></div>
+    </div>
+
+    <!-- AUTO-BA-01 -->
+    <div class="script-card" id="ba-auto">
+      <div class="sc-head">
+        <span class="sc-badge badge-ba">Before / After</span>
+        <span class="sc-badge badge-auto">Auto Insurance</span>
+        <span class="sc-title">Before I Compared / After</span>
+        <span class="sc-id">AUTO-BA-01</span>
+      </div>
+      <div class="sc-char">Character: Professional 35–55 · Home or office · 70% energy, matter-of-fact</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>Conversational, not dramatic. The BEFORE state is comfortable — not distressed. The TURN is casual, which makes the AFTER more striking by contrast.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-before">BEFORE</div>
+          <div class="sc-text">"I was paying $287 a month. Had been for three years. Never thought to question it."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-turn">THE TURN</div>
+          <div class="sc-text">"My coworker mentioned she'd switched and saved $80. I figured I'd check."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-after">AFTER</div>
+          <div class="sc-text">"Same coverage. Same deductible. $94 less a month. I've switched twice since."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Run the comparison. Takes seven minutes."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"I've switched twice since" is the detail that makes it real — it shows this is habitual behavior now, not a one-time fluke. Keep it.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('ba-auto')">Copy Script</button></div>
+    </div>
+
+    <!-- MEDICARE-BA-01 -->
+    <div class="script-card" id="ba-med">
+      <div class="sc-head">
+        <span class="sc-badge badge-ba">Before / After</span>
+        <span class="sc-badge badge-med">Medicare</span>
+        <span class="sc-title">Before the Advisor Call / After</span>
+        <span class="sc-id">MEDICARE-BA-01</span>
+      </div>
+      <div class="sc-char">Character: 65–72yo woman · Kitchen table or living room · 60% energy, warm, reflective</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>Reflective tone throughout. The BEFORE is resignation — "assumed that's what it cost." The AFTER has quiet satisfaction. The grocery line is the emotional payoff.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-before">BEFORE</div>
+          <div class="sc-text">"I was paying $148 a month for my Medicare supplement. Had been for two years. Just assumed that's what it cost."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-turn">THE TURN</div>
+          <div class="sc-text">"One call to a free Medicare advisor. She asked me about my doctors, my prescriptions, what I valued."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-after">AFTER</div>
+          <div class="sc-text">"Zero premium plan. Same doctors. Dental included. That $148 a month now covers groceries."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"The call is free. Number in the link."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"That $148 a month now covers groceries" is the concrete payoff that makes the savings tangible. Abstract savings don't convert — groceries do.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('ba-med')">Copy Script</button></div>
+    </div>
+
+    <!-- ACA-BA-01 -->
+    <div class="script-card" id="ba-aca">
+      <div class="sc-head">
+        <span class="sc-badge badge-ba">Before / After</span>
+        <span class="sc-badge badge-aca">ACA Health</span>
+        <span class="sc-title">Before I Checked / After</span>
+        <span class="sc-id">ACA-BA-01</span>
+      </div>
+      <div class="sc-char">Character: 26–34yo gig worker or freelancer · Home, direct to camera · 80% energy, direct, slightly sobered</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>The BEFORE should feel familiar and a little bravado — "nothing would happen." The TURN is a gut punch. The AFTER is relief, not triumph. Keep the tone sober.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-before">BEFORE</div>
+          <div class="sc-text">"Two years freelancing. No insurance. I told myself it was fine. I was 28. Nothing would happen."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-turn">THE TURN</div>
+          <div class="sc-text">"Something happened. ER visit. $9,200."</div>
+          <div class="sc-beat">↳ [PAUSE] Three sentences. Hard stop after each one.</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-after">AFTER</div>
+          <div class="sc-text">"ACA marketplace. After subsidy: $22 a month. I have real coverage now for twenty-two dollars."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Check the calculator before something happens. Link below."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"Something happened. ER visit. $9,200." — these three sentences do everything. The brevity is the point. Do not add context or soften it.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('ba-aca')">Copy Script</button></div>
+    </div>
+  </div><!-- /content -->
+
+  <!-- ═══ BONUS ═══ -->
+  <div class="sec-header" id="bonus">
+    <div class="sec-header-inner">
+      <div class="sec-label">Format 06</div>
+      <div class="sec-title">Bonus Scripts · Gap Fills</div>
+      <div class="sec-count">4 scripts</div>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- FE-HOOK-01 -->
+    <div class="script-card" id="bon-1">
+      <div class="sc-head">
+        <span class="sc-badge badge-hook">Hook-Forward</span>
+        <span class="sc-badge badge-fe">Final Expense</span>
+        <span class="sc-title">The Church Pew Confession</span>
+        <span class="sc-id">FE-HOOK-01</span>
+      </div>
+      <div class="sc-char">Character: 58yo Black woman, warm church community energy · Living room, Sunday clothes · 70% energy, emotional warmth</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>This runs hotter emotionally than standard FE. Sunday clothes signal community. The "didn't want to embarrass him" line is the emotional anchor — protect it.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"My husband would have been embarrassed by this GoFundMe. He was a proud man. That's why I didn't wait."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-body">BODY</div>
+          <div class="sc-text">"After he passed I handled everything. I didn't want my kids to have to do what I did. I looked into final expense the same week."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-bridge">BRIDGE</div>
+          <div class="sc-text">"Twenty-three dollars a month. Locked rate. No health questions. My kids will never scramble. That's what I know."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Link's right there if you've been putting it off. It took me nine minutes."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>The "proud man" framing is FE gold — dignity preservation is the core emotional driver for this vertical. Lean in.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('bon-1')">Copy Script</button></div>
+    </div>
+
+    <!-- AUTO-POL-02 -->
+    <div class="script-card" id="bon-2">
+      <div class="sc-head">
+        <span class="sc-badge badge-pol">Polished</span>
+        <span class="sc-badge badge-auto">Auto Insurance</span>
+        <span class="sc-title">The New Driver's Dad</span>
+        <span class="sc-id">AUTO-POL-02</span>
+      </div>
+      <div class="sc-char">Character: 47yo white man, suburban dad · Kitchen or garage · 65% energy, slightly exasperated warmth</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>Life event angle — new teenage driver on policy. The exasperation is the relatability. He's not angry, just resigned and then relieved. Very wide targeting demographic.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"My son just got his license. My insurance company added him and my rate went up $163 a month."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-body">BODY</div>
+          <div class="sc-text">"I wasn't going to just accept that. Ran a comparison — same coverage, new carrier. $74 less than what I was paying before he even got his license."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-pivot">PIVOT</div>
+          <div class="sc-text">"New driver on the policy, and I'm paying less than before. I genuinely didn't think that was possible."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"If you just added a young driver — run the comparison before you accept the new rate. Link below. Seven minutes."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>Life event trigger: new driver = mass relatable moment. Target parents of teens. The math is the hook — $163 up vs $74 below baseline is a dramatic before/after in one script.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('bon-2')">Copy Script</button></div>
+    </div>
+
+    <!-- MEDICARE-BA-02 -->
+    <div class="script-card" id="bon-3">
+      <div class="sc-head">
+        <span class="sc-badge badge-ba">Before / After</span>
+        <span class="sc-badge badge-med">Medicare</span>
+        <span class="sc-title">I Did It for My Husband</span>
+        <span class="sc-id">MEDICARE-BA-02</span>
+      </div>
+      <div class="sc-char">Character: 67yo woman · Living room · 65% energy, domestic warmth, doing something for someone else</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>Doing-it-for-someone-else angle. The motivation is spousal care, not self-interest. This hits a completely different emotional register than standard FE or Medicare — more tender.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"My husband had a stroke last year. I realized I didn't know what we were actually covered for."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-before">BEFORE</div>
+          <div class="sc-text">"We'd both been on original Medicare. No one ever told us about the out-of-pocket maximum — or the lack of one."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-turn">THE TURN</div>
+          <div class="sc-text">"One call. Forty-five minutes. She found us both Medicare Advantage plans with a cap on what we'd ever pay. Zero premium combined."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-after">AFTER</div>
+          <div class="sc-text">"I sleep better now. That's the honest truth. I know what we're covered for."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Number in the link. The call is free. Do it for whoever needs you to."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>"I sleep better now" is the emotional resolution — quiet, not triumphant. The CTA "do it for whoever needs you to" extends the motivation to the viewer's own loved ones.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('bon-3')">Copy Script</button></div>
+    </div>
+
+    <!-- ACA-DR-02 -->
+    <div class="script-card" id="bon-4">
+      <div class="sc-head">
+        <span class="sc-badge badge-dr">DR Hook</span>
+        <span class="sc-badge badge-aca">ACA Health</span>
+        <span class="sc-title">The Gig Worker Subsidy</span>
+        <span class="sc-id">ACA-DR-02</span>
+      </div>
+      <div class="sc-char">Character: 32yo man, gig economy worker (Uber/DoorDash coded) · Car interior or casual home · 90% energy, informational urgency</div>
+      <div class="sc-body">
+        <div class="sc-note"><strong>Director Notes</strong>90% energy. This is the gig worker version of the COBRA trap — same urgency, different audience. Targets the massive uninsured gig economy segment. Very high-frequency angle.</div>
+        <div class="sc-line">
+          <div class="sc-label lbl-hook">HOOK</div>
+          <div class="sc-text">"If you drive for Uber, DoorDash, Instacart — any of those — and you don't have health insurance, I need sixty seconds."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-data">DATA</div>
+          <div class="sc-text">"Gig workers who make under $60,000 a year typically qualify for ACA subsidies that bring premiums down to under $50 a month. Sometimes zero."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-expand">EXPAND</div>
+          <div class="sc-text">"You are classified as self-employed. That's the trigger. The marketplace was literally designed for you."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-solution">SOLUTION</div>
+          <div class="sc-text">"Thirty-second income calculator. Tells you your subsidy instantly. No sales call. No obligation."</div>
+        </div>
+        <div class="sc-line">
+          <div class="sc-label lbl-cta">CTA</div>
+          <div class="sc-text">"Link below. You're probably leaving money on the table right now."</div>
+        </div>
+        <div class="sc-note"><strong>Performance Note</strong>Very high frequency, very wide targeting. "You are classified as self-employed. That's the trigger." — this reframe is the entire script. It's educational DR, not emotional DR.</div>
+      </div>
+      <div class="sc-footer"><button class="copy-btn" onclick="copyScript('bon-4')">Copy Script</button></div>
+    </div>
+  </div><!-- /content -->
+
+  <div style="padding:16px 48px 40px;text-align:center;color:var(--muted);font-size:11px;border-top:1px solid var(--border)">
+    Pigeonfi · Rachel · Script Templates · 24 production-ready scripts across 4 verticals<br>
+    <a href="index.html" style="color:var(--accent);text-decoration:none">← Back to Library Home</a>
+  </div>
+</div><!-- /main -->
+
+<script>
+const burger=document.getElementById('burger');
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
+const sbCls=document.getElementById('sb-cls');
+function openSidebar(){sidebar.classList.add('open');overlay.classList.add('show');burger.classList.add('open')}
+function closeSidebar(){sidebar.classList.remove('open');overlay.classList.remove('show');burger.classList.remove('open')}
+burger.addEventListener('click',()=>sidebar.classList.contains('open')?closeSidebar():openSidebar());
+overlay.addEventListener('click',closeSidebar);
+sbCls.addEventListener('click',closeSidebar);
+
+function copyScript(id){
+  const card=document.getElementById(id);
+  if(!card)return;
+  const lines=card.querySelectorAll('.sc-line');
+  let text='';
+  const title=card.querySelector('.sc-title');
+  const scId=card.querySelector('.sc-id');
+  if(title)text+=title.textContent+' ('+scId.textContent+')\n\n';
+  const charLine=card.querySelector('.sc-char');
+  if(charLine)text+='Character: '+charLine.textContent+'\n\n';
+  lines.forEach(line=>{
+    const lbl=line.querySelector('.sc-label');
+    const txt=line.querySelector('.sc-text');
+    if(lbl&&txt)text+='['+lbl.textContent.trim()+']\n'+txt.textContent.trim()+'\n\n';
+  });
+  // Overlay list
+  const overlays=card.querySelectorAll('.overlay-item');
+  overlays.forEach((ov,i)=>{
+    const main=ov.querySelector('.overlay-main');
+    const broll=ov.querySelector('.overlay-broll');
+    if(main)text+='TEXT '+(i+1)+': '+main.textContent.trim()+'\n';
+    if(broll)text+='  '+broll.textContent.trim()+'\n';
+  });
+  navigator.clipboard.writeText(text.trim()).then(()=>{
+    const btn=card.querySelector('.copy-btn');
+    btn.textContent='Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copy Script';btn.classList.remove('copied')},2000);
+  }).catch(()=>{
+    const btn=card.querySelector('.copy-btn');
+    btn.textContent='Error';
+    setTimeout(()=>{btn.textContent='Copy Script'},1500);
+  });
+}
+// Sidebar nav scroll close on mobile
+document.querySelectorAll('.sbl').forEach(l=>{
+  l.addEventListener('click',()=>{if(window.innerWidth<1060)closeSidebar()});
+});
+</script>
+</body></html>

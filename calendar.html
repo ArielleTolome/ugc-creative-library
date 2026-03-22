@@ -1,0 +1,609 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Seasonal Content Calendar · UGC Creative System</title><style>
+:root{--bg:#090c11;--bg2:#111520;--bg3:#181d28;--border:#232a38;--border2:#2c3549;--text:#dce8f5;--muted:#6f8099;--muted2:#4a5a72;--accent:#6366f1;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--blue:#3b82f6;--pink:#ec4899;--teal:#14b8a6;--orange:#f97316;--purple:#8b5cf6;--cyan:#06b6d4;--lime:#84cc16;--sw:256px;--hh:52px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px;overflow-x:hidden}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--hh);background:rgba(9,12,17,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 16px;z-index:200}
+.burger{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;min-height:44px;min-width:44px}
+.burger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;transition:all .25s}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.tb-brand{flex:1;font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-count{font-size:12px;color:var(--muted);white-space:nowrap}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}.overlay.show{opacity:1;pointer-events:all}
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:400;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);padding-bottom:40px}
+.sidebar.open{transform:translateX(0)}
+@media(min-width:1060px){.sidebar{transform:translateX(0)}.overlay{display:none!important}.burger{display:none}.main{margin-left:var(--sw)}}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sb-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.sb-logo{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.sb-title{font-size:12px;font-weight:800}.sb-ver{font-size:10px;color:var(--muted)}
+.sb-cls{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;min-height:44px;min-width:44px}
+@media(min-width:1060px){.sb-cls{display:none}}
+.sb-sec{padding:4px 8px 0}.sb-lbl{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);padding:5px 8px 2px}
+.sbl{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:11.5px;cursor:pointer;transition:all .12s;min-height:34px}
+.sbl:hover{background:var(--bg3);color:var(--text)}.sbl .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sbl-home{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:11.5px;min-height:34px}
+.sbl-home:hover{background:var(--bg3);color:var(--text)}
+.main{padding-top:var(--hh)}
+.hero{padding:24px 16px 20px;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(16,185,129,.05));border-bottom:1px solid var(--border)}
+@media(min-width:600px){.hero{padding:32px 32px}}@media(min-width:900px){.hero{padding:36px 48px}}
+.hero-ey{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+.hero-title{font-size:22px;font-weight:900;letter-spacing:-.03em;margin-bottom:5px}
+@media(min-width:600px){.hero-title{font-size:28px}}
+.hero-sub{color:var(--muted);font-size:12.5px;max-width:620px;margin-bottom:14px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:8px}
+.hstat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 13px;text-align:center}
+.hstat-n{font-size:19px;font-weight:900;line-height:1}.hstat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+/* Filter bar */
+.filter-bar{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:sticky;top:var(--hh);z-index:90}
+@media(min-width:600px){.filter-bar{padding:12px 32px}}@media(min-width:900px){.filter-bar{padding:12px 48px}}
+.filter-lbl{font-size:9.5px;font-weight:800;color:var(--muted2);letter-spacing:.1em;text-transform:uppercase;margin-right:4px}
+.filter-btn{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:16px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap}
+.filter-btn:hover{border-color:var(--accent);color:var(--accent)}
+.filter-btn.active{background:var(--accent);border-color:var(--accent);color:white}
+.filter-btn.active-fe{background:var(--purple);border-color:var(--purple);color:white}
+.filter-btn.active-auto{background:var(--blue);border-color:var(--blue);color:white}
+.filter-btn.active-med{background:var(--green);border-color:var(--green);color:white}
+.filter-btn.active-aca{background:var(--yellow);border-color:var(--yellow);color:#1a1a1a}
+/* Calendar grid */
+.cal-wrap{padding:20px 16px 40px}
+@media(min-width:600px){.cal-wrap{padding:24px 32px 48px}}@media(min-width:900px){.cal-wrap{padding:28px 48px 56px}}
+.cal-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:700px){.cal-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1200px){.cal-grid{grid-template-columns:repeat(3,1fr)}}
+/* Month card */
+.month-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .18s}
+.month-card:hover{border-color:var(--border2)}
+.month-card.current-month{border-color:var(--accent);box-shadow:0 0 0 1px rgba(99,102,241,.3)}
+.month-card.hidden{display:none}
+.mc-head{padding:14px 16px 12px;border-bottom:1px solid var(--border)}
+.mc-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.mc-name{font-size:18px;font-weight:900;flex:1;letter-spacing:-.02em}
+.current-badge{font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;background:var(--accent);color:white;text-transform:uppercase;letter-spacing:.08em}
+.urgency-badge{font-size:9.5px;font-weight:800;padding:3px 9px;border-radius:4px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.urg-low{background:rgba(107,114,128,.15);color:#9ca3af}
+.urg-medium{background:rgba(59,130,246,.15);color:#60a5fa}
+.urg-high{background:rgba(249,115,22,.15);color:#fb923c}
+.urg-critical{background:rgba(239,68,68,.18);color:#f87171}
+.mc-windows{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.window-tag{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:4px;border:1px solid var(--border2);color:var(--muted);background:var(--bg3)}
+.mc-body{padding:12px 16px}
+.mc-verticals{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.vert-tag{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:.06em}
+.vt-fe{background:rgba(139,92,246,.12);color:#c4b5fd}
+.vt-auto{background:rgba(59,130,246,.12);color:#93c5fd}
+.vt-med{background:rgba(16,185,129,.12);color:#6ee7b7}
+.vt-aca{background:rgba(245,158,11,.12);color:#fcd34d}
+.mc-hook{font-size:11.5px;color:var(--muted);font-style:italic;border-left:2px solid var(--border2);padding:4px 8px;margin-bottom:10px;line-height:1.5}
+.mc-concepts{list-style:none;display:flex;flex-direction:column;gap:5px}
+.mc-concept{display:flex;gap:7px;align-items:flex-start;font-size:12px;line-height:1.5}
+.mc-bullet{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.mc-concept-text{color:var(--text)}
+.mc-section-lbl{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:4px;margin-top:8px}
+/* Urgency legend */
+.legend{display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:0 0 12px}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.leg-dot{width:8px;height:8px;border-radius:2px}
+</style></head>
+<body>
+<div class="topbar">
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="tb-brand">📅 Seasonal Content Calendar</div>
+  <div class="tb-count">12 months · 4 enrollment windows</div>
+</div>
+<div class="overlay" id="overlay"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div><div class="sb-logo">Pigeonfi · Rachel</div><div class="sb-title">Content Calendar</div><div class="sb-ver">Annual campaign planning</div></div>
+    <button class="sb-cls" id="sb-cls">✕</button>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Navigate</div>
+    <a class="sbl-home sbl" href="index.html">🏠 <span>Home</span></a>
+    <a class="sbl-home sbl" href="library.html">📚 <span>Vol. 1 Library</span></a>
+    <a class="sbl-home sbl" href="vol2.html">🔥 <span>Vol. 2 Angles</span></a>
+    <a class="sbl-home sbl" href="cookbook.html">👨‍🍳 <span>Cookbook</span></a>
+    <a class="sbl-home sbl" href="scripts.html">📝 <span>Script Templates</span></a>
+    <a class="sbl-home sbl" href="ab-testing.html">🧪 <span>A/B Testing</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Critical Months</div>
+    <a class="sbl" href="#jan"><span class="dot" style="background:var(--red)"></span>January · ACA OEP closes</a>
+    <a class="sbl" href="#oct"><span class="dot" style="background:var(--red)"></span>October · Medicare AEP opens</a>
+    <a class="sbl" href="#nov"><span class="dot" style="background:var(--red)"></span>November · Double enrollment</a>
+    <a class="sbl" href="#dec"><span class="dot" style="background:var(--red)"></span>December · Dec 7 deadline</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">High Priority</div>
+    <a class="sbl" href="#mar"><span class="dot" style="background:var(--orange)"></span>March · Medicare OEEP closes</a>
+    <a class="sbl" href="#sep"><span class="dot" style="background:var(--orange)"></span>September · AEP preview</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Medium Priority</div>
+    <a class="sbl" href="#feb"><span class="dot" style="background:var(--blue)"></span>February · Valentine's</a>
+    <a class="sbl" href="#apr"><span class="dot" style="background:var(--blue)"></span>April · Tax season</a>
+    <a class="sbl" href="#may"><span class="dot" style="background:var(--blue)"></span>May · Memorial Day</a>
+    <a class="sbl" href="#aug"><span class="dot" style="background:var(--blue)"></span>August · Back to school</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Steady State</div>
+    <a class="sbl" href="#jun"><span class="dot" style="background:var(--muted)"></span>June · Grads aging off</a>
+    <a class="sbl" href="#jul"><span class="dot" style="background:var(--muted)"></span>July · Summer</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Enrollment Windows</div>
+    <div style="padding:4px 8px;font-size:11px;color:var(--muted);line-height:1.7">
+      <div>🔴 ACA OEP: Nov 1 – Jan 15</div>
+      <div>🔵 Medicare AEP: Oct 15 – Dec 7</div>
+      <div>🟢 Medicare OEEP: Jan 1 – Mar 31</div>
+      <div>⚪ SEP: Ongoing (life events)</div>
+    </div>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="hero">
+    <div class="hero-ey">Campaign Planning · Annual Reference</div>
+    <div class="hero-title">📅 Seasonal Content Calendar</div>
+    <div class="hero-sub">When to push each vertical, what angles to run, and which enrollment windows to exploit. Current month is highlighted automatically. Filter by vertical to see only your relevant months.</div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n">4</div><div class="hstat-l">Critical Months</div></div>
+      <div class="hstat"><div class="hstat-n">4</div><div class="hstat-l">Enrollment Windows</div></div>
+      <div class="hstat"><div class="hstat-n">12</div><div class="hstat-l">Monthly Plans</div></div>
+      <div class="hstat"><div class="hstat-n">48+</div><div class="hstat-l">Angle Concepts</div></div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-lbl">Filter:</span>
+    <button class="filter-btn active" id="filter-all" onclick="setFilter('all')">All Verticals</button>
+    <button class="filter-btn" id="filter-fe" onclick="setFilter('fe')">Final Expense</button>
+    <button class="filter-btn" id="filter-auto" onclick="setFilter('auto')">Auto Insurance</button>
+    <button class="filter-btn" id="filter-med" onclick="setFilter('med')">Medicare</button>
+    <button class="filter-btn" id="filter-aca" onclick="setFilter('aca')">ACA Health</button>
+  </div>
+
+  <div class="cal-wrap">
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Critical</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--orange)"></div>High</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--blue)"></div>Medium</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#6b7280"></div>Low</div>
+      <div class="leg-item" style="margin-left:auto;font-size:10px;color:var(--accent)">★ Current month highlighted</div>
+    </div>
+    <div class="cal-grid" id="calGrid">
+
+      <!-- JANUARY -->
+      <div class="month-card" id="jan" data-verticals="aca med">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">January</div>
+            <span class="urgency-badge urg-critical">🔴 Critical</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">ACA OEP closes Jan 15</span>
+            <span class="window-tag">Medicare OEEP Jan 1–Mar 31</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-aca">ACA 🔥 Primary</span>
+            <span class="vert-tag vt-med">Medicare 🔥 Secondary</span>
+          </div>
+          <div class="mc-hook">"January 15 is the ACA deadline — if you haven't enrolled you're about to miss it" / "New year, new coverage. Two windows open right now."</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--aca,var(--yellow))"></div><div class="mc-concept-text">Jan 15 is the ACA deadline — if you haven't enrolled you're about to miss it</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">New Medicare Advantage window opened January 1 — 3 months to upgrade your plan</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">New year financial audit — insurance is always the biggest first win</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Last-chance urgency: "You have X days left." Count down to Jan 15 in creative</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- FEBRUARY -->
+      <div class="month-card" id="feb" data-verticals="auto med fe">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">February</div>
+            <span class="urgency-badge urg-medium">🔵 Medium</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">Medicare OEEP ongoing</span>
+            <span class="window-tag">SEP (life events)</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-auto">Auto 🔥 Primary</span>
+            <span class="vert-tag vt-med">Medicare Secondary</span>
+            <span class="vert-tag vt-fe">FE Emotion</span>
+          </div>
+          <div class="mc-hook">"The most romantic thing you can do is make sure your spouse is covered" / "Medicare window is still open — you have until March 31"</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">My wife and I did this together — saved $180 combined on auto insurance</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--pink)"></div><div class="mc-concept-text">Valentine's Day: most romantic thing you can do is make sure your spouse is covered (FE)</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Medicare OEEP still open — 6 weeks left to change your Advantage plan</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">Couples auto comparison — "We checked ours together last night" angle</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MARCH -->
+      <div class="month-card" id="mar" data-verticals="med auto">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">March</div>
+            <span class="urgency-badge urg-high">🟠 High</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">Medicare OEEP closes Mar 31</span>
+            <span class="window-tag">SEP ongoing</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-med">Medicare 🔥 Primary</span>
+            <span class="vert-tag vt-auto">Auto Secondary</span>
+          </div>
+          <div class="mc-hook">"March 31 is the last day to change your Medicare Advantage plan this year" / "Spring cleaning your finances — insurance comparison is always first"</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">March 31 is your last day to change Medicare Advantage plans this year — deadline urgency</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">OEEP closing: "If you're unhappy with your Medicare plan, this is the last window until October"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">Spring financial review — auto insurance comparison is always the first item</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Spring cleaning angle: "Cleaned out the closet, cleaned up my bills — Medicare comparison saved me $148/mo"</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- APRIL -->
+      <div class="month-card" id="apr" data-verticals="aca fe">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">April</div>
+            <span class="urgency-badge urg-medium">🔵 Medium</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">SEP (life events only)</span>
+            <span class="window-tag">Tax refund season</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-aca">ACA 🔥 Primary</span>
+            <span class="vert-tag vt-fe">FE Secondary</span>
+          </div>
+          <div class="mc-hook">"Your accountant just filed your taxes. Did she mention the ACA subsidy you qualify for?" / "Tax refund — what's the first responsible thing you do with it?"</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">Self-employed filers discovering their ACA subsidy at tax time — "My accountant changed everything"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">At tax time you know your exact income — that's when ACA subsidies are most accurate to calculate</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--purple)"></div><div class="mc-concept-text">Tax refund → final expense: "First thing I did with my refund was handle what I'd been putting off"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">SEP trigger: income change from gig work qualifies for special enrollment</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MAY -->
+      <div class="month-card" id="may" data-verticals="auto fe aca">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">May</div>
+            <span class="urgency-badge urg-medium">🔵 Medium</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">SEP ongoing</span>
+            <span class="window-tag">Memorial Day weekend</span>
+            <span class="window-tag">Mother's Day</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-auto">Auto 🔥 Primary</span>
+            <span class="vert-tag vt-fe">FE Emotion</span>
+            <span class="vert-tag vt-aca">ACA Steady</span>
+          </div>
+          <div class="mc-hook">"Before the summer road trips — compare your auto insurance" / "Memorial Day is a reminder to handle what matters"</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">Pre-summer auto: "Road trip season starts in two weeks — is your coverage right?"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--purple)"></div><div class="mc-concept-text">Memorial Day FE emotion: "Today we remember. This week I got covered."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--purple)"></div><div class="mc-concept-text">Mother's Day: "Give your mom the gift she'd never ask for — final expense so she doesn't worry about the kids"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">Summer financial prep: "The one bill I cut before summer costs anything"</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- JUNE -->
+      <div class="month-card" id="jun" data-verticals="aca auto">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">June</div>
+            <span class="urgency-badge urg-low">⚪ Low</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">SEP: Grads aging off parents' plan at 26</span>
+            <span class="window-tag">SEP: Graduates (new income)</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-aca">ACA 🔥 Primary</span>
+            <span class="vert-tag vt-auto">Auto Secondary</span>
+          </div>
+          <div class="mc-hook">"Just graduated? You're about to age off your parents' insurance" / "First grown-up decision — get health coverage before something happens"</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">College grad ACA: "Graduated in May — aging off parents' plan at 26. ACA opened for me at $28/mo"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">First-adult framing: "Nobody told me I could afford health insurance as a new grad"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">New grad auto: "Buying first car — compare before you go to the dealer so you know your insurance cost"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">Parent-to-grad angle: "Your kid is aging off your plan this month. Here's what to tell them."</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- JULY -->
+      <div class="month-card" id="jul" data-verticals="auto aca">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">July</div>
+            <span class="urgency-badge urg-low">⚪ Low</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">SEP ongoing</span>
+            <span class="window-tag">Summer travel peak</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-auto">Auto 🔥 Primary</span>
+            <span class="vert-tag vt-aca">ACA Steady</span>
+          </div>
+          <div class="mc-hook">"Summer is when accidents spike — when did you last check your coverage?" / "Road trip season — took 7 minutes to save $94/month"</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">Road trip season auto: "Best time to compare — before you're driving 1,000 miles this month"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">Summer accident stat: "Summer has the highest auto accident rates of the year — are you covered right?"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">Ambient lifestyle: "Running errands between trips, decided to run the comparison right here in the parking lot"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">Summer spending angle: "Cut one bill before you spend it all on vacation"</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- AUGUST -->
+      <div class="month-card" id="aug" data-verticals="fe auto med">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">August</div>
+            <span class="urgency-badge urg-medium">🔵 Medium</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">SEP: Back to school moves</span>
+            <span class="window-tag">Pre-AEP education (Oct 15)</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-fe">FE 🔥 Primary</span>
+            <span class="vert-tag vt-auto">Auto Secondary</span>
+            <span class="vert-tag vt-med">Medicare Pre-Season</span>
+          </div>
+          <div class="mc-hook">"Back to school — is your family protected if something happens to you?" / "AEP starts in 10 weeks — now's the time to start comparing Medicare"</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--purple)"></div><div class="mc-concept-text">FE back-to-school: "Kids going back to school — I handled final expense coverage this week. $20/month."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--purple)"></div><div class="mc-concept-text">Parent responsibility: "Every August I review the family protection checklist. Coverage was #1."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--blue)"></div><div class="mc-concept-text">New teen driver on policy: "My son started driving this fall — ran a comparison before accepting the rate hike"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Medicare AEP preview: "October 15 is 10 weeks away — start comparing Medicare Advantage plans now"</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SEPTEMBER -->
+      <div class="month-card" id="sep" data-verticals="med fe auto">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">September</div>
+            <span class="urgency-badge urg-high">🟠 High</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">Medicare AEP preview (starts Oct 15)</span>
+            <span class="window-tag">SEP ongoing</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-med">Medicare 🔥 Primary</span>
+            <span class="vert-tag vt-fe">FE Secondary</span>
+            <span class="vert-tag vt-auto">Auto Steady</span>
+          </div>
+          <div class="mc-hook">"October 15 is 2–3 weeks away — Medicare Annual Enrollment is coming. Don't wait." / "Fall financial audit — Medicare check is always item one."</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">AEP preview education: "It's September — Medicare AEP opens Oct 15. Here's how to prepare."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">"I start comparing Medicare plans every September so I'm ready when the window opens"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Fall financial review angle: "Every September I review my coverage. Here's what I changed last year."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--purple)"></div><div class="mc-concept-text">FE end-of-summer: "Summer's over. Handled the things I'd been putting off. This was one of them."</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- OCTOBER -->
+      <div class="month-card" id="oct" data-verticals="med aca">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">October</div>
+            <span class="urgency-badge urg-critical">🔴 Critical</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">Medicare AEP opens Oct 15</span>
+            <span class="window-tag">ACA OEP preview (Nov 1)</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-med">Medicare 🔥🔥 Primary</span>
+            <span class="vert-tag vt-aca">ACA Preview</span>
+          </div>
+          <div class="mc-hook">"Medicare AEP is open RIGHT NOW — October 15 through December 7. This is the window." / "ACA open enrollment starts November 1 — start preparing now."</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Oct 15 launch: "Medicare open enrollment is LIVE right now. Free advisor call to compare plans."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">"The AEP window opened — are you on the right Medicare plan? You have until Dec 7."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Comparison urgency: "I compare my Medicare plan every October. Last year I found zero-premium with dental."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">ACA preview: "ACA open enrollment starts November 1 — if you're self-employed, start your calculator now"</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- NOVEMBER -->
+      <div class="month-card" id="nov" data-verticals="med aca fe">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">November</div>
+            <span class="urgency-badge urg-critical">🔴 Critical</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">Medicare AEP through Dec 7</span>
+            <span class="window-tag">ACA OEP opens Nov 1</span>
+            <span class="window-tag">Thanksgiving family season</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-med">Medicare 🔥🔥 Primary</span>
+            <span class="vert-tag vt-aca">ACA 🔥🔥 Primary</span>
+            <span class="vert-tag vt-fe">FE Emotion</span>
+          </div>
+          <div class="mc-hook">"Both Medicare AND ACA enrollment are OPEN right now — November is the biggest month of the year." / "Thanksgiving — help your family get covered while you're all in the same room."</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--red)"></div><div class="mc-concept-text">Double enrollment: "November is the only month both Medicare AND ACA are open simultaneously. Don't wait."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Family Thanksgiving: "Help your parents compare Medicare while you're all together this weekend"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">ACA launch: "ACA just opened November 1 — if you're self-employed, your subsidy calculator is live"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--purple)"></div><div class="mc-concept-text">Gratitude + FE: "Thanksgiving — I'm grateful I handled this. My family doesn't have to worry."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Dec 7 countdown: "December 7 is 4 weeks away — Medicare window closes. Compare this week."</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- DECEMBER -->
+      <div class="month-card" id="dec" data-verticals="med aca fe">
+        <div class="mc-head">
+          <div class="mc-top">
+            <div class="mc-name">December</div>
+            <span class="urgency-badge urg-critical">🔴 Critical</span>
+          </div>
+          <div class="mc-windows">
+            <span class="window-tag">Medicare AEP closes Dec 7</span>
+            <span class="window-tag">ACA OEP through Jan 15</span>
+            <span class="window-tag">Christmas / Holiday season</span>
+          </div>
+        </div>
+        <div class="mc-body">
+          <div class="mc-verticals">
+            <span class="vert-tag vt-med">Medicare 🔥🔥 Dec 1–7</span>
+            <span class="vert-tag vt-aca">ACA 🔥 Dec</span>
+            <span class="vert-tag vt-fe">FE 🎄 Holiday</span>
+          </div>
+          <div class="mc-hook">"December 7 is the Medicare deadline — after that you're locked in until next year" / "Christmas gift — final expense coverage for your parents. Under $20/month."</div>
+          <div class="mc-section-lbl">Angle Concepts</div>
+          <ul class="mc-concepts">
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--red)"></div><div class="mc-concept-text">Dec 7 hard close: "TODAY is the last day to change your Medicare plan this year" (run Dec 1–7)</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--green)"></div><div class="mc-concept-text">Last-chance Medicare: "After December 7 you're locked in until October 2025. Today is your last day."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--purple)"></div><div class="mc-concept-text">Christmas FE: "The best gift I'm giving my kids this year — they'll never have to scramble. $20/month."</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--yellow)"></div><div class="mc-concept-text">ACA end-of-year: "ACA enrollment runs through January 15 — new year, covered and ready"</div></li>
+            <li class="mc-concept"><div class="mc-bullet" style="background:var(--purple)"></div><div class="mc-concept-text">Year-end family emotion: "This was the year I finally handled what I'd been avoiding. Link below."</div></li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /cal-grid -->
+
+    <!-- Enrollment Windows Reference -->
+    <div style="margin-top:32px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);font-size:14px;font-weight:800">📋 Enrollment Windows Quick Reference</div>
+      <div style="display:grid;grid-template-columns:1fr;gap:0">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
+          <div style="font-size:11px;font-weight:800;background:rgba(245,158,11,.12);color:#fcd34d;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px">ACA OEP</div>
+          <div>
+            <div style="font-size:13px;font-weight:700">November 1 – January 15</div>
+            <div style="font-size:11.5px;color:var(--muted)">Annual Open Enrollment Period. Anyone can enroll, switch, or change ACA health plans. Primary campaign months: November (launch), December, January (close).</div>
+          </div>
+        </div>
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
+          <div style="font-size:11px;font-weight:800;background:rgba(16,185,129,.12);color:#6ee7b7;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px">Medicare AEP</div>
+          <div>
+            <div style="font-size:13px;font-weight:700">October 15 – December 7</div>
+            <div style="font-size:11.5px;color:var(--muted)">Annual Enrollment Period. Anyone on Medicare can switch or enroll in Advantage or PDP plans. Highest urgency window of the year. Dec 7 is a hard close.</div>
+          </div>
+        </div>
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
+          <div style="font-size:11px;font-weight:800;background:rgba(16,185,129,.12);color:#6ee7b7;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px">Medicare OEEP</div>
+          <div>
+            <div style="font-size:13px;font-weight:700">January 1 – March 31</div>
+            <div style="font-size:11.5px;color:var(--muted)">Open Enrollment for Existing Enrolled Period. Those already on Medicare Advantage can switch once. January is a fresh opportunity; March 31 is the close.</div>
+          </div>
+        </div>
+        <div style="padding:14px 18px;display:flex;gap:12px;align-items:flex-start">
+          <div style="font-size:11px;font-weight:800;background:rgba(107,114,128,.15);color:#9ca3af;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px">SEP</div>
+          <div>
+            <div style="font-size:13px;font-weight:700">Ongoing · Triggered by Life Events</div>
+            <div style="font-size:11.5px;color:var(--muted)">Special Enrollment Period. Triggers: job loss, marriage, birth, moving, aging off parent plan at 26, income change. Always available — key for ACA year-round targeting.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cal-wrap -->
+
+  <div style="padding:16px 48px 40px;text-align:center;color:var(--muted);font-size:11px;border-top:1px solid var(--border)">
+    Pigeonfi · Rachel · Seasonal Content Calendar · Annual enrollment campaign planning<br>
+    <a href="index.html" style="color:var(--accent);text-decoration:none">← Back to Library Home</a>
+  </div>
+</div><!-- /main -->
+
+<script>
+const burger=document.getElementById('burger');
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
+const sbCls=document.getElementById('sb-cls');
+function openSidebar(){sidebar.classList.add('open');overlay.classList.add('show');burger.classList.add('open')}
+function closeSidebar(){sidebar.classList.remove('open');overlay.classList.remove('show');burger.classList.remove('open')}
+burger.addEventListener('click',()=>sidebar.classList.contains('open')?closeSidebar():openSidebar());
+overlay.addEventListener('click',closeSidebar);
+sbCls.addEventListener('click',closeSidebar);
+
+// Highlight current month
+const monthIds=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+const curMonth=new Date().getMonth();
+const curCard=document.getElementById(monthIds[curMonth]);
+if(curCard){
+  curCard.classList.add('current-month');
+  const nameEl=curCard.querySelector('.mc-name');
+  if(nameEl){const badge=document.createElement('span');badge.className='current-badge';badge.textContent='Now';nameEl.parentNode.insertBefore(badge,nameEl.nextSibling)}
+}
+
+// Filter
+let activeFilter='all';
+function setFilter(v){
+  activeFilter=v;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active','active-fe','active-auto','active-med','active-aca'));
+  const btn=document.getElementById('filter-'+v);
+  if(btn){
+    btn.classList.add('active');
+    if(v!=='all')btn.classList.add('active-'+v);
+  }
+  document.querySelectorAll('.month-card').forEach(card=>{
+    if(v==='all'){card.classList.remove('hidden');return}
+    const verts=(card.dataset.verticals||'').split(' ');
+    card.classList.toggle('hidden',!verts.includes(v));
+  });
+}
+
+document.querySelectorAll('.sbl').forEach(l=>{
+  l.addEventListener('click',()=>{if(window.innerWidth<1060)closeSidebar()});
+});
+</script>
+</body></html>

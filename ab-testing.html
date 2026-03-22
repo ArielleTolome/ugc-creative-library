@@ -1,0 +1,644 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A/B Testing Framework · UGC Creative System</title><style>
+:root{--bg:#090c11;--bg2:#111520;--bg3:#181d28;--border:#232a38;--border2:#2c3549;--text:#dce8f5;--muted:#6f8099;--muted2:#4a5a72;--accent:#6366f1;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--blue:#3b82f6;--pink:#ec4899;--teal:#14b8a6;--orange:#f97316;--purple:#8b5cf6;--cyan:#06b6d4;--lime:#84cc16;--sw:256px;--hh:52px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px;overflow-x:hidden}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--hh);background:rgba(9,12,17,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 16px;z-index:200}
+.burger{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;min-height:44px;min-width:44px}
+.burger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;transition:all .25s}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.tb-brand{flex:1;font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-count{font-size:12px;color:var(--muted);white-space:nowrap}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}.overlay.show{opacity:1;pointer-events:all}
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:400;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);padding-bottom:40px}
+.sidebar.open{transform:translateX(0)}
+@media(min-width:1060px){.sidebar{transform:translateX(0)}.overlay{display:none!important}.burger{display:none}.main{margin-left:var(--sw)}}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sb-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.sb-logo{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.sb-title{font-size:12px;font-weight:800}.sb-ver{font-size:10px;color:var(--muted)}
+.sb-cls{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;min-height:44px;min-width:44px}
+@media(min-width:1060px){.sb-cls{display:none}}
+.sb-sec{padding:4px 8px 0}.sb-lbl{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);padding:5px 8px 2px}
+.sbl{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:11.5px;cursor:pointer;transition:all .12s;min-height:34px}
+.sbl:hover{background:var(--bg3);color:var(--text)}.sbl .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sbl-home{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:11.5px;min-height:34px}
+.sbl-home:hover{background:var(--bg3);color:var(--text)}
+.main{padding-top:var(--hh)}
+.hero{padding:24px 16px 20px;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(236,72,153,.05));border-bottom:1px solid var(--border)}
+@media(min-width:600px){.hero{padding:32px 32px}}@media(min-width:900px){.hero{padding:36px 48px}}
+.hero-ey{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);margin-bottom:5px}
+.hero-title{font-size:22px;font-weight:900;letter-spacing:-.03em;margin-bottom:5px}
+@media(min-width:600px){.hero-title{font-size:28px}}
+.hero-sub{color:var(--muted);font-size:12.5px;max-width:620px;margin-bottom:14px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:8px}
+.hstat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 13px;text-align:center}
+.hstat-n{font-size:19px;font-weight:900;line-height:1}.hstat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+/* Content sections */
+.content{padding:20px 16px 32px;border-bottom:1px solid var(--border)}
+@media(min-width:600px){.content{padding:24px 32px}}@media(min-width:900px){.content{padding:28px 48px}}
+.sec-header{padding:14px 16px 12px;background:var(--bg3);border-bottom:1px solid var(--border);position:sticky;top:var(--hh);z-index:90}
+@media(min-width:600px){.sec-header{padding:14px 32px}}@media(min-width:900px){.sec-header{padding:14px 48px}}
+.sec-header-inner{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sec-num{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.sec-title{font-size:16px;font-weight:800}
+/* Priority order */
+.priority-list{display:flex;flex-direction:column;gap:8px}
+.priority-item{display:flex;gap:14px;align-items:flex-start;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px}
+.priority-item:hover{border-color:var(--border2)}
+.priority-n{font-size:22px;font-weight:900;color:var(--accent);width:32px;flex-shrink:0;line-height:1;margin-top:2px}
+.priority-body{flex:1}
+.priority-title{font-size:13.5px;font-weight:800;margin-bottom:3px}
+.priority-desc{font-size:12px;color:var(--muted);line-height:1.55}
+.priority-impact{font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px;display:inline-block;margin-top:4px}
+.impact-highest{background:rgba(239,68,68,.15);color:#f87171}
+.impact-high{background:rgba(249,115,22,.15);color:#fb923c}
+.impact-medium{background:rgba(245,158,11,.15);color:#fcd34d}
+.impact-lower{background:rgba(107,114,128,.15);color:#9ca3af}
+/* AB Pairs */
+.ab-pair{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.ab-pair-head{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;background:var(--bg3)}
+.ab-pair-num{font-size:10px;font-weight:800;color:var(--muted2);font-family:monospace;width:22px}
+.ab-pair-title{font-size:13px;font-weight:800;flex:1}
+.ab-pair-winner{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:10px}
+.winner-b{background:rgba(16,185,129,.15);color:#6ee7b7}
+.winner-a{background:rgba(59,130,246,.15);color:#93c5fd}
+.winner-ctx{background:rgba(245,158,11,.15);color:#fcd34d}
+.ab-pair-body{padding:12px 14px}
+.ab-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+@media(max-width:599px){.ab-row{grid-template-columns:1fr}}
+.ab-ver{padding:10px 12px;border-radius:8px;border:1px solid var(--border2)}
+.ab-ver-a{border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.04)}
+.ab-ver-b{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04)}
+.ab-ver-lbl{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.lbl-a{color:#93c5fd}.lbl-b{color:#6ee7b7}
+.ab-ver-text{font-size:12.5px;line-height:1.6;color:var(--text);font-style:italic}
+.ab-reasoning{font-size:12px;color:var(--muted);line-height:1.6;border-left:2px solid var(--accent);padding:6px 10px;border-radius:0 4px 4px 0;background:rgba(99,102,241,.04)}
+/* Velocity framework */
+.velocity-grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:600px){.velocity-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.velocity-grid{grid-template-columns:repeat(3,1fr)}}
+.vel-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px}
+.vel-card-label{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);margin-bottom:5px}
+.vel-card-value{font-size:22px;font-weight:900;margin-bottom:3px;line-height:1}
+.vel-card-desc{font-size:11.5px;color:var(--muted);line-height:1.5}
+/* Killers */
+.killer-list{display:flex;flex-direction:column;gap:8px}
+.killer-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;border-left:3px solid var(--red)}
+.killer-n{font-size:13px;font-weight:800;color:var(--red);width:20px;flex-shrink:0;margin-top:1px}
+.killer-body{}
+.killer-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px}
+.killer-desc{font-size:12px;color:var(--muted);line-height:1.5}
+/* Creative loop */
+.loop-grid{display:grid;grid-template-columns:1fr;gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+@media(min-width:700px){.loop-grid{grid-template-columns:repeat(4,1fr)}}
+.loop-week{padding:16px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+@media(min-width:700px){.loop-week{border-bottom:none}}
+.loop-week:last-child{border-right:none}
+.loop-week-lbl{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.loop-week-title{font-size:14px;font-weight:800;margin-bottom:6px}
+.loop-week-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.loop-metric{font-size:20px;font-weight:900;color:var(--text);margin:8px 0 2px}
+.loop-metric-lbl{font-size:10px;color:var(--muted2)}
+.loop-footer{padding:12px 16px;border-top:1px solid var(--border);background:var(--bg3);font-size:12px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap}
+.loop-footer-item{display:flex;gap:6px;align-items:center}
+.loop-footer-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+/* Section tag styles for stat cards */
+.stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+@media(min-width:700px){.stat-row{grid-template-columns:repeat(4,1fr)}}
+</style></head>
+<body>
+<div class="topbar">
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="tb-brand">🧪 A/B Testing Framework</div>
+  <div class="tb-count">10 Hook Pairs · 5 Sections · Insurance Verticals</div>
+</div>
+<div class="overlay" id="overlay"></div>
+<nav class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div><div class="sb-logo">Pigeonfi · Rachel</div><div class="sb-title">A/B Testing Framework</div><div class="sb-ver">What to test and when</div></div>
+    <button class="sb-cls" id="sb-cls">✕</button>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Navigate</div>
+    <a class="sbl-home sbl" href="index.html">🏠 <span>Home</span></a>
+    <a class="sbl-home sbl" href="library.html">📚 <span>Vol. 1 Library</span></a>
+    <a class="sbl-home sbl" href="vol2.html">🔥 <span>Vol. 2 Angles</span></a>
+    <a class="sbl-home sbl" href="cookbook.html">👨‍🍳 <span>Cookbook</span></a>
+    <a class="sbl-home sbl" href="scripts.html">📝 <span>Script Templates</span></a>
+    <a class="sbl-home sbl" href="calendar.html">📅 <span>Content Calendar</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Sections</div>
+    <a class="sbl" href="#s1"><span class="dot" style="background:var(--accent)"></span>1 · Testing Priority Order</a>
+    <a class="sbl" href="#s2"><span class="dot" style="background:var(--pink)"></span>2 · Hook A/B Pairs (10)</a>
+    <a class="sbl" href="#s3"><span class="dot" style="background:var(--teal)"></span>3 · Velocity Framework</a>
+    <a class="sbl" href="#s4"><span class="dot" style="background:var(--red)"></span>4 · What Kills an Ad</a>
+    <a class="sbl" href="#s5"><span class="dot" style="background:var(--green)"></span>5 · The Creative Loop</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Quick Reference</div>
+    <div style="padding:4px 8px;font-size:11px;color:var(--muted);line-height:2">
+      <div>🎯 Test hook first, always</div>
+      <div>⚡ 72hr initial read</div>
+      <div>💀 Kill &lt;0.5% CTR @ 1K imp</div>
+      <div>📈 Scale &gt;2.5% CTR</div>
+      <div>🔄 3–5 new hooks/week</div>
+      <div>✅ 1 winner/week = good week</div>
+    </div>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="hero">
+    <div class="hero-ey">Performance Framework · Creative Testing</div>
+    <div class="hero-title">🧪 A/B Testing Framework</div>
+    <div class="hero-sub">What to test, in what order, how long to wait, when to kill, and how the Rachel → Marcus creative loop works. Battle-tested against insurance verticals on Meta, YouTube, and programmatic.</div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-n">8</div><div class="hstat-l">Test Priorities</div></div>
+      <div class="hstat"><div class="hstat-n">10</div><div class="hstat-l">Hook A/B Pairs</div></div>
+      <div class="hstat"><div class="hstat-n">10</div><div class="hstat-l">Creative Killers</div></div>
+      <div class="hstat"><div class="hstat-n">80%</div><div class="hstat-l">Healthy Kill Rate</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 1: Priority Order ═══ -->
+  <div class="sec-header" id="s1">
+    <div class="sec-header-inner">
+      <div class="sec-num">Section 01</div>
+      <div class="sec-title">Testing Priority Order</div>
+    </div>
+  </div>
+  <div class="content">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;max-width:640px">Test in this order. Each level has lower expected impact than the one above it. Don't skip to wardrobe tests when you haven't exhausted hook variations. Start at the top of the stack.</p>
+    <div class="priority-list">
+      <div class="priority-item">
+        <div class="priority-n">1</div>
+        <div class="priority-body">
+          <div class="priority-title">Hook — First 3 Seconds</div>
+          <div class="priority-desc">The single highest-impact variable in ad creative. The hook determines whether anyone watches the rest of the ad. Test 5+ hook variations before moving to anything else. Different first lines, different emotional registers, different delivery speed.</div>
+          <span class="priority-impact impact-highest">Highest Impact</span>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-n">2</div>
+        <div class="priority-body">
+          <div class="priority-title">Format / Style</div>
+          <div class="priority-desc">Raw UGC vs Polished Testimonial vs DR Hook vs Ambient Slice. Same hook, different energy and production style. This answers whether your vertical responds to authenticity (raw) or authority (polished) or information (DR).</div>
+          <span class="priority-impact impact-highest">Very High Impact</span>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-n">3</div>
+        <div class="priority-body">
+          <div class="priority-title">Character Angle</div>
+          <div class="priority-desc">Occupation vs life event vs skeptic arc vs community discovery. Same format and hook, different character identity. FE: church community vs professional identity. Auto: suburban parent vs young driver. ACA: freelancer vs gig worker.</div>
+          <span class="priority-impact impact-high">High Impact</span>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-n">4</div>
+        <div class="priority-body">
+          <div class="priority-title">Offer Frame</div>
+          <div class="priority-desc">Specific number ($22/month) vs general ("affordable coverage") vs no number at all. Insurance verticals almost always prefer specific numbers. But test the frame — "from $22" vs "as low as $22" vs just "$22" perform differently.</div>
+          <span class="priority-impact impact-high">High Impact</span>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-n">5</div>
+        <div class="priority-body">
+          <div class="priority-title">CTA Style</div>
+          <div class="priority-desc">Soft ("check it out") vs urgent ("do it tonight") vs benefit-forward ("see your rate in 7 minutes"). The CTA is a micro-hook at the end. Test length, specificity, and urgency level independently.</div>
+          <span class="priority-impact impact-medium">Medium Impact</span>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-n">6</div>
+        <div class="priority-body">
+          <div class="priority-title">Wardrobe / Visual Signals</div>
+          <div class="priority-desc">Signals character identity without a word. Sunday clothes (church, community) vs business casual (professional authority) vs flannel (authentic, relatable). Test wardrobe changes when you've found a winning character angle.</div>
+          <span class="priority-impact impact-medium">Medium Impact</span>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-n">7</div>
+        <div class="priority-body">
+          <div class="priority-title">Location / Setting</div>
+          <div class="priority-desc">Porch vs kitchen vs car vs home office. Setting does subconscious credibility work. FE: home settings outperform blank walls. Auto: car interior or parking lot beats generic homes. Medicare: kitchen table with visible paperwork.</div>
+          <span class="priority-impact impact-lower">Lower Impact</span>
+        </div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-n">8</div>
+        <div class="priority-body">
+          <div class="priority-title">Accent / Character Identity</div>
+          <div class="priority-desc">Accent must match the character's stated background. Southern character needs Southern delivery. This isn't a test variable so much as a quality control check — mismatches kill performance. Only test accent when you've confirmed the character works.</div>
+          <span class="priority-impact impact-lower">Quality Control</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 2: Hook A/B Pairs ═══ -->
+  <div class="sec-header" id="s2">
+    <div class="sec-header-inner">
+      <div class="sec-num">Section 02</div>
+      <div class="sec-title">Hook A/B Test Pairs</div>
+      <div style="font-size:11px;color:var(--muted);margin-left:auto">10 battle-tested pairs</div>
+    </div>
+  </div>
+  <div class="content">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;max-width:640px">Each pair is a real test with a real recommendation. Green = Version B usually wins. Blue = Version A usually wins. Yellow = context-dependent. Run these with identical body copy — only change the first line.</p>
+
+    <!-- Pair 1 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">01</span>
+        <span class="ab-pair-title">Direct Stat vs Question Hook</span>
+        <span class="ab-pair-winner winner-b">B Wins</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — Statement</div><div class="ab-ver-text">"The average American funeral costs $11,847."</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — Question</div><div class="ab-ver-text">"Does your family have $11,847 liquid right now?"</div></div>
+        </div>
+        <div class="ab-reasoning">🏆 B usually wins because the question creates personal stake. The viewer stops scrolling to mentally answer it. A is a fact; B is a challenge. In FE especially, the interrogative form forces self-qualification.</div>
+      </div>
+    </div>
+
+    <!-- Pair 2 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">02</span>
+        <span class="ab-pair-title">Broad Appeal vs Specific Identity</span>
+        <span class="ab-pair-winner winner-b">B Wins</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — Broad</div><div class="ab-ver-text">"Anyone who hasn't checked their car insurance recently..."</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — Specific</div><div class="ab-ver-text">"If you've been with the same insurance company for more than 3 years..."</div></div>
+        </div>
+        <div class="ab-reasoning">🏆 B wins via specificity = self-selection. The "3 years" threshold causes the viewer to immediately calculate how long they've been with their insurer. Self-qualified viewers convert at 2–3x the rate of broad appeals.</div>
+      </div>
+    </div>
+
+    <!-- Pair 3 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">03</span>
+        <span class="ab-pair-title">Problem Hook vs Solution Hook</span>
+        <span class="ab-pair-winner winner-ctx">Context Dependent</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — Problem</div><div class="ab-ver-text">"Original Medicare doesn't cover everything."</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — Solution</div><div class="ab-ver-text">"Zero-premium Medicare plans exist. Here's who qualifies."</div></div>
+        </div>
+        <div class="ab-reasoning">⚖️ Funnel-stage dependent. Cold traffic: A wins — the problem hook interrupts the scroll by activating fear. Warm retargeting: B wins — they already know the problem, they want to know if the solution applies to them. Run A on top-of-funnel audiences; B on retargeting.</div>
+      </div>
+    </div>
+
+    <!-- Pair 4 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">04</span>
+        <span class="ab-pair-title">First-Person Confession vs Third-Person Advice</span>
+        <span class="ab-pair-winner winner-b">B Wins</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — Third Person</div><div class="ab-ver-text">"If you're freelancing without health insurance..."</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — First Person</div><div class="ab-ver-text">"I was uninsured for two years doing this freelance thing..."</div></div>
+        </div>
+        <div class="ab-reasoning">🏆 First-person wins on trust. In UGC, the audience's trust detection is very high. Third-person advice sounds like an ad. First-person confession sounds like a person. The "I" creates parasocial credibility that the "you" framing can't replicate.</div>
+      </div>
+    </div>
+
+    <!-- Pair 5 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">05</span>
+        <span class="ab-pair-title">Specific Number vs Emotional Opener</span>
+        <span class="ab-pair-winner winner-ctx">Traffic-Stage Dependent</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — Number</div><div class="ab-ver-text">"Twenty-two dollars a month."</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — Emotional</div><div class="ab-ver-text">"I wasn't going to share this but I've been asked too many times not to."</div></div>
+        </div>
+        <div class="ab-reasoning">⚖️ Cold traffic: A wins — the specific number stops the scroll because the brain needs to process it. Warm retargeting: B wins — emotional curiosity gap hooks people who've already been exposed to the offer. Test both on cold; use B to refresh fatigued audiences.</div>
+      </div>
+    </div>
+
+    <!-- Pair 6 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">06</span>
+        <span class="ab-pair-title">Urgency/Deadline vs No Urgency</span>
+        <span class="ab-pair-winner winner-ctx">Date Dependent</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — Deadline</div><div class="ab-ver-text">"ACA enrollment closes January 15th. That's 12 days."</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — Evergreen</div><div class="ab-ver-text">"ACA coverage is available to anyone self-employed."</div></div>
+        </div>
+        <div class="ab-reasoning">⚖️ Date proximity determines winner. When the deadline is under 30 days away: A wins significantly — urgency is the conversion driver. When the deadline is far away or no deadline exists: B wins — false urgency collapses trust. Only run deadline hooks when the deadline is real and close.</div>
+      </div>
+    </div>
+
+    <!-- Pair 7 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">07</span>
+        <span class="ab-pair-title">High Energy vs Low Energy</span>
+        <span class="ab-pair-winner winner-ctx">Vertical Dependent</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — High Energy</div><div class="ab-ver-text">DR Hook format · 90% energy · Fast delivery · Forward lean</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — Low Energy</div><div class="ab-ver-text">Polished Testimonial · 60% energy · Measured pace · Composed</div></div>
+        </div>
+        <div class="ab-reasoning">⚖️ Vertical determines winner. Auto / ACA: A wins — younger demos and comparison-shopper mindsets respond to urgency and direct delivery. Final Expense / Medicare: B wins — older demos trust composed authority over excited energy. Mismatching energy to vertical is a common creative killer (see Section 4, #1).</div>
+      </div>
+    </div>
+
+    <!-- Pair 8 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">08</span>
+        <span class="ab-pair-title">Professional Credential vs Peer Testimonial</span>
+        <span class="ab-pair-winner winner-b">B Wins</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — Professional</div><div class="ab-ver-text">"I work in insurance and I'm telling you to compare your rate."</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — Peer</div><div class="ab-ver-text">"I compared my insurance and saved $94 a month."</div></div>
+        </div>
+        <div class="ab-reasoning">🏆 Peer credibility wins in UGC. The audience is trained to distrust professional endorsements in paid content. A peer who "just figured it out" is more trustworthy than a professional who "knows better." Exception: Medicare, where advisor framing with "they're paid by the carrier, not you" can outperform peer on some audiences.</div>
+      </div>
+    </div>
+
+    <!-- Pair 9 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">09</span>
+        <span class="ab-pair-title">Generic CTA vs Specific CTA</span>
+        <span class="ab-pair-winner winner-b">B Wins</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — Generic</div><div class="ab-ver-text">"Click the link below."</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — Specific</div><div class="ab-ver-text">"Tap the link — it takes you straight to the comparison. Takes seven minutes."</div></div>
+        </div>
+        <div class="ab-reasoning">🏆 Specificity reduces friction uncertainty. The viewer's hesitation at the CTA is "what happens when I tap?" B answers that question before they ask it. "Seven minutes" is the specific commitment — it removes the fear of a long sales process. Always name the time commitment in the CTA.</div>
+      </div>
+    </div>
+
+    <!-- Pair 10 -->
+    <div class="ab-pair">
+      <div class="ab-pair-head">
+        <span class="ab-pair-num">10</span>
+        <span class="ab-pair-title">Single CTA vs Double CTA</span>
+        <span class="ab-pair-winner winner-b">B Wins</span>
+      </div>
+      <div class="ab-pair-body">
+        <div class="ab-row">
+          <div class="ab-ver ab-ver-a"><div class="ab-ver-lbl lbl-a">Version A — Single</div><div class="ab-ver-text">"Link below."</div></div>
+          <div class="ab-ver ab-ver-b"><div class="ab-ver-lbl lbl-b">Version B — Double</div><div class="ab-ver-text">"Link below, or comment your zip code and I'll send you the link directly."</div></div>
+        </div>
+        <div class="ab-reasoning">🏆 Double CTA creates engagement signal + backup path. The comment CTA converts non-clickers into leads via DM/comment reply automation. On Meta specifically, comment engagement boosts organic distribution of the ad. The zip code ask is a micro-commitment that pre-qualifies for geo-specific insurance offers.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 3: Velocity ═══ -->
+  <div class="sec-header" id="s3">
+    <div class="sec-header-inner">
+      <div class="sec-num">Section 03</div>
+      <div class="sec-title">Testing Velocity Framework</div>
+    </div>
+  </div>
+  <div class="content">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;max-width:640px">How many tests to run, how long to let them run, when to kill, when to scale. These are thresholds for insurance verticals on Meta. Adjust for other platforms.</p>
+    <div class="velocity-grid" style="margin-bottom:20px">
+      <div class="vel-card">
+        <div class="vel-card-label">Min Budget Per Variant</div>
+        <div class="vel-card-value" style="color:var(--yellow)">$50–$200</div>
+        <div class="vel-card-desc">Before reading results. Lower-funnel offers (phone calls, form fills) need $200+. Higher-funnel (calculator, quiz) can signal at $50–100.</div>
+      </div>
+      <div class="vel-card">
+        <div class="vel-card-label">Min Impressions Before Reading</div>
+        <div class="vel-card-value" style="color:var(--blue)">2,000</div>
+        <div class="vel-card-desc">Per variant. Reading at 500 impressions is noise. At 2K, CTR patterns are directionally reliable. Statistical significance requires more — but you're making directional calls, not academic ones.</div>
+      </div>
+      <div class="vel-card">
+        <div class="vel-card-label">Kill Threshold</div>
+        <div class="vel-card-value" style="color:var(--red)">&lt;0.5% CTR</div>
+        <div class="vel-card-desc">At 1,000 impressions. If a hook can't generate 0.5% CTR on cold traffic in 1K impressions, it's not going to magically improve with more spend. Kill it.</div>
+      </div>
+      <div class="vel-card">
+        <div class="vel-card-label">Scale Threshold</div>
+        <div class="vel-card-value" style="color:var(--green)">&gt;2.5% CTR</div>
+        <div class="vel-card-desc">OR cost per lead below target CPA. Both signals together = winner. CTR alone isn't enough — verify that the lead quality from the conversion is acceptable before scaling budget.</div>
+      </div>
+      <div class="vel-card">
+        <div class="vel-card-label">Weekly Velocity Target</div>
+        <div class="vel-card-value" style="color:var(--accent)">3–5</div>
+        <div class="vel-card-desc">New hook variants per week, plus 1 new character angle every 2–3 weeks. More than 5 hooks/week and the signal-to-noise ratio collapses — you can't evaluate properly.</div>
+      </div>
+      <div class="vel-card">
+        <div class="vel-card-label">Promote Timeline</div>
+        <div class="vel-card-value" style="color:var(--orange)">72hr → 7d</div>
+        <div class="vel-card-desc">72-hour initial read to kill obvious losers. 7-day full evaluation to promote winners. Never scale based on less than 3 days of data — early spikes are often algorithm-dependent noise.</div>
+      </div>
+    </div>
+
+    <!-- Quick reference rules -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+      <div style="padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:12px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em">Testing Rules of Thumb</div>
+      <div style="display:flex;flex-direction:column">
+        <div style="padding:10px 16px;border-bottom:1px solid var(--border);font-size:12.5px;display:flex;gap:10px;align-items:flex-start"><span style="color:var(--accent);font-weight:700;flex-shrink:0">→</span>Never change more than one variable per A/B test. Change the hook OR the format, not both.</div>
+        <div style="padding:10px 16px;border-bottom:1px solid var(--border);font-size:12.5px;display:flex;gap:10px;align-items:flex-start"><span style="color:var(--accent);font-weight:700;flex-shrink:0">→</span>Run variants in the same ad set at the same time. Different ad sets introduce targeting variance that corrupts the test.</div>
+        <div style="padding:10px 16px;border-bottom:1px solid var(--border);font-size:12.5px;display:flex;gap:10px;align-items:flex-start"><span style="color:var(--accent);font-weight:700;flex-shrink:0">→</span>Document what you kill and why. The kill log is as valuable as the winner log. It tells you what this audience doesn't respond to.</div>
+        <div style="padding:10px 16px;border-bottom:1px solid var(--border);font-size:12.5px;display:flex;gap:10px;align-items:flex-start"><span style="color:var(--accent);font-weight:700;flex-shrink:0">→</span>Don't run more than 5 variants at once. Each variant needs adequate budget to reach threshold. Spreading too thin = invalid results.</div>
+        <div style="padding:10px 16px;font-size:12.5px;display:flex;gap:10px;align-items:flex-start"><span style="color:var(--accent);font-weight:700;flex-shrink:0">→</span>80% kill rate is healthy. If you're promoting more than 2 out of 10 hooks, your quality control on hook writing is too loose.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 4: Creative Killers ═══ -->
+  <div class="sec-header" id="s4">
+    <div class="sec-header-inner">
+      <div class="sec-num">Section 04</div>
+      <div class="sec-title">What Kills an Ad</div>
+      <div style="font-size:11px;color:var(--muted);margin-left:auto">10 creative killers</div>
+    </div>
+  </div>
+  <div class="content">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;max-width:640px">These are the things that kill performance even when the hook is good, the script is right, and the offer is solid. Use this as a pre-flight checklist before any ad goes live.</p>
+    <div class="killer-list">
+      <div class="killer-item">
+        <div class="killer-n">01</div>
+        <div class="killer-body">
+          <div class="killer-title">Mismatched Energy</div>
+          <div class="killer-desc">90% DR Hook delivery energy on a testimonial script. Or a 55% polished energy on a DR Hook script. Viewers' trust detectors are calibrated to energy-content alignment. If the delivery energy contradicts what the script is saying, the viewer clocks it as "off" and disengages — even if they can't explain why. Match energy to format, always.</div>
+        </div>
+      </div>
+      <div class="killer-item">
+        <div class="killer-n">02</div>
+        <div class="killer-body">
+          <div class="killer-title">Wrong Accent for the Character</div>
+          <div class="killer-desc">PNW flat delivery on a Deep South character. Upper-Midwest accent on a Brooklyn-coded script. Accent mismatches break parasocial believability instantly. The viewer's brain pattern-matches on accent and background before processing content. Disconnect = distrust. Casting must match the character's claimed geographic and cultural identity.</div>
+        </div>
+      </div>
+      <div class="killer-item">
+        <div class="killer-n">03</div>
+        <div class="killer-body">
+          <div class="killer-title">Too-Clean Production on Raw UGC</div>
+          <div class="killer-desc">Tripod + professional lighting + clean audio on a "Raw UGC" testimonial. The audience knows what Raw UGC looks like. When a "raw" testimonial is shot with a cinema lens and three-point lighting, it reads as paid — which destroys the entire credibility premise. Raw UGC should look like it was shot on a phone by a person in a parking lot. Because it should be.</div>
+        </div>
+      </div>
+      <div class="killer-item">
+        <div class="killer-n">04</div>
+        <div class="killer-body">
+          <div class="killer-title">No Number in the Hook for Comparison Verticals</div>
+          <div class="killer-desc">Auto Insurance and Medicare require a specific number in or near the hook. "I saved money on car insurance" performs significantly worse than "I saved $94 a month on car insurance." Without the number, the brain has nothing to anchor the claim. Specific numbers pass through the scroll-filter; vague claims don't.</div>
+        </div>
+      </div>
+      <div class="killer-item">
+        <div class="killer-n">05</div>
+        <div class="killer-body">
+          <div class="killer-title">Asking for Too Much in the CTA</div>
+          <div class="killer-desc">Phone call CTA on cold traffic in comparison or calculator verticals. Cold traffic will fill a form or run a calculator. They will not call a number they don't know. The CTA commitment level must match the temperature of the audience. Cold: link/form/calculator. Warm: call. Retargeting: call or chat.</div>
+        </div>
+      </div>
+      <div class="killer-item">
+        <div class="killer-n">06</div>
+        <div class="killer-body">
+          <div class="killer-title">Background Inconsistent with Character</div>
+          <div class="killer-desc">Beach background for a claimed hospital worker. New York City skyline for a character claiming to be from rural Georgia. The background is part of the character's credibility package. If the setting contradicts the character's stated identity, the subconscious trust score collapses. Location must support the character's life, not contradict it.</div>
+        </div>
+      </div>
+      <div class="killer-item">
+        <div class="killer-n">07</div>
+        <div class="killer-body">
+          <div class="killer-title">Wardrobe Mismatch</div>
+          <div class="killer-desc">Authority figure script with casual wardrobe — or vice versa. In FE, the "community elder" character needs wardrobe that signals stability and care (button shirt, no logos). In Auto DR Hook, business casual signals professional knowledge. In Raw UGC, anything too polished undermines the authenticity premise. Dress the character, not the creator.</div>
+        </div>
+      </div>
+      <div class="killer-item">
+        <div class="killer-n">08</div>
+        <div class="killer-body">
+          <div class="killer-title">Too Long on Cold Traffic</div>
+          <div class="killer-desc">45-second scripts losing to 15-second scripts on cold audiences. Cold viewers haven't committed to the creator yet. They're deciding in the first 3 seconds whether to stop and watch. A tighter 15-second version of the same hook-body-CTA almost always outperforms the longer version on initial cold traffic. Use longer formats for retargeting after awareness is established.</div>
+        </div>
+      </div>
+      <div class="killer-item">
+        <div class="killer-n">09</div>
+        <div class="killer-body">
+          <div class="killer-title">Vague Offer</div>
+          <div class="killer-desc">No price, no number, no specific outcome. "Affordable insurance" — for what? "Save money" — how much? The viewer doesn't know what they're clicking for, so they don't click. Insurance verticals require a specific offer artifact: a price ($22/month), a savings number ($94 less), a time commitment (seven minutes), or a concrete outcome (zero premium). Vague = low CTR.</div>
+        </div>
+      </div>
+      <div class="killer-item">
+        <div class="killer-n">10</div>
+        <div class="killer-body">
+          <div class="killer-title">Fake Urgency</div>
+          <div class="killer-desc">Obvious false scarcity: "This offer expires tonight!" when it doesn't, or "Only 3 spots left!" for an online insurance comparison. The audience has seen every fake urgency trick. When detected — and it's usually detected — trust collapses completely. The ad is rejected not just ignored. Only run deadline language when the deadline is real (AEP, OEP), specific (December 7), and close (within 30 days).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 5: Creative Loop ═══ -->
+  <div class="sec-header" id="s5">
+    <div class="sec-header-inner">
+      <div class="sec-num">Section 05</div>
+      <div class="sec-title">The Creative Loop · Rachel → Marcus</div>
+    </div>
+  </div>
+  <div class="content">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:18px;max-width:640px">The weekly cycle that keeps creative output high and waste low. Rachel produces, Marcus runs, data comes back, Rachel iterates. One loop per week. One winner per week is a good week.</p>
+
+    <div class="loop-grid">
+      <div class="loop-week">
+        <div class="loop-week-lbl">Week 1</div>
+        <div class="loop-week-title">Rachel Produces</div>
+        <div class="loop-metric">10</div>
+        <div class="loop-metric-lbl">Variants</div>
+        <div class="loop-week-desc" style="margin-top:8px">5 hook variations × 2 formats = 10 variants. Same character, same vertical. Brief includes full script, director notes, character specs, and energy level. Delivered to Marcus by end of week.</div>
+      </div>
+      <div class="loop-week">
+        <div class="loop-week-lbl">Week 2</div>
+        <div class="loop-week-title">Marcus Runs</div>
+        <div class="loop-metric">72hr</div>
+        <div class="loop-metric-lbl">Initial Read</div>
+        <div class="loop-week-desc" style="margin-top:8px">All 10 variants run with equal budget. 72-hour initial read: report CTR and CPL per variant. No early scaling — wait for the data. Marcus flags anything below kill threshold immediately.</div>
+      </div>
+      <div class="loop-week">
+        <div class="loop-week-lbl">Week 3</div>
+        <div class="loop-week-title">Rachel Iterates</div>
+        <div class="loop-metric">80%</div>
+        <div class="loop-metric-lbl">Kill Rate</div>
+        <div class="loop-week-desc" style="margin-top:8px">Kill the bottom 7–8. Study the top 2–3 for signal: what specific words, what delivery energy, what offer frame worked. Produce 5 new hooks that iterate on the winner's attributes. One new character angle introduced.</div>
+      </div>
+      <div class="loop-week">
+        <div class="loop-week-lbl">Week 4</div>
+        <div class="loop-week-title">Scale Winner</div>
+        <div class="loop-metric">1</div>
+        <div class="loop-metric-lbl">Winner / Week</div>
+        <div class="loop-week-desc" style="margin-top:8px">Scale the proven winner. Introduce the next character angle into the test pool. The winner becomes the "control" — all future tests must beat it to justify budget. One winner per week is a healthy, sustainable output.</div>
+      </div>
+    </div>
+    <div class="loop-footer">
+      <div class="loop-footer-item"><div class="loop-footer-dot" style="background:var(--red)"></div><span>80% kill rate is healthy, not a failure</span></div>
+      <div class="loop-footer-item"><div class="loop-footer-dot" style="background:var(--green)"></div><span>1 winner per week = strong creative operation</span></div>
+      <div class="loop-footer-item"><div class="loop-footer-dot" style="background:var(--accent)"></div><span>Data from Marcus drives Rachel's next brief</span></div>
+      <div class="loop-footer-item"><div class="loop-footer-dot" style="background:var(--yellow)"></div><span>Never scale without 7-day full evaluation</span></div>
+    </div>
+
+    <!-- The signal reading framework -->
+    <div style="margin-top:20px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+      <div style="padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:12px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em">Reading the Signal — What Marcus Sends Rachel</div>
+      <div style="display:grid;grid-template-columns:1fr;gap:0">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-start">
+          <div style="font-size:11px;font-weight:800;background:rgba(16,185,129,.15);color:#6ee7b7;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px">CTR &gt;2.5%</div>
+          <div style="font-size:12.5px;color:var(--text)">Winner signal. Scale budget 2x. Study the hook for what's driving it. Produce 3 direct iterations on this hook's pattern.</div>
+        </div>
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-start">
+          <div style="font-size:11px;font-weight:800;background:rgba(245,158,11,.15);color:#fcd34d;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px">CTR 1–2.5%</div>
+          <div style="font-size:12.5px;color:var(--text)">Contender. Keep running through 7-day evaluation. If CPL is acceptable, continue. If CPL is too high despite decent CTR, the landing page may be the problem, not the creative.</div>
+        </div>
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-start">
+          <div style="font-size:11px;font-weight:800;background:rgba(59,130,246,.15);color:#93c5fd;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px">CTR 0.5–1%</div>
+          <div style="font-size:12.5px;color:var(--text)">Below benchmark but alive. Let it run to 2K impressions. If it doesn't improve, kill it. Document what it got wrong in hook delivery or format.</div>
+        </div>
+        <div style="padding:12px 16px;display:flex;gap:14px;align-items:flex-start">
+          <div style="font-size:11px;font-weight:800;background:rgba(239,68,68,.15);color:#f87171;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px">CTR &lt;0.5%</div>
+          <div style="font-size:12.5px;color:var(--text)">Kill at 1K impressions. Note the specific failure mode: bad hook? wrong energy? wrong character? The kill reason informs Rachel's next brief as much as the winner signal.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <div style="padding:16px 48px 40px;text-align:center;color:var(--muted);font-size:11px;border-top:1px solid var(--border)">
+    Pigeonfi · Rachel · A/B Testing Framework · Creative testing for insurance vertical UGC<br>
+    <a href="index.html" style="color:var(--accent);text-decoration:none">← Back to Library Home</a>
+  </div>
+</div><!-- /main -->
+
+<script>
+const burger=document.getElementById('burger');
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
+const sbCls=document.getElementById('sb-cls');
+function openSidebar(){sidebar.classList.add('open');overlay.classList.add('show');burger.classList.add('open')}
+function closeSidebar(){sidebar.classList.remove('open');overlay.classList.remove('show');burger.classList.remove('open')}
+burger.addEventListener('click',()=>sidebar.classList.contains('open')?closeSidebar():openSidebar());
+overlay.addEventListener('click',closeSidebar);
+sbCls.addEventListener('click',closeSidebar);
+document.querySelectorAll('.sbl').forEach(l=>{
+  l.addEventListener('click',()=>{if(window.innerWidth<1060)closeSidebar()});
+});
+</script>
+</body></html>
