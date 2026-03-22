@@ -1,0 +1,471 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Creative Brief Templates · UGC Creative System</title><style>
+:root{--bg:#090c11;--bg2:#111520;--bg3:#181d28;--border:#232a38;--border2:#2c3549;--text:#dce8f5;--muted:#6f8099;--muted2:#4a5a72;--accent:#6366f1;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--blue:#3b82f6;--pink:#ec4899;--teal:#14b8a6;--orange:#f97316;--purple:#8b5cf6;--cyan:#06b6d4;--lime:#84cc16;--sw:256px;--hh:52px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:15px;overflow-x:hidden}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--hh);background:rgba(9,12,17,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 16px;z-index:200}
+.burger{width:44px;height:44px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0}
+.burger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;transition:all .25s}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.tb-brand{flex:1;font-size:13px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}.overlay.show{opacity:1;pointer-events:all}
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:400;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);padding-bottom:40px}
+.sidebar.open{transform:translateX(0)}
+@media(min-width:1060px){.sidebar{transform:translateX(0)}.overlay{display:none!important}.burger{display:none}.main{margin-left:var(--sw)}}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sb-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.sb-logo{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.sb-title{font-size:12px;font-weight:800}.sb-ver{font-size:10px;color:var(--muted)}
+.sb-cls{min-width:44px;min-height:44px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
+@media(min-width:1060px){.sb-cls{display:none}}
+.sb-sec{padding:4px 8px 0}.sb-lbl{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);padding:8px 8px 3px}
+.sbl{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:12.5px;cursor:pointer;min-height:44px;transition:all .12s}
+.sbl:hover{background:var(--bg3);color:var(--text)}.sbl .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.main{padding-top:var(--hh)}
+.hero{padding:24px 16px 20px;background:linear-gradient(135deg,rgba(20,184,166,.08),rgba(99,102,241,.05));border-bottom:1px solid var(--border)}
+@media(min-width:600px){.hero{padding:32px 32px}}
+.hero-ey{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:5px}
+.hero-title{font-size:22px;font-weight:900;letter-spacing:-.03em;margin-bottom:6px}
+@media(min-width:600px){.hero-title{font-size:28px}}
+.hero-sub{color:var(--muted);font-size:13px;max-width:620px;margin-bottom:14px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:8px}
+.hstat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 13px;text-align:center}
+.hstat-n{font-size:18px;font-weight:900;line-height:1}.hstat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.ph{padding:9px 16px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;position:sticky;top:var(--hh);z-index:100;flex-wrap:wrap}
+@media(min-width:600px){.ph{padding:9px 32px}}
+.phb{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:12px;white-space:nowrap;flex-shrink:0}
+.pht{font-size:13px;font-weight:800}
+.sec{padding:20px 16px 28px;border-bottom:1px solid var(--border)}
+@media(min-width:600px){.sec{padding:24px 32px 32px}}
+.s-ey{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.s-ti{font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.s-de{color:var(--muted);font-size:13px;margin-bottom:18px;max-width:660px}
+/* Brief Cards */
+.brief-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:20px;overflow:hidden}
+.bc-head{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bc-label{font-size:9px;font-weight:800;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em;flex-shrink:0}
+.bc-title{font-size:14px;font-weight:800;flex:1}
+.bc-id{font-size:9px;font-weight:700;color:var(--muted2);font-family:monospace}
+.bc-body{padding:16px 18px}
+.bf-row{display:flex;border-bottom:1px solid rgba(255,255,255,.04);padding:7px 0;gap:12px;flex-wrap:wrap}
+.bf-row:last-child{border-bottom:none;padding-bottom:0}
+.bf-key{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);min-width:160px;flex-shrink:0;padding-top:1px}
+.bf-val{font-size:13px;color:var(--text);flex:1;line-height:1.55}
+.bf-val em{color:#8fb3d4;font-style:italic}
+.bf-val.blank{color:var(--muted2);font-style:italic}
+.tpl-card{background:var(--bg2);border:1px dashed var(--border2);border-radius:12px;margin-bottom:20px;overflow:hidden}
+.tpl-head{padding:12px 18px;border-bottom:1px dashed var(--border2);display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.02)}
+.tpl-title{font-size:13px;font-weight:800;color:var(--muted)}
+.tpl-body{padding:16px 18px}
+.rapid-list{display:flex;flex-direction:column;gap:10px}
+.rapid-row{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 16px}
+.rapid-n{font-size:9px;font-weight:800;color:var(--muted2);font-family:monospace;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+.rapid-text{font-size:13px;color:#8fb3d4;font-style:italic;line-height:1.65}
+.rapid-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.rtag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap}
+.batch-wrap{overflow-x:auto;margin-top:4px}
+.batch-table{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
+.batch-table th{background:var(--bg3);padding:8px 10px;text-align:left;font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border)}
+.batch-table td{padding:8px 10px;border:1px solid var(--border);vertical-align:top;line-height:1.5;color:var(--text)}
+.batch-table td em{color:#8fb3d4;font-style:italic;font-size:11px}
+.batch-table tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+.rev-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden}
+.rev-head{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rev-parent{font-size:10px;font-weight:800;color:var(--muted);background:var(--bg3);padding:2px 8px;border-radius:4px;font-family:monospace}
+.rev-title{font-size:13px;font-weight:800}
+.rev-body{padding:14px 16px}
+.tV{background:rgba(139,92,246,.1);color:#a78bfa}.tB{background:rgba(59,130,246,.1);color:#60a5fa}
+.tG{background:rgba(16,185,129,.1);color:#34d399}.tY{background:rgba(245,158,11,.1);color:#fbbf24}
+.tGr{background:rgba(107,114,128,.15);color:#9ca3af}
+.note-box{background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.18);border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--muted);margin-bottom:16px}
+.note-box strong{color:var(--accent);display:block;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+@media(max-width:599px){.bf-key{min-width:120px}.bf-val{font-size:12.5px}}
+</style></head><body>
+<div class="overlay" id="overlay"></div>
+<header class="topbar">
+  <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  <div class="tb-brand">📋 Creative Brief Templates · UGC Creative System</div>
+</header>
+<nav class="sidebar" id="sidebar">
+  <div class="sb-head"><div><div class="sb-logo">Pigeonfi · Rachel</div><div class="sb-title">Brief Templates</div><div class="sb-ver">4 Formats · 17 Examples</div></div><button class="sb-cls" id="sbclose">✕</button></div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Brief Formats</div>
+    <a class="sbl" href="#standard"><span class="dot" style="background:var(--teal)"></span>Standard Brief</a>
+    <a class="sbl" href="#rapid"><span class="dot" style="background:var(--lime)"></span>Rapid Brief</a>
+    <a class="sbl" href="#batch"><span class="dot" style="background:var(--orange)"></span>Batch Brief</a>
+    <a class="sbl" href="#revision"><span class="dot" style="background:var(--purple)"></span>Revision Brief</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Also Use With</div>
+    <a class="sbl" href="library.html"><span class="dot" style="background:var(--accent)"></span>Vol. 1 — Main Library</a>
+    <a class="sbl" href="vol2.html"><span class="dot" style="background:var(--orange)"></span>Vol. 2 — New Angles</a>
+    <a class="sbl" href="vol3.html"><span class="dot" style="background:var(--red)"></span>Vol. 3 — Advanced</a>
+    <a class="sbl" href="index.html"><span class="dot" style="background:var(--muted)"></span>← Home</a>
+  </div>
+</nav>
+<main class="main">
+<div class="hero">
+  <div class="hero-ey">Pigeonfi · Rachel · Production Tools</div>
+  <div class="hero-title">📋 Creative Brief Templates</div>
+  <div class="hero-sub">Structured brief formats for every production scenario. Fill in the blanks, hand to production. Four formats for four contexts — standard shoots, fast production days, Monday batch sessions, and iterating on existing concepts.</div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n" style="color:var(--teal)">4</div><div class="hstat-l">Formats</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--lime)">10</div><div class="hstat-l">Rapid Briefs</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--orange)">5</div><div class="hstat-l">Batch Slots</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--purple)">3</div><div class="hstat-l">Revision Examples</div></div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- SECTION 1: STANDARD BRIEF -->
+<!-- ================================================================ -->
+<div class="ph" id="standard"><span class="phb" style="background:rgba(20,184,166,.12);color:var(--teal);border:1px solid rgba(20,184,166,.25)">Section 1</span><span class="pht">📄 Standard Creative Brief</span></div>
+<div class="sec">
+  <div class="s-ey">Fill-in-the-blank · One per vertical</div>
+  <div class="s-ti">Standard Creative Brief Template</div>
+  <div class="s-de">The complete brief format for standard production sessions. Fill every field — partially-filled briefs produce partially-realized creative. The dialogue field should be word-for-word or key beats, never a vague description.</div>
+
+  <div class="note-box"><strong>How to Use</strong>Copy the blank template below. Fill every field. Hand to talent or paste into the generator. Four completed examples follow — one per vertical.</div>
+
+  <!-- BLANK TEMPLATE -->
+  <div class="tpl-card">
+    <div class="tpl-head"><span class="tpl-title">📝 BLANK TEMPLATE — Copy &amp; Fill</span></div>
+    <div class="tpl-body">
+      <div class="bf-row"><div class="bf-key">Offer Name</div><div class="bf-val blank">___________________________________________</div></div>
+      <div class="bf-row"><div class="bf-key">Vertical</div><div class="bf-val blank">☐ Final Expense  ☐ Auto  ☐ Medicare  ☐ ACA Health</div></div>
+      <div class="bf-row"><div class="bf-key">Target Audience</div><div class="bf-val blank">Age range / demographics / income level / specific trigger</div></div>
+      <div class="bf-row"><div class="bf-key">Core Message</div><div class="bf-val blank">What do we want them to believe after watching? (one sentence)</div></div>
+      <div class="bf-row"><div class="bf-key">Hook Type</div><div class="bf-val blank">☐ DR Hook  ☐ Testimonial  ☐ Discovery Cam  ☐ Ambient Slice  ☐ Before/After  ☐ Voiceover B-Roll  ☐ Tutorial  ☐ Reaction Cam</div></div>
+      <div class="bf-row"><div class="bf-key">Format</div><div class="bf-val blank">☐ Raw UGC  ☐ Polished Testimonial  ☐ Branded Lifestyle  ☐ Comedic  ☐ Platform-Native</div></div>
+      <div class="bf-row"><div class="bf-key">Character</div><div class="bf-val blank">Age: ___ | Ethnicity: ___________ | Accent: ___________</div></div>
+      <div class="bf-row"><div class="bf-key">Wardrobe</div><div class="bf-val blank">Specific to occupation/setting/lifestyle. No generic "casual."</div></div>
+      <div class="bf-row"><div class="bf-key">Location</div><div class="bf-val blank">Specific room/setting + environmental details (items visible, time of day)</div></div>
+      <div class="bf-row"><div class="bf-key">Energy Level</div><div class="bf-val blank">__% (45=contemplative, 75=warm/direct, 90=urgent/excited)</div></div>
+      <div class="bf-row"><div class="bf-key">Camera Direction</div><div class="bf-val blank">☐ Direct to camera  ☐ Selfie  ☐ Medium shot  ☐ Handheld  ☐ Wide  ☐ Text overlay</div></div>
+      <div class="bf-row"><div class="bf-key">Dialogue</div><div class="bf-val blank">Word-for-word script or key beats. Include tone notes in [brackets].</div></div>
+      <div class="bf-row"><div class="bf-key">CTA</div><div class="bf-val blank">Exact CTA language + placement (mid-roll / end-roll / text overlay)</div></div>
+      <div class="bf-row"><div class="bf-key">Platform</div><div class="bf-val blank">☐ TikTok  ☐ Facebook  ☐ Instagram  ☐ YouTube  ☐ All</div></div>
+      <div class="bf-row"><div class="bf-key">Never-Do</div><div class="bf-val blank">Anything production must avoid</div></div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE 1: FE -->
+  <div class="brief-card">
+    <div class="bc-head">
+      <span class="bc-label tV">Final Expense</span>
+      <div class="bc-title">Completed Example — FE · Grief-to-Action</div>
+      <div class="bc-id">STD-FE-001</div>
+    </div>
+    <div class="bc-body">
+      <div class="bf-row"><div class="bf-key">Offer Name</div><div class="bf-val">No-Exam Final Expense Life Insurance</div></div>
+      <div class="bf-row"><div class="bf-key">Vertical</div><div class="bf-val">Final Expense</div></div>
+      <div class="bf-row"><div class="bf-key">Target Audience</div><div class="bf-val">Ages 45–70, any ethnicity, recently experienced a family death without coverage. Adults who felt the financial scramble firsthand.</div></div>
+      <div class="bf-row"><div class="bf-key">Core Message</div><div class="bf-val"><em>The scramble is preventable. $22/month, no exam, no questions. Get it done so your family never goes through what you went through.</em></div></div>
+      <div class="bf-row"><div class="bf-key">Hook Type</div><div class="bf-val">DR Hook — opens with the loss event, converts to resolution</div></div>
+      <div class="bf-row"><div class="bf-key">Format</div><div class="bf-val">Raw UGC — handheld, no production lighting, authentic setting</div></div>
+      <div class="bf-row"><div class="bf-key">Character</div><div class="bf-val">Age: 47 | Ethnicity: Black | Accent: Warm Georgia</div></div>
+      <div class="bf-row"><div class="bf-key">Wardrobe</div><div class="bf-val">Casual weekend clothes — henley or flannel, nothing polished</div></div>
+      <div class="bf-row"><div class="bf-key">Location</div><div class="bf-val">Front porch steps, evening light, slightly overcast. No props except phone in pocket.</div></div>
+      <div class="bf-row"><div class="bf-key">Energy Level</div><div class="bf-val">60% — calm, reflective, not performing. Pacing is unhurried.</div></div>
+      <div class="bf-row"><div class="bf-key">Camera Direction</div><div class="bf-val">Handheld static, medium shot, slightly downward gaze allowed</div></div>
+      <div class="bf-row"><div class="bf-key">Dialogue</div><div class="bf-val">"My mom passed in February. There was nothing in place. Me and my siblings had to figure it out fast. I had mine locked in by March. Twenty dollars a month. No questions. I just wasn't going to be that conversation for my kids." [pause, direct look to camera] "Link's below."</div></div>
+      <div class="bf-row"><div class="bf-key">CTA</div><div class="bf-val">"Link's below." — end-roll, text overlay reinforces with "$20/mo · No Exam · Rate Locked"</div></div>
+      <div class="bf-row"><div class="bf-key">Platform</div><div class="bf-val">Facebook primary, YouTube secondary, Instagram Reels with text resize</div></div>
+      <div class="bf-row"><div class="bf-key">Never-Do</div><div class="bf-val">Never show funeral footage. Never use dramatic music. Never rush the pacing — silence is part of the emotional beat. Never say "death" more than once.</div></div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE 2: AUTO -->
+  <div class="brief-card">
+    <div class="bc-head">
+      <span class="bc-label tB">Auto</span>
+      <div class="bc-title">Completed Example — Auto · Loyalty Penalty Discovery</div>
+      <div class="bc-id">STD-AUTO-001</div>
+    </div>
+    <div class="bc-body">
+      <div class="bf-row"><div class="bf-key">Offer Name</div><div class="bf-val">Auto Insurance Rate Comparison</div></div>
+      <div class="bf-row"><div class="bf-key">Vertical</div><div class="bf-val">Auto Insurance</div></div>
+      <div class="bf-row"><div class="bf-key">Target Audience</div><div class="bf-val">Ages 30–55, any ethnicity, been with same carrier 3+ years. Loyal customers who've never compared.</div></div>
+      <div class="bf-row"><div class="bf-key">Core Message</div><div class="bf-val"><em>Your loyalty is being punished. Same coverage, different carrier, $94/month less. Seven minutes to check.</em></div></div>
+      <div class="bf-row"><div class="bf-key">Hook Type</div><div class="bf-val">DR Hook — comedic comparison (loyalty card vs insurance company)</div></div>
+      <div class="bf-row"><div class="bf-key">Format</div><div class="bf-val">Raw UGC — conversational, slight comedic performance energy</div></div>
+      <div class="bf-row"><div class="bf-key">Character</div><div class="bf-val">Age: 41 | Ethnicity: Black | Accent: Chicago neutral</div></div>
+      <div class="bf-row"><div class="bf-key">Wardrobe</div><div class="bf-val">Clean casual — quarter-zip or polo, looks like a responsible adult</div></div>
+      <div class="bf-row"><div class="bf-key">Location</div><div class="bf-val">Home living room or kitchen, clean and lived-in. Coffee mug or loyalty card visible on counter is a nice touch.</div></div>
+      <div class="bf-row"><div class="bf-key">Energy Level</div><div class="bf-val">90% — high energy, comedic timing, performative but authentic</div></div>
+      <div class="bf-row"><div class="bf-key">Camera Direction</div><div class="bf-val">Direct to camera, medium-close, may gesture with hands</div></div>
+      <div class="bf-row"><div class="bf-key">Dialogue</div><div class="bf-val">"I have a loyalty card at my coffee shop. Tenth drink free. I have been with my insurance company for eight years. My reward for loyalty is they raised my rate twice. Comparison site. Seven minutes. Saved $94 a month. The coffee shop treats me better." [beat, slight head tilt] "Link below."</div></div>
+      <div class="bf-row"><div class="bf-key">CTA</div><div class="bf-val">"Link below." — end-roll. Text overlay: "Same Coverage · 7 Minutes · $94/mo Saved"</div></div>
+      <div class="bf-row"><div class="bf-key">Platform</div><div class="bf-val">TikTok primary, Instagram Reels, Facebook secondary</div></div>
+      <div class="bf-row"><div class="bf-key">Never-Do</div><div class="bf-val">Never name a specific insurance company. Never mock the audience. Keep the humor self-directed — the joke is about his own loyalty, not the viewer's.</div></div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE 3: MEDICARE -->
+  <div class="brief-card">
+    <div class="bc-head">
+      <span class="bc-label tG">Medicare</span>
+      <div class="bc-title">Completed Example — Medicare · Wrong About Everything</div>
+      <div class="bc-id">STD-MED-001</div>
+    </div>
+    <div class="bc-body">
+      <div class="bf-row"><div class="bf-key">Offer Name</div><div class="bf-val">$0 Premium Medicare Advantage Plan</div></div>
+      <div class="bf-row"><div class="bf-key">Vertical</div><div class="bf-val">Medicare</div></div>
+      <div class="bf-row"><div class="bf-key">Target Audience</div><div class="bf-val">Ages 65–75, on original Medicare or overpaying for a Medigap supplement. Skeptical about switching — need trust before action.</div></div>
+      <div class="bf-row"><div class="bf-key">Core Message</div><div class="bf-val"><em>Everything you think you know about Medicare Advantage is probably wrong. One free call fixes all of it.</em></div></div>
+      <div class="bf-row"><div class="bf-key">Hook Type</div><div class="bf-val">Self-deprecating testimonial — list format, "wrong" as punchline</div></div>
+      <div class="bf-row"><div class="bf-key">Format</div><div class="bf-val">Raw UGC — warm kitchen setting, conversational grandmother energy</div></div>
+      <div class="bf-row"><div class="bf-key">Character</div><div class="bf-val">Age: 67 | Ethnicity: White | Accent: Warm Midwest</div></div>
+      <div class="bf-row"><div class="bf-key">Wardrobe</div><div class="bf-val">Comfortable home clothes — cardigan, reading glasses on head or around neck</div></div>
+      <div class="bf-row"><div class="bf-key">Location</div><div class="bf-val">Kitchen table, morning light, coffee cup visible. Lived-in warm home feel.</div></div>
+      <div class="bf-row"><div class="bf-key">Energy Level</div><div class="bf-val">70% — warm with moments of self-deprecating humor. Not sad, not performing.</div></div>
+      <div class="bf-row"><div class="bf-key">Camera Direction</div><div class="bf-val">Direct to camera, medium shot, seated. Slight head shake on each "wrong."</div></div>
+      <div class="bf-row"><div class="bf-key">Dialogue</div><div class="bf-val">"Things I believed about Medicare Advantage that were wrong: [tick off on fingers] that my doctor wouldn't be in-network — wrong. That the zero-dollar premium was a trick — wrong. That switching would be complicated — wrong. That it was too good to be true — wrong. One free advisor call. All four wrong beliefs fixed. Link below."</div></div>
+      <div class="bf-row"><div class="bf-key">CTA</div><div class="bf-val">"Link below." — end-roll. Text overlay: "Free Advisor Call · $0 Premium · Same Doctors"</div></div>
+      <div class="bf-row"><div class="bf-key">Platform</div><div class="bf-val">Facebook primary (65+ demographic strongest), YouTube secondary</div></div>
+      <div class="bf-row"><div class="bf-key">Never-Do</div><div class="bf-val">Never use jargon (Part C, HMO, PPO) without explaining it. Never make the character feel stupid — she's wise and self-aware, not foolish. Never rush the list delivery.</div></div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE 4: ACA -->
+  <div class="brief-card">
+    <div class="bc-head">
+      <span class="bc-label tY">ACA Health</span>
+      <div class="bc-title">Completed Example — ACA · Self-Employed Discovery</div>
+      <div class="bc-id">STD-ACA-001</div>
+    </div>
+    <div class="bc-body">
+      <div class="bf-row"><div class="bf-key">Offer Name</div><div class="bf-val">ACA Marketplace Health Insurance</div></div>
+      <div class="bf-row"><div class="bf-key">Vertical</div><div class="bf-val">ACA Health</div></div>
+      <div class="bf-row"><div class="bf-key">Target Audience</div><div class="bf-val">Ages 25–45, self-employed, freelancers, gig workers, content creators. People who assume ACA is for "other people" or that self-employed = expensive insurance.</div></div>
+      <div class="bf-row"><div class="bf-key">Core Message</div><div class="bf-val"><em>ACA is specifically designed for self-employed people. After subsidy: $19–41/month. Stop paying $400+ for private plans.</em></div></div>
+      <div class="bf-row"><div class="bf-key">Hook Type</div><div class="bf-val">Branded Lifestyle — relatable creative professional</div></div>
+      <div class="bf-row"><div class="bf-key">Format</div><div class="bf-val">Branded Lifestyle — clean setting, aspirational self-employed identity</div></div>
+      <div class="bf-row"><div class="bf-key">Character</div><div class="bf-val">Age: 26 | Ethnicity: Black | Accent: Upbeat neutral / standard American</div></div>
+      <div class="bf-row"><div class="bf-key">Wardrobe</div><div class="bf-val">Creator-casual: clean hoodie or cropped jacket, visible ring light or mic in background</div></div>
+      <div class="bf-row"><div class="bf-key">Location</div><div class="bf-val">Home studio setup — ring light, camera gear, plants, creative workspace energy. Not messy, not sterile.</div></div>
+      <div class="bf-row"><div class="bf-key">Energy Level</div><div class="bf-val">85% — high energy, directly relatable to creator audience, peer-to-peer tone</div></div>
+      <div class="bf-row"><div class="bf-key">Camera Direction</div><div class="bf-val">Direct to camera, medium-close, native selfie energy (not professional camera feel)</div></div>
+      <div class="bf-row"><div class="bf-key">Dialogue</div><div class="bf-val">"Year three of doing this full time. I kept saying I'd figure out insurance when I was making more. Meanwhile ACA exists for exactly this situation. After subsidy: nineteen dollars a month. Creator income, content creator coverage. Link below. Stop waiting."</div></div>
+      <div class="bf-row"><div class="bf-key">CTA</div><div class="bf-val">"Link below. Stop waiting." — end-roll with urgency. Text overlay: "$19/mo · Self-Employed · 9 Min Application"</div></div>
+      <div class="bf-row"><div class="bf-key">Platform</div><div class="bf-val">TikTok and Instagram Reels primary (creator audience), YouTube Shorts secondary</div></div>
+      <div class="bf-row"><div class="bf-key">Never-Do</div><div class="bf-val">Never make the character look unsuccessful. Never imply ACA is a safety net for failures. This is a smart financial move by a working professional. Never use healthcare jargon.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- SECTION 2: RAPID BRIEF -->
+<!-- ================================================================ -->
+<div class="ph" id="rapid"><span class="phb" style="background:rgba(132,204,22,.12);color:var(--lime);border:1px solid rgba(132,204,22,.25)">Section 2</span><span class="pht">⚡ Rapid Brief Format</span></div>
+<div class="sec">
+  <div class="s-ey">One-line format · Fast production days</div>
+  <div class="s-ti">Rapid Brief — One Line, One Concept</div>
+  <div class="s-de">For fast production days when you're shooting 5–10 concepts and don't need the full standard brief. One line contains everything talent needs. Format: <code>[age] [ethnicity] [gender] [accent] [wardrobe] [location] [energy]% [camera] saying "[hook] [offer] [CTA]"</code></div>
+
+  <div class="note-box"><strong>When to Use</strong>Use Rapid Briefs when: shooting multiple concepts in one session, working with experienced talent who only needs the beat, or generating batches through AI tools. Always upgrade to Standard Brief for new concepts with unfamiliar talent.</div>
+
+  <div class="rapid-list">
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 01 · FE</div>
+      <div class="rapid-text">62yo Black man, warm Southern, flannel, front porch evening, 60% direct-to-camera saying "My mom passed without coverage. The scramble. Twenty dollars a month. No exam. Rate locked. My kids won't know that scramble. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tV">FE</span><span class="rtag tGr">Raw UGC</span></div>
+    </div>
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 02 · Auto</div>
+      <div class="rapid-text">38yo white woman, Northeast direct, business casual, kitchen morning, 85% medium-shot saying "I've been with my carrier for seven years. Ran the comparison. Ninety-one dollars a month less. Same car. Same coverage. Seven minutes. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tB">Auto</span><span class="rtag tGr">DR Hook</span></div>
+    </div>
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 03 · Medicare</div>
+      <div class="rapid-text">66yo white man, Midwest warm, polo, kitchen table morning coffee, 65% direct-to-camera saying "Original Medicare cost me a hundred forty-two a month with gaps. Advisor call. Zero premium. Dental included. Same doctors. One call. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tG">Medicare</span><span class="rtag tGr">Before/After</span></div>
+    </div>
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 04 · ACA</div>
+      <div class="rapid-text">29yo Latina woman, warm Texas, casual tee, home office, 80% selfie-angle saying "Self-employed two years. Finally checked the marketplace. Twenty-two dollars a month. I was the one making it complicated. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tY">ACA</span><span class="rtag tGr">Branded Lifestyle</span></div>
+    </div>
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 05 · FE</div>
+      <div class="rapid-text">55yo white woman, calm Midwest, cardigan, living room evening, 55% medium-shot saying "My sister passed in March. Nothing in place. I had mine locked by April. Twenty-two dollars. No questions. Rate locked. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tV">FE</span><span class="rtag tGr">Polished Testimonial</span></div>
+    </div>
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 06 · Auto</div>
+      <div class="rapid-text">44yo Black man, Chicago direct, clean casual, home desk, 80% direct-to-camera saying "My renewal went up again. Third year straight. Comparison site. Six minutes. A hundred and four dollars less a month. I should have been angry sooner. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tB">Auto</span><span class="rtag tGr">Raw UGC</span></div>
+    </div>
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 07 · Medicare</div>
+      <div class="rapid-text">68yo Black woman, warm Southern, church-casual, dining room, 60% direct-to-camera saying "My neighbor at church pays zero for her Medicare. I was paying a hundred forty-eight. One call Monday morning. Zero premium now. Talk to your pew neighbor. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tG">Medicare</span><span class="rtag tGr">Community Discovery</span></div>
+    </div>
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 08 · ACA</div>
+      <div class="rapid-text">33yo white man, Pacific NW neutral, hoodie, home office with monitor, 75% selfie-angle saying "Left corporate six months ago. Freelancing. ACA marketplace. Twenty-eight a month. The insurance was the easiest part of going independent. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tY">ACA</span><span class="rtag tGr">Branded Lifestyle</span></div>
+    </div>
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 09 · FE</div>
+      <div class="rapid-text">49yo Latina woman, warm Miami, casual blouse, kitchen, 70% medium-shot saying "My whole family argued about who had coverage at dinner. Nobody did. Three of us enrolled before the dishes were done. Twenty-two each. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tV">FE</span><span class="rtag tGr">Raw UGC</span></div>
+    </div>
+    <div class="rapid-row">
+      <div class="rapid-n">Rapid 10 · Auto</div>
+      <div class="rapid-text">52yo white woman, Pennsylvania warm, weekend casual, kitchen table with laptop, 70% medium-shot saying "Saturday morning finances with my husband. He ran the comparison on a whim. A hundred forty dollars less. Both cars. Same coverage. He looked at me. I said switch. Link below."</div>
+      <div class="rapid-tags"><span class="rtag tB">Auto</span><span class="rtag tGr">Branded Lifestyle</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- SECTION 3: BATCH BRIEF -->
+<!-- ================================================================ -->
+<div class="ph" id="batch"><span class="phb" style="background:rgba(249,115,22,.12);color:var(--orange);border:1px solid rgba(249,115,22,.25)">Section 3</span><span class="pht">📊 Batch Brief Format</span></div>
+<div class="sec">
+  <div class="s-ey">Table format · 5+ concepts in parallel</div>
+  <div class="s-ti">Batch Brief — Monday Morning Production</div>
+  <div class="s-de">When you're briefing 5+ concepts at once for a production batch. Abbreviated fields in table format. Each row is one concept. Use for Monday morning briefing sessions where the team needs to see the full week's lineup at a glance.</div>
+
+  <div class="note-box"><strong>When to Use</strong>Batch briefs work best when: all concepts share a production day, talent is already booked, and you need rapid comparison across concepts to ensure variety in angles, verticals, and character demographics. Upgrade any winning concept to a Standard Brief before re-shooting.</div>
+
+  <div class="batch-wrap">
+    <table class="batch-table">
+      <thead>
+        <tr>
+          <th style="width:30px">#</th>
+          <th style="width:70px">Vertical</th>
+          <th style="width:140px">Concept</th>
+          <th style="width:180px">Character</th>
+          <th style="width:90px">Setting</th>
+          <th style="width:50px">Energy</th>
+          <th>Hook Beat</th>
+          <th style="width:80px">CTA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><em>FE</em></td>
+          <td>Son enrolls dad on phone</td>
+          <td>34yo Latino, TX accent</td>
+          <td>Kitchen</td>
+          <td>75%</td>
+          <td><em>"My dad kept saying he'd look into it. He's 67. I looked into it for him. Twenty-two dollars."</em></td>
+          <td>Link below</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><em>Auto</em></td>
+          <td>Loyalty penalty discovery</td>
+          <td>41yo Black, Chicago</td>
+          <td>Home</td>
+          <td>90%</td>
+          <td><em>"Loyalty card at coffee shop — tenth drink free. Eight years with insurance — rate raised twice. $94/mo saved."</em></td>
+          <td>Link below</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><em>Medicare</em></td>
+          <td>Wrong about everything</td>
+          <td>67yo White F, Midwest</td>
+          <td>Kitchen</td>
+          <td>70%</td>
+          <td><em>"Things I believed that were wrong: doctor not in-network — wrong. $0 premium a trick — wrong. Switching complicated — wrong."</em></td>
+          <td>Free call</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><em>ACA</em></td>
+          <td>Creator finally checks</td>
+          <td>26yo Black F, neutral</td>
+          <td>Studio</td>
+          <td>85%</td>
+          <td><em>"Year three full time. Kept saying I'd figure it out when I made more. ACA: nineteen dollars a month."</em></td>
+          <td>Stop waiting</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><em>FE</em></td>
+          <td>Post-funeral parking lot</td>
+          <td>48yo Black F, Southern</td>
+          <td>Outside</td>
+          <td>55%</td>
+          <td><em>"Just got back from burying my uncle. Nothing in place. Applied in the parking lot. Twenty dollars. Rate locked."</em></td>
+          <td>Link below</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- SECTION 4: REVISION BRIEF -->
+<!-- ================================================================ -->
+<div class="ph" id="revision"><span class="phb" style="background:rgba(139,92,246,.12);color:var(--purple);border:1px solid rgba(139,92,246,.25)">Section 4</span><span class="pht">🔄 Revision Brief Format</span></div>
+<div class="sec">
+  <div class="s-ey">Iteration format · Changing one variable at a time</div>
+  <div class="s-ti">Revision Brief — Iterate on What's Working</div>
+  <div class="s-de">When a concept is performing but you want to test a variation. The revision brief references the parent concept and specifies only what changes. Single-variable testing — change one thing, measure the difference. Never revise more than 2 elements at once or you lose attribution.</div>
+
+  <div class="note-box"><strong>When to Use</strong>Use Revision Briefs when: a concept has proven performance data, you want to test a specific hypothesis (hook swap, character swap, CTA change), or you're in the iteration phase of the creative loop with Marcus. Always keep the parent concept running as control.</div>
+
+  <!-- REVISION 1 -->
+  <div class="rev-card">
+    <div class="rev-head">
+      <span class="rev-parent">PARENT: STD-FE-001</span>
+      <span class="rev-title">Revision A — Swap Character Gender + Age</span>
+    </div>
+    <div class="rev-body">
+      <div class="bf-row"><div class="bf-key">Parent Concept ID</div><div class="bf-val">STD-FE-001 · FE Grief-to-Action · 47yo Black man, Georgia porch</div></div>
+      <div class="bf-row"><div class="bf-key">What Performed (Keep)</div><div class="bf-val">Hook structure (loss → personal action → rate reveal → family protection). CTA placement. Raw UGC format. 60% energy level. Evening porch setting.</div></div>
+      <div class="bf-row"><div class="bf-key">What to Change</div><div class="bf-val">Character: swap from 47yo Black man → 55yo white woman. Accent: Georgia → Midwest. Setting stays porch but now morning light instead of evening.</div></div>
+      <div class="bf-row"><div class="bf-key">Hypothesis</div><div class="bf-val">The hook structure works across demographics. Female character may unlock a different audience segment (women 50–65) who over-index on FE consideration but under-convert. Morning light may feel more "fresh start" vs evening's reflective tone.</div></div>
+      <div class="bf-row"><div class="bf-key">New Dialogue Beats</div><div class="bf-val">"My sister passed in October. Nothing in place. I watched our family scramble for two weeks. I had mine locked by November. Twenty dollars a month. No questions. My kids won't go through what we went through. Link below."</div></div>
+      <div class="bf-row"><div class="bf-key">Expected Improvement</div><div class="bf-val">Expand demographic reach without losing hook effectiveness. Target: 15%+ new audience overlap with same or better CVR.</div></div>
+    </div>
+  </div>
+
+  <!-- REVISION 2 -->
+  <div class="rev-card">
+    <div class="rev-head">
+      <span class="rev-parent">PARENT: STD-AUTO-001</span>
+      <span class="rev-title">Revision B — Swap Hook from Comedic to Anger</span>
+    </div>
+    <div class="rev-body">
+      <div class="bf-row"><div class="bf-key">Parent Concept ID</div><div class="bf-val">STD-AUTO-001 · Auto Loyalty Penalty · 41yo Black man, comedic delivery</div></div>
+      <div class="bf-row"><div class="bf-key">What Performed (Keep)</div><div class="bf-val">Core angle (loyalty penalty), savings amount ($94/mo), "seven minutes" speed frame, same coverage proof point. Direct-to-camera format.</div></div>
+      <div class="bf-row"><div class="bf-key">What to Change</div><div class="bf-val">Emotional register: swap comedic (90% energy, loyalty card bit) → frustrated/angry (85% energy, "I was angry"). Character: 41yo Black man → 48yo Black woman, Chicago. Drop the coffee shop comparison entirely — replace with rate increase frustration.</div></div>
+      <div class="bf-row"><div class="bf-key">Hypothesis</div><div class="bf-val">Rate increase anger is a stronger conversion driver than humor for audiences who just received their renewal. Testing whether frustration-to-empowerment arc outperforms humor-to-action arc on same savings message.</div></div>
+      <div class="bf-row"><div class="bf-key">New Dialogue Beats</div><div class="bf-val">"When I got my renewal I was angry. Third year in a row. Same car. Better driver. Rate went up. I ran the comparison angry. I switched angry. I'm saving $94 a month and I'm still a little angry — but now it's at myself for waiting this long. Link below."</div></div>
+      <div class="bf-row"><div class="bf-key">Expected Improvement</div><div class="bf-val">Higher CTR from audiences in renewal window (Q1/Q3). Test against parent for 7 days minimum before scaling.</div></div>
+    </div>
+  </div>
+
+  <!-- REVISION 3 -->
+  <div class="rev-card">
+    <div class="rev-head">
+      <span class="rev-parent">PARENT: STD-ACA-001</span>
+      <span class="rev-title">Revision C — Platform Swap: TikTok POV Format</span>
+    </div>
+    <div class="rev-body">
+      <div class="bf-row"><div class="bf-key">Parent Concept ID</div><div class="bf-val">STD-ACA-001 · ACA Self-Employed Creator · 26yo Black woman, studio</div></div>
+      <div class="bf-row"><div class="bf-key">What Performed (Keep)</div><div class="bf-val">Self-employed creator identity. "Stop waiting" CTA urgency. $19/month proof point. Creator-audience relatability. 85% energy.</div></div>
+      <div class="bf-row"><div class="bf-key">What to Change</div><div class="bf-val">Format: swap Branded Lifestyle → TikTok POV. Camera: medium shot → close selfie, direct eye contact. Opening: swap "Year three of doing this" → "POV: You just went full-time and you still don't have insurance." Second-person address instead of first-person testimonial.</div></div>
+      <div class="bf-row"><div class="bf-key">Hypothesis</div><div class="bf-val">TikTok POV format drives higher completion rate (viewer feels directly addressed vs. observing someone else's story). Second-person framing may increase urgency-to-click for viewers currently in the "just went full-time" moment.</div></div>
+      <div class="bf-row"><div class="bf-key">New Dialogue Beats</div><div class="bf-val">"POV: You went full-time six months ago and you still don't have health insurance because you keep saying 'I'll figure it out when I'm making more.' ACA marketplace. Nineteen dollars a month. It took me nine minutes. You have nine minutes. Link below. Stop waiting."</div></div>
+      <div class="bf-row"><div class="bf-key">Expected Improvement</div><div class="bf-val">Higher completion rate on TikTok specifically (+20% target). Test with same audience targeting as parent to isolate format variable.</div></div>
+    </div>
+  </div>
+</div>
+
+</main>
+<script>
+const burger=document.getElementById('burger'),sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay'),sbclose=document.getElementById('sbclose');
+function openSidebar(){sidebar.classList.add('open');overlay.classList.add('show')}
+function closeSidebar(){sidebar.classList.remove('open');overlay.classList.remove('show');burger.classList.remove('open')}
+burger.addEventListener('click',()=>{sidebar.classList.toggle('open');overlay.classList.toggle('show');burger.classList.toggle('open')});
+overlay.addEventListener('click',closeSidebar);sbclose.addEventListener('click',closeSidebar);
+sidebar.querySelectorAll('.sbl').forEach(l=>{l.addEventListener('click',()=>{if(window.innerWidth<1060)closeSidebar()})});
+</script>
+</body></html>
