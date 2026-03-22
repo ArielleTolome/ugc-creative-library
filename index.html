@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>UGC Creative System · Pigeonfi</title><style>
+:root{--bg:#090c11;--bg2:#111520;--bg3:#181d28;--border:#232a38;--text:#dce8f5;--muted:#6f8099;--accent:#6366f1;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--orange:#f97316;--purple:#8b5cf6;--pink:#ec4899;--teal:#14b8a6;--lime:#84cc16}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.hero{padding:60px 20px 48px;text-align:center;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.06),rgba(16,185,129,.04));border-bottom:1px solid var(--border)}
+.logo{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-size:32px;font-weight:900;letter-spacing:-.04em;margin-bottom:8px}
+@media(min-width:600px){h1{font-size:44px}}
+.sub{color:var(--muted);font-size:14px;max-width:480px;margin:0 auto 28px}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:0}
+.badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--bg2);border:1px solid var(--border)}
+.cards{display:grid;gap:16px;padding:32px 16px;max-width:960px;margin:0 auto;grid-template-columns:1fr}
+@media(min-width:600px){.cards{grid-template-columns:repeat(2,1fr);padding:40px 24px}}
+@media(min-width:900px){.cards{grid-template-columns:repeat(3,1fr);padding:48px 32px}}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .18s,transform .18s;text-decoration:none;display:flex;flex-direction:column}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card-top{padding:20px 20px 16px;flex:1}
+.card-ey{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.card-title{font-size:18px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.card-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.card-stats{display:flex;flex-wrap:wrap;gap:6px}
+.stat{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--bg3);color:var(--muted)}
+.card-btn{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--border);font-size:12px;font-weight:700;color:var(--accent)}
+.card-btn svg{width:14px;height:14px;opacity:.7}
+.footer{text-align:center;padding:24px 16px;color:var(--muted);font-size:11px;border-top:1px solid var(--border)}
+</style></head><body>
+<div class="hero">
+  <div class="logo">Pigeonfi · Rachel · Creative System</div>
+  <h1>🎯 UGC Creative Library</h1>
+  <p class="sub">Concepts, angles, and production briefs for insurance vertical ad creative. Pick a format, pick a concept, generate.</p>
+  <div class="badge-row">
+    <span class="badge">9 JSON Generators</span>
+    <span class="badge">460+ Concepts</span>
+    <span class="badge">4 Verticals</span>
+    <span class="badge" style="color:var(--purple)">Final Expense</span>
+    <span class="badge" style="color:var(--accent)">Auto Insurance</span>
+    <span class="badge" style="color:var(--green)">Medicare</span>
+    <span class="badge" style="color:var(--yellow)">ACA Health</span>
+  </div>
+</div>
+<div class="cards">
+  <a class="card" href="library.html">
+    <div class="card-top">
+      <div class="card-ey" style="color:var(--lime)">Vol. 1 · Master Library</div>
+      <div class="card-title">UGC Concepts Library</div>
+      <div class="card-desc">304 concepts across all 9 generators. 8–10 per vertical per format. Every entry is a complete input brief ready to paste into the JSON generator.</div>
+      <div class="card-stats">
+        <span class="stat">9 Generators</span>
+        <span class="stat">304 Concepts</span>
+        <span class="stat">4 Verticals</span>
+        <span class="stat">Mobile Friendly</span>
+      </div>
+    </div>
+    <div class="card-btn">Open Library <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.293 4.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L15.586 11H3a1 1 0 110-2h12.586l-3.293-3.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+  </a>
+  <a class="card" href="vol2.html">
+    <div class="card-top">
+      <div class="card-ey" style="color:var(--orange)">Vol. 2 · New Angles</div>
+      <div class="card-title">New Angle Categories</div>
+      <div class="card-desc">160+ concepts across 7 angle categories missing from Vol. 1: Occupation-Based, Life Events, Skeptic Arc, Insider Credibility, Doing It for Someone Else, Community Discovery, Age Milestones.</div>
+      <div class="card-stats">
+        <span class="stat">7 New Categories</span>
+        <span class="stat">160+ Concepts</span>
+        <span class="stat">Generator Tags</span>
+      </div>
+    </div>
+    <div class="card-btn">Open Vol. 2 <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.293 4.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L15.586 11H3a1 1 0 110-2h12.586l-3.293-3.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+  </a>
+  <a class="card" href="cookbook.html">
+    <div class="card-top">
+      <div class="card-ey" style="color:var(--pink)">Production Reference</div>
+      <div class="card-title">UGC Creative Cookbook</div>
+      <div class="card-desc">Recipe card format for every video style. Each format includes when to use it, required ingredients, shot sequence, chef's notes, never-do rules, and 3 example prompts per vertical.</div>
+      <div class="card-stats">
+        <span class="stat">10 Format Recipes</span>
+        <span class="stat">4 Vertical Playbooks</span>
+        <span class="stat">Quick Reference</span>
+      </div>
+    </div>
+    <div class="card-btn">Open Cookbook <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.293 4.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L15.586 11H3a1 1 0 110-2h12.586l-3.293-3.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg></div>
+  </a>
+</div>
+<div class="footer">Pigeonfi · Rachel · UGC Creative System · 460+ concepts across 4 insurance verticals</div>
+</body></html>

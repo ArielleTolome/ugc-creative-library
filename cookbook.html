@@ -1,0 +1,1198 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>UGC Creative Cookbook · Pigeonfi</title><style>
+:root{--bg:#090c11;--bg2:#111520;--bg3:#181d28;--border:#232a38;--border2:#2c3549;--text:#dce8f5;--muted:#6f8099;--muted2:#4a5a72;--accent:#6366f1;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--blue:#3b82f6;--pink:#ec4899;--teal:#14b8a6;--orange:#f97316;--purple:#8b5cf6;--cyan:#06b6d4;--lime:#84cc16;--sw:260px;--hh:56px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px;overflow-x:hidden}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--hh);background:rgba(9,12,17,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 16px;z-index:200}
+.burger{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;min-height:44px;min-width:44px}
+.burger span{display:block;width:18px;height:2px;background:var(--muted);border-radius:2px;transition:all .25s}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.tb-brand{flex:1;min-width:0}
+.tb-name{font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-sub{font-size:10px;color:var(--muted);display:none}
+@media(min-width:480px){.tb-sub{display:block}}
+.tb-stats{display:none;gap:14px}
+@media(min-width:640px){.tb-stats{display:flex}}
+.ts{text-align:center}.ts-n{font-size:15px;font-weight:800;line-height:1}.ts-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.show{opacity:1;pointer-events:all}
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;height:100vh;width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:400;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);padding-bottom:40px}
+.sidebar.open{transform:translateX(0)}
+@media(min-width:1060px){.sidebar{transform:translateX(0)}.overlay{display:none!important}.burger{display:none}.main{margin-left:var(--sw)}}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sb-head{padding:14px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.sb-logo{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.sb-title{font-size:13px;font-weight:800;color:var(--text)}
+.sb-ver{font-size:10px;color:var(--muted)}
+.sb-cls{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;flex-shrink:0;min-height:44px;min-width:44px}
+@media(min-width:1060px){.sb-cls{display:none}}
+.sb-sec{padding:6px 8px 0}
+.sb-lbl{font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);padding:6px 8px 2px}
+.sbl{display:flex;align-items:center;gap:7px;padding:8px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:12px;cursor:pointer;transition:all .12s;min-height:36px}
+.sbl:hover,.sbl.active{background:var(--bg3);color:var(--text)}
+.sbl .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sbl .cnt{margin-left:auto;font-size:10px;font-weight:700;color:var(--muted2);background:var(--bg3);padding:1px 5px;border-radius:8px}
+/* MAIN */
+.main{padding-top:var(--hh)}
+/* HERO */
+.hero{padding:32px 16px 28px;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.05));border-bottom:1px solid var(--border)}
+@media(min-width:600px){.hero{padding:40px 32px}}
+@media(min-width:900px){.hero{padding:48px 48px}}
+.hero-eyebrow{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.hero-title{font-size:26px;font-weight:900;letter-spacing:-.03em;margin-bottom:8px;line-height:1.1}
+@media(min-width:600px){.hero-title{font-size:34px}}
+.hero-sub{color:var(--muted);font-size:14px;max-width:600px;margin-bottom:20px}
+.hero-stats{display:flex;flex-wrap:wrap;gap:12px}
+.hstat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center}
+.hstat-n{font-size:22px;font-weight:900;line-height:1}.hstat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+/* HOW TO USE */
+.how{padding:24px 16px;border-bottom:1px solid var(--border);background:var(--bg2)}
+@media(min-width:600px){.how{padding:28px 32px}}
+@media(min-width:900px){.how{padding:28px 48px}}
+.how-title{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:12px}
+.steps{display:flex;flex-direction:column;gap:8px}
+@media(min-width:600px){.steps{flex-direction:row;gap:0}}
+.step{display:flex;align-items:flex-start;gap:10px;flex:1}
+@media(min-width:600px){.step{flex-direction:column;align-items:center;text-align:center;gap:6px;position:relative}}
+.step+.step::before{content:'→';position:absolute;left:-8px;top:12px;color:var(--muted2);font-size:14px;display:none}
+@media(min-width:600px){.step+.step::before{display:block}}
+.step-n{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-t{font-size:12px;font-weight:700;color:var(--text)}.step-d{font-size:11px;color:var(--muted)}
+/* PART HEADER */
+.part-header{padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;position:sticky;top:var(--hh);z-index:100}
+@media(min-width:600px){.part-header{padding:12px 32px}}
+@media(min-width:900px){.part-header{padding:12px 48px}}
+.part-badge{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:16px;white-space:nowrap}
+.part-title{font-size:14px;font-weight:800;color:var(--text)}
+.part-count{margin-left:auto;font-size:11px;color:var(--muted);font-weight:600}
+/* SECTION */
+.section{padding:24px 16px 28px;border-bottom:1px solid var(--border)}
+@media(min-width:600px){.section{padding:28px 32px}}
+@media(min-width:900px){.section{padding:32px 48px}}
+.s-ey{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.s-ti{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+@media(min-width:600px){.s-ti{font-size:22px}}
+.s-de{color:var(--muted);font-size:13px;margin-bottom:20px;max-width:640px}
+/* RECIPE CARD */
+.recipe-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.rm{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:11px}
+.rm-l{color:var(--muted);font-size:9.5px;text-transform:uppercase;letter-spacing:.06em}
+.rm-v{font-weight:700;color:var(--text)}
+.recipe-body{display:grid;gap:14px}
+@media(min-width:700px){.recipe-body{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.recipe-body{grid-template-columns:1fr 1fr 1fr}}
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.card:hover{border-color:var(--border2)}
+.ctag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-bottom:7px}
+.cname{font-size:13px;font-weight:700;color:var(--text);margin-bottom:5px}
+.cbody{font-size:12px;color:var(--muted);line-height:1.6}
+/* SHOT SEQUENCE */
+.shots{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.shot{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px}
+.shot-n{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);min-width:48px;padding-top:1px}
+.shot-t{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.shot-d{font-size:12px;color:var(--muted);line-height:1.5}
+/* RULES */
+.rule-list{list-style:none;display:flex;flex-direction:column;gap:4px}
+.rule-list li{font-size:12px;color:var(--muted);padding:4px 4px 4px 20px;position:relative;border-bottom:1px solid rgba(255,255,255,.03)}
+.rule-list li:last-child{border-bottom:none}
+.rule-list.no li::before{content:'✕';position:absolute;left:3px;color:var(--red);font-weight:800;font-size:10px;top:5px}
+.rule-list.yes li::before{content:'✓';position:absolute;left:3px;color:var(--green);font-weight:800;font-size:10px;top:5px}
+/* EXAMPLE PROMPTS */
+.examples{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.ex-block{background:var(--bg3);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.ex-head{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.ex-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.ex-vert{font-size:10px;color:var(--muted)}
+.ex-body{padding:12px 14px;font-size:12px;line-height:1.8;color:#b8cce0;font-style:italic}
+/* INGREDIENT ITEMS */
+.ing-list{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.ing{display:flex;gap:10px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 13px}
+.ing-n{font-size:11px;font-weight:800;color:var(--muted2);font-family:monospace;min-width:26px;padding-top:1px}
+.ing-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.ing-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.ing-ex{margin-top:5px;font-size:11.5px;color:#aabdd8;font-style:italic}
+/* HOOK TEMPLATE */
+.htmpl{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:8px;padding:10px 13px;margin-bottom:7px}
+.htmpl.R{border-left-color:var(--red)}.htmpl.G{border-left-color:var(--green)}.htmpl.Y{border-left-color:var(--yellow)}
+.htmpl.B{border-left-color:var(--blue)}.htmpl.P{border-left-color:var(--pink)}.htmpl.O{border-left-color:var(--orange)}
+.htmpl.T{border-left-color:var(--teal)}.htmpl.V{border-left-color:var(--purple)}
+.ht-type{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:3px}
+.ht-tmpl{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.4}
+.ht-tmpl var{font-style:normal;color:#a5b4fc;background:rgba(99,102,241,.12);padding:0 3px;border-radius:3px;font-size:12px}
+.ht-ex{font-size:12px;color:var(--muted);font-style:italic}
+/* TABLE */
+.tw{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow-x:auto;margin-bottom:16px;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:420px}
+th{text-align:left;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg3);white-space:nowrap}
+td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--text);vertical-align:top}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.012)}td.c{text-align:center}
+/* GRID */
+.grid{display:grid;gap:10px;margin-bottom:16px}
+.g2{grid-template-columns:1fr}
+.g3{grid-template-columns:1fr}
+@media(min-width:520px){.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:800px){.g3{grid-template-columns:repeat(3,1fr)}}
+/* COL CARD */
+.colcard{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.collbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.colist{list-style:none;display:flex;flex-direction:column;gap:2px}
+.colist li{font-size:12px;color:var(--muted);padding:3px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.colist li:last-child{border-bottom:none}
+/* SECT DIVIDER */
+.sect{font-size:13px;font-weight:800;color:var(--text);margin:20px 0 12px;display:flex;align-items:center;gap:10px}
+.sect::after{content:'';flex:1;height:1px;background:var(--border)}
+/* PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:6px}
+.pg{background:rgba(16,185,129,.1);color:#10b981}.pr{background:rgba(239,68,68,.1);color:#f87171}
+.pb{background:rgba(59,130,246,.1);color:#60a5fa}.pv{background:rgba(139,92,246,.1);color:#a78bfa}
+.po{background:rgba(249,115,22,.1);color:#fb923c}.ppk{background:rgba(236,72,153,.1);color:#f472b6}
+.pt{background:rgba(20,184,166,.1);color:#2dd4bf}.py{background:rgba(245,158,11,.1);color:#fbbf24}
+.pc{background:rgba(6,182,212,.1);color:#22d3ee}.pl{background:rgba(132,204,22,.1);color:#a3e635}
+/* PLAYBOOK */
+.playbook{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+.pb-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.pb-badge{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:12px}
+.pb-title{font-size:15px;font-weight:800}
+/* COMBO BOX */
+.combo{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.06));border:1px solid rgba(99,102,241,.2);border-radius:12px;padding:20px;margin-top:12px;text-align:center}
+.combo-n{font-size:40px;font-weight:900;color:#a5b4fc;line-height:1;margin-bottom:8px}
+.combo-d{font-size:13px;color:var(--muted);line-height:1.8}
+/* FOOTER */
+.footer{padding:20px 16px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:4px}
+@media(min-width:600px){.footer{flex-direction:row;justify-content:space-between;padding:20px 32px}}
+@media print{
+  .sidebar,.topbar,.burger,.overlay{display:none!important}
+  .main{margin-left:0;padding-top:0}
+  .section{page-break-inside:avoid}
+  body{background:#fff;color:#111}
+  .card,.ing,.shot,.htmpl,.ex-block,.colcard,.playbook{border-color:#ddd;background:#fafafa}
+  .ex-body{background:#f0f0f0;color:#333}
+  th{background:#f0f0f0;color:#555}td,th{border-color:#ddd}
+  @page{margin:1.5cm}
+}
+</style></head><body>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay"></div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="tb-brand">
+    <div class="tb-name">📖 UGC Creative Cookbook</div>
+    <div class="tb-sub">Pigeonfi · Rachel · Master Reference</div>
+  </div>
+  <div class="tb-stats">
+    <div class="ts"><div class="ts-n" style="color:var(--green)">10</div><div class="ts-l">Recipes</div></div>
+    <div class="ts"><div class="ts-n" style="color:var(--red)">60+</div><div class="ts-l">Hooks</div></div>
+    <div class="ts"><div class="ts-n" style="color:var(--pink)">50</div><div class="ts-l">Bodies</div></div>
+    <div class="ts"><div class="ts-n" style="color:var(--cyan)">40</div><div class="ts-l">CTAs</div></div>
+    <div class="ts"><div class="ts-n" style="color:var(--yellow)">4</div><div class="ts-l">Verticals</div></div>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div>
+      <div class="sb-logo">Pigeonfi · Rachel</div>
+      <div class="sb-title">UGC Creative Cookbook</div>
+      <div class="sb-ver">v3.0 · Daily Reference Guide</div>
+    </div>
+    <button class="sb-cls" id="sbclose" aria-label="Close">✕</button>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Start Here</div>
+    <a class="sbl" href="#how-to-use"><span class="dot" style="background:var(--accent)"></span>How to Use This Cookbook</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Part 1 · Recipe Cards</div>
+    <a class="sbl" href="#r-rawugc"><span class="dot" style="background:var(--green)"></span>Raw UGC <span class="cnt">🥗</span></a>
+    <a class="sbl" href="#r-drhook"><span class="dot" style="background:var(--red)"></span>DR Hook <span class="cnt">🔥</span></a>
+    <a class="sbl" href="#r-branded"><span class="dot" style="background:var(--pink)"></span>Branded Lifestyle <span class="cnt">✨</span></a>
+    <a class="sbl" href="#r-testimonial"><span class="dot" style="background:var(--blue)"></span>Polished Testimonial <span class="cnt">🎤</span></a>
+    <a class="sbl" href="#r-beforeafter"><span class="dot" style="background:var(--orange)"></span>Before / After <span class="cnt">↔</span></a>
+    <a class="sbl" href="#r-voiceover"><span class="dot" style="background:var(--teal)"></span>Voiceover B-Roll <span class="cnt">🎙</span></a>
+    <a class="sbl" href="#r-pov"><span class="dot" style="background:var(--purple)"></span>POV Discovery Cam <span class="cnt">👁</span></a>
+    <a class="sbl" href="#r-ambient"><span class="dot" style="background:var(--muted)"></span>Ambient Slice <span class="cnt">🌿</span></a>
+    <a class="sbl" href="#r-reaction"><span class="dot" style="background:var(--yellow)"></span>Reaction Cam <span class="cnt">😮</span></a>
+    <a class="sbl" href="#r-ugctest"><span class="dot" style="background:var(--lime)"></span>UGC Testimonial <span class="cnt">🎬</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Part 2 · Ingredients</div>
+    <a class="sbl" href="#ing-hooks"><span class="dot" style="background:var(--red)"></span>Hook Library <span class="cnt">60+</span></a>
+    <a class="sbl" href="#ing-body"><span class="dot" style="background:var(--pink)"></span>Body Styles <span class="cnt">50</span></a>
+    <a class="sbl" href="#ing-cta"><span class="dot" style="background:var(--cyan)"></span>CTA Library <span class="cnt">40</span></a>
+    <a class="sbl" href="#ing-accents"><span class="dot" style="background:var(--orange)"></span>Accent Library <span class="cnt">25+</span></a>
+    <a class="sbl" href="#ing-wardrobe"><span class="dot" style="background:var(--teal)"></span>Wardrobe Catalog <span class="cnt">60+</span></a>
+    <a class="sbl" href="#ing-locations"><span class="dot" style="background:var(--green)"></span>Location Bank <span class="cnt">70+</span></a>
+    <a class="sbl" href="#ing-personas"><span class="dot" style="background:var(--purple)"></span>Persona Bank <span class="cnt">30+</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Part 3 · Vertical Playbooks</div>
+    <a class="sbl" href="#v-fe"><span class="dot" style="background:var(--purple)"></span>Final Expense</a>
+    <a class="sbl" href="#v-auto"><span class="dot" style="background:var(--blue)"></span>Auto Insurance</a>
+    <a class="sbl" href="#v-medicare"><span class="dot" style="background:var(--green)"></span>Medicare</a>
+    <a class="sbl" href="#v-aca"><span class="dot" style="background:var(--yellow)"></span>ACA Health</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Part 4 · Quick Reference</div>
+    <a class="sbl" href="#qr-picker"><span class="dot" style="background:var(--accent)"></span>Format Picker</a>
+    <a class="sbl" href="#qr-howto"><span class="dot" style="background:var(--accent)"></span>How to Build a Prompt</a>
+    <a class="sbl" href="#qr-math"><span class="dot" style="background:var(--accent)"></span>Combination Math</a>
+  </div>
+</nav>
+
+<main class="main" id="main">
+
+<!-- HERO -->
+<div class="hero" id="home">
+  <div class="hero-eyebrow">Pigeonfi · Rachel · Master Reference</div>
+  <div class="hero-title">UGC Creative Cookbook</div>
+  <div class="hero-sub">Pick a recipe. Grab your ingredients. Fill in the blanks. Ship a production-ready input prompt in 60 seconds.</div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n" style="color:var(--green)">10</div><div class="hstat-l">Recipe Formats</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--red)">60+</div><div class="hstat-l">Hook Templates</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--pink)">50</div><div class="hstat-l">Body Styles</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--cyan)">40</div><div class="hstat-l">CTA Types</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--purple)">30+</div><div class="hstat-l">Personas</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--yellow)">4</div><div class="hstat-l">Verticals</div></div>
+  </div>
+</div>
+
+<!-- HOW TO USE -->
+<div class="how" id="how-to-use">
+  <div class="how-title">How to Use This Cookbook</div>
+  <div class="steps">
+    <div class="step"><div class="step-n">1</div><div><div class="step-t">Pick a Recipe</div><div class="step-d">Choose a format from Part 1 based on your goal — cold traffic, retargeting, social proof, etc.</div></div></div>
+    <div class="step"><div class="step-n">2</div><div><div class="step-t">Grab Ingredients</div><div class="step-d">Pull a hook, body style, CTA, persona, accent, wardrobe, and location from Part 2.</div></div></div>
+    <div class="step"><div class="step-n">3</div><div><div class="step-t">Check Your Vertical</div><div class="step-d">Use the Part 3 playbook for your vertical to find proven combos and dialogue templates.</div></div></div>
+    <div class="step"><div class="step-n">4</div><div><div class="step-t">Build the Prompt</div><div class="step-d">Combine everything into one paragraph prompt using the format: [character] + [setting+action] + [camera notes] + saying "[dialogue]"</div></div></div>
+    <div class="step"><div class="step-n">5</div><div><div class="step-t">Ship It</div><div class="step-d">Paste into your video gen system. The recipe cards have 3 complete examples you can copy directly.</div></div></div>
+  </div>
+</div>
+
+<!-- PART 1 HEADER -->
+<div class="part-header">
+  <span class="part-badge" style="background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.2)">Part 1</span>
+  <span class="part-title">Recipe Cards</span>
+  <span class="part-count">10 formats · each with examples</span>
+</div>
+
+<!-- RECIPE 1: RAW UGC -->
+<div class="section" id="r-rawugc">
+  <div class="s-ey">Recipe 01</div>
+  <div class="s-ti">🥗 Raw UGC — Authentic Discovery</div>
+  <div class="s-de">Spontaneous, imperfect, FaceTime energy. The creator just found something and has to share it. Highest versatility across verticals.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">Cold traffic · Awareness</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">40–50 words</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">70–100%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">Medium</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">Yes</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">All verticals</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">Shot 1<br>0–4s</div><div><div class="shot-t">Hook — Pattern interrupt or discovery</div><div class="shot-d">Creator mid-motion, energetic. Opener flies. No intro, no "hey guys." Handheld drift.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 2<br>4–11s</div><div><div class="shot-t">Discovery — The thing they found + why it matters</div><div class="shot-d">Peer-to-peer explanation. What it is, why they're excited, the specific value. Conversational, imperfect.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 3<br>11–15s</div><div><div class="shot-t">Share — Light recommendation + link</div><div class="shot-d">Friend-to-friend. Not a command. "I just wanted to share." Link is casual, not a command.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>Slight camera drift signals it's not a professional setup</li>
+        <li>Background noise or activity makes it feel real</li>
+        <li>Creator looking slightly off-camera occasionally = thinking in real time</li>
+        <li>Imperfect framing — just slightly off-center is gold</li>
+        <li>Natural breath pauses between thoughts</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never open with "Hey guys!" or any greeting</li>
+        <li>Never use a ring light or obviously professional lighting</li>
+        <li>Never read from a visible script or teleprompter</li>
+        <li>Never use soft, polished CTAs ("check out the link below!")</li>
+        <li>Never over-correct color or use heavy filters</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">Final Expense</div><div class="ex-vert">Raw UGC · Discovery</div></div>
+      <div class="ex-body">63 year old Black american woman with soft Georgia accent wearing a comfortable cardigan and reading glasses sitting at her kitchen table with bills and mail spread out, picking up her phone with genuine relief energy at 75%, handheld tight frame with warm practical lighting, saying "I was sitting here stressing about what my kids would have to deal with when I'm gone and I found this. No medical exam. I qualified immediately. Starting at eighteen dollars a month my family doesn't have to handle a thing. I just had to share this — link's in the comments."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">Raw UGC · Discovery</div></div>
+      <div class="ex-body">34 year old Hispanic man with Texas accent wearing Amazon delivery uniform polo shirt sitting in the back of his delivery van on break, holding phone with genuine disbelief energy at 85%, slightly shaky handheld selfie cam, saying "I'm on break right now and I just need to tell somebody. I've been paying two hundred and forty dollars a month for car insurance. I checked this site on my lunch break and I'm now paying sixty seven. Same coverage. I'm kind of mad it took me this long honestly. Link's below, takes two minutes."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare</div><div class="ex-vert">Raw UGC · Discovery</div></div>
+      <div class="ex-body">68 year old white woman with Minnesota accent wearing casual fleece pullover standing in her kitchen holding a piece of mail, slightly shaky handheld frame, genuine excited energy at 70%, saying "Okay so I literally just got off the phone and I cannot believe I've been paying for this plan for three years when I could've had dental, vision, and gym membership included for zero dollars a month. Zero. My neighbor told me about this and I had to call right away. If you're on Medicare and haven't checked your plan this year — do it today. I'll put the number in the comments."</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE 2: DR HOOK -->
+<div class="section" id="r-drhook">
+  <div class="s-ey">Recipe 02</div>
+  <div class="s-ti">🔥 DR Hook — Pattern Interrupt Assault</div>
+  <div class="s-de">Opens mid-thought. No warmup. Pattern interrupt into agitation into hard CTA. Creator is urgent, direct, almost confrontational. Best for retargeting and warm audiences.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">Retargeting · Warm traffic</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">42–52 words</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">80–100%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">High</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">Yes</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">Auto, ACA, retarget</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">Shot 1<br>0–3s</div><div><div class="shot-t">Pattern Interrupt — Starts mid-sentence</div><div class="shot-d">Already in motion. "— and that's why you need to stop." No intro, no greeting. High energy immediately.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 2<br>3–10s</div><div><div class="shot-t">Agitation — Problem is costing them right now</div><div class="shot-d">Name the specific cost or consequence. Numbers work well. Urgency builds. Creator almost frustrated on their behalf.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 3<br>10–15s</div><div><div class="shot-t">Hard CTA — Specific action, specific reason now</div><div class="shot-d">Single clear action. Real reason to do it tonight. "That's it." or "I'm done." Ends strong.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>Start mid-sentence or mid-thought — viewer was already watching something</li>
+        <li>Lean into camera slightly — physical intensity signals urgency</li>
+        <li>Specific numbers in the agitation = credibility</li>
+        <li>Hard stop at end, no soft close</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never warm up — it starts mid-thought, always</li>
+        <li>Never introduce yourself</li>
+        <li>Never use soft CTAs or "whenever you're ready"</li>
+        <li>Never use hype words: amazing, incredible, life-changing</li>
+        <li>Never use fake scarcity ("only 3 left!")</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">DR Hook · Pattern Interrupt</div></div>
+      <div class="ex-body">41 year old white man with South Carolina drawl wearing a faded work polo leaning against his truck in a gas station parking lot, locked-off medium shot, direct intense eye contact at 95% energy, saying "Stop paying your car insurance renewal without checking this first. Stop. The average person overpays eight hundred dollars a year because they never shop around. I did it in seven minutes. Tap the link. Enter your zip. See your actual number. Do it right now before you forget."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA Health</div><div class="ex-vert">DR Hook · Urgent Warning</div></div>
+      <div class="ex-body">29 year old Black woman with Atlanta accent wearing a bright blazer standing in an office hallway, tight handheld frame at 90% energy, direct address to camera, saying "If you are self-employed and you don't have health insurance right now because you think you can't afford it — you're wrong. I was paying zero dollars a month. Zero. ACA subsidies cover most of it for people in your income bracket. Open enrollment is closing. Tap the link and see what you actually qualify for. Takes ninety seconds."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">Final Expense</div><div class="ex-vert">DR Hook · Consequence Warning</div></div>
+      <div class="ex-body">57 year old Latino man with Texas border town accent wearing a button-down shirt sitting at a kitchen table at 88% energy, tight frame, leaning slightly toward camera, saying "The average funeral in this country costs eleven thousand dollars. Eleven thousand. If you're over fifty and you don't have final expense coverage, that money comes out of your family's pocket. No medical exam. Rates start at eighteen dollars a month and they're locked in for life. Tap below. Tonight."</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE 3: BRANDED LIFESTYLE -->
+<div class="section" id="r-branded">
+  <div class="s-ey">Recipe 03</div>
+  <div class="s-ti">✨ Branded Lifestyle — Organic Integration</div>
+  <div class="s-de">Product lives inside the creator's life. Never formally introduced. Feels like an influencer organically sharing their world. Lowest ad signal of all talking-head formats.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">Cold traffic · Awareness</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">38–48 words</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">65–80%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">Very Low</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">Yes</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">ACA, cold traffic</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">Shot 1<br>0–4s</div><div><div class="shot-t">Lifestyle Hook — Creator already in their world</div><div class="shot-d">Showing something about their life. Not the product. Their routine, morning, activity.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 2<br>4–11s</div><div><div class="shot-t">Natural Discovery — Product appears in their life</div><div class="shot-d">Product is found, not presented. "Oh by the way..." Product is part of their existing story.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 3<br>11–15s</div><div><div class="shot-t">Casual Share — Link dropped without pressure</div><div class="shot-d">Soft close. Not a command. "It's in my bio if you're curious." No urgency language.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>The lifestyle must feel authentic — not staged for the ad</li>
+        <li>Product discovery must feel accidental, not engineered</li>
+        <li>Wardrobe and setting should match the life they're showing</li>
+        <li>Energy is relaxed — not selling, sharing</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never center the product — it lives at the edges of their life</li>
+        <li>Never formally introduce the product ("this is...")</li>
+        <li>Never use urgency language in the close</li>
+        <li>Never break the lifestyle illusion with sales language</li>
+        <li>Never use a hard CTA — link is casual, mentioned once</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA Health</div><div class="ex-vert">Branded Lifestyle · Morning Routine</div></div>
+      <div class="ex-body">27 year old white woman with pacific northwest accent wearing cozy oversized sweater and slippers sitting cross-legged on her couch with a coffee mug and laptop, morning light through the window, relaxed 65% energy, handheld casual frame, saying "I've been freelancing for about two years now and honestly the thing that took the longest to figure out was health insurance. I was shocked — I'm paying less than thirty dollars a month. My friends think I'm lying. Link's in my bio if you want to see what you'd pay."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">Branded Lifestyle · Errand Day</div></div>
+      <div class="ex-body">38 year old Latina woman with Miami accent wearing casual weekend clothes loading grocery bags into her car in a parking lot, phone propped up, 70% energy, handheld wide-medium frame, saying "So I'm out running errands and I'm waiting for my husband to finish inside and I'm just thinking — we really need to go over our finances this month. We switched our car insurance like six months ago and we're saving over a hundred dollars a month. I'll put the comparison tool we used in my stories."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare</div><div class="ex-vert">Branded Lifestyle · Active Senior</div></div>
+      <div class="ex-body">67 year old white man with Ohio neutral accent wearing a track jacket and walking shoes returning from a morning walk, catching his breath slightly, recording casually on his phone in the driveway at 65% energy, saying "Just got back from my morning walk — I do about four miles now. Retirement's treated me well. One thing that made a big difference was finally reviewing my Medicare plan last year. Dental, vision, gym membership — all included, nothing extra out of pocket. Happy to share the plan name in the comments."</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE 4: POLISHED TESTIMONIAL -->
+<div class="section" id="r-testimonial">
+  <div class="s-ey">Recipe 04</div>
+  <div class="s-ti">🎤 Polished Testimonial — Credible Authority</div>
+  <div class="s-de">More composed than Raw UGC. Context → Transformation → Endorsement. Slightly elevated wardrobe and framing. Best for Medicare and Final Expense where trust is the primary barrier.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">Warm traffic · Trust building</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">40–50 words</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">65–85%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">Medium</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">Yes</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">Medicare, Final Expense</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">Shot 1<br>0–4s</div><div><div class="shot-t">Context — Who they are + the situation before</div><div class="shot-d">Brief identity and the problem or starting point. Specific details make it credible.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 2<br>4–11s</div><div><div class="shot-t">Transformation — What happened and what they got</div><div class="shot-d">Specific results with numbers. Not "I saved money" — "I went from $180 to $47 a month."</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 3<br>11–15s</div><div><div class="shot-t">Endorsement — The recommendation with reason</div><div class="shot-d">Why they'd tell someone else. Specific. Not generic praise.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>Sustained eye contact — looking at one person, not the world</li>
+        <li>Window light at 45° for clean, credible look</li>
+        <li>Specific numbers in transformation: amounts, timeframes, before/after</li>
+        <li>Wardrobe one level above casual — clean, not corporate</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never use casual filler words (um, like, you know)</li>
+        <li>Never exceed 85% energy — this isn't hype</li>
+        <li>Never use hype words: amazing, incredible, game-changer</li>
+        <li>Never use aggressive sales close language</li>
+        <li>Never drift eye contact mid-endorsement</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">Final Expense</div><div class="ex-vert">Polished Testimonial · Family Relief</div></div>
+      <div class="ex-body">59 year old Black woman with soft Carolinas accent wearing a neat blazer over a blouse sitting in a well-lit home office with a bookshelf visible, sustained eye contact at 75% energy, locked-off medium shot with soft window light, saying "After my mother passed and my family had to scramble to cover the funeral, I knew I had to handle this for my own kids. I got covered in ten minutes — no doctor visit, no exam. Twenty-two dollars a month. My rate is locked in permanently. If you've been putting this off the way I did, I really want you to do it today."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare</div><div class="ex-vert">Polished Testimonial · Switched Plans</div></div>
+      <div class="ex-body">71 year old white man with calm midwest accent wearing a neat collared shirt sitting at a clean dining room table, direct eye contact at 70% energy, locked-off medium shot with natural window light, saying "I was on original Medicare for four years before my neighbor mentioned that plans existed that covered dental and vision with no monthly premium. I called that afternoon. My premium dropped to zero. I've had the same doctors. I genuinely wish someone had told me this years earlier — I'd have saved thousands."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">Polished Testimonial · Loyalty Penalty</div></div>
+      <div class="ex-body">46 year old Asian-American man with Pacific Northwest accent wearing a clean casual button-down sitting at his home desk, direct eye contact at 72% energy, locked-off medium shot with good natural lighting, saying "I had been with the same insurance company for nine years thinking that loyalty meant better rates. It doesn't. I ran a comparison and found out I was being charged significantly more than new customers. Switching took twelve minutes. I saved a hundred and sixty dollars a month. I felt foolish for waiting so long."</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE 5: BEFORE/AFTER -->
+<div class="section" id="r-beforeafter">
+  <div class="s-ey">Recipe 05</div>
+  <div class="s-ti">↔ Before / After — Witnessed Transformation</div>
+  <div class="s-de">Hard structural break between two visual states. Low energy first half (the before), elevated energy second half (the after). Lighting or location changes between halves. The contrast does the selling.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">Cold + warm traffic</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">38–46 words</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">40% → 85%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">Medium</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">Yes</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">Any transformation</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">Before<br>0–7s</div><div><div class="shot-t">The Before — Low energy, visible problem</div><div class="shot-d">Dim lighting, tired expression, stressed body language. Creator describes the problem in present tense as if still in it.</div></div></div>
+    <div class="shot"><div class="shot-n">CUT</div><div><div class="shot-t">Hard Cut — Visual break between states</div><div class="shot-d">Different lighting. Different position or location. The cut IS the transformation moment.</div></div></div>
+    <div class="shot"><div class="shot-n">After<br>7–15s</div><div><div class="shot-t">The After — Elevated energy, resolved problem</div><div class="shot-d">Brighter, more composed. Creator describes the after in present tense. Ends with the offer and CTA.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>The lighting change is the most important visual signal of the transformation</li>
+        <li>Before: slouched, tired, low voice; After: upright, energetic, confident</li>
+        <li>Specific numbers in the after half — amounts, timeframes</li>
+        <li>The cut should be abrupt, not a fade</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never keep the same energy/lighting in both halves</li>
+        <li>Never fade between before and after — cut hard</li>
+        <li>Never make the before too dramatic (unbelievable)</li>
+        <li>Never forget that the after needs a clear result with numbers</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">Final Expense</div><div class="ex-vert">Before/After · Worry to Peace</div></div>
+      <div class="ex-body">55 year old white woman with Appalachian accent wearing an oversized t-shirt, BEFORE shot: sitting slumped at a dim kitchen table at night surrounded by papers at 40% energy, looking tired and stressed, saying "I kept thinking about it. Every night. What my kids would have to deal with. I had nothing set aside. Nothing." — HARD CUT — AFTER shot: same woman now in daylight wearing a clean top, upright, relaxed at 80% energy, saying "I found coverage for nineteen dollars a month. No exam. No paperwork. I sleep fine now. Link is below — it took me eight minutes."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">Before/After · Overpaying to Savings</div></div>
+      <div class="ex-body">31 year old Black man with Chicago accent wearing work clothes, BEFORE shot: sitting in parked car staring at his phone with a frustrated look at 45% energy, saying "Two hundred and eighty dollars a month. Every month. And I can't even really afford it right now but I need the car." — HARD CUT — AFTER shot: same man now outside his car, standing confidently, energetic at 82%, saying "Sixty-four dollars. Same coverage. I ran the comparison on my lunch break. I don't know why I waited this long. You can check yours in like sixty seconds — link's below."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA Health</div><div class="ex-vert">Before/After · Uninsured to Covered</div></div>
+      <div class="ex-body">25 year old white woman with Valley California accent wearing casual clothes, BEFORE shot: sitting on her apartment floor looking at laptop at 40% energy, saying "I've been uninsured for two years. Every time I look it up I just close the tab because it's always like three or four hundred a month and I just can't." — HARD CUT — AFTER shot: same woman sitting at a desk, upright, relieved at 85%, saying "Twenty-two dollars a month. I qualified for a subsidy I didn't even know existed. I'm covered now. If you've been putting this off — just check. The calculator takes two minutes."</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE 6: VOICEOVER B-ROLL -->
+<div class="section" id="r-voiceover">
+  <div class="s-ey">Recipe 06</div>
+  <div class="s-ti">🎙 Voiceover B-Roll — Personal Documentary</div>
+  <div class="s-de">No face. Ambient footage with intimate narration. Creator's voice over their daily-life footage. Feels like a personal documentary. Lowest ad signal of all formats — Facebook almost never flags it.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">Cold traffic · All stages</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">40–50 words</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">55–75%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">Lowest</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">No</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">Final Expense, lifestyle</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">B-Roll 1<br>0–5s</div><div><div class="shot-t">Context footage — Their world without them in it</div><div class="shot-d">Kitchen, porch, family photos, hands doing things. Voiceover sets context and the problem.</div></div></div>
+    <div class="shot"><div class="shot-n">B-Roll 2<br>5–11s</div><div><div class="shot-t">Discovery footage — Finding the solution</div><div class="shot-d">Phone screen, hands on keyboard, mail opening. Voiceover narrates the discovery.</div></div></div>
+    <div class="shot"><div class="shot-n">B-Roll 3<br>11–15s</div><div><div class="shot-t">Resolution footage — Life after</div><div class="shot-d">Peaceful, resolved b-roll. Voiceover delivers result and soft recommendation.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>Voiceover should sound like journaling, not presenting</li>
+        <li>Natural ambient sound underneath the voiceover adds depth</li>
+        <li>Footage should be imperfect, handheld, unstaged</li>
+        <li>The intimacy comes from the contrast of personal voice over public footage</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never use stock footage — must feel real and personal</li>
+        <li>Never use a professional voice/announcer tone</li>
+        <li>Never remove all ambient sound — silence sounds fake</li>
+        <li>Never exceed 50 words — space and breath matter here</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">Final Expense</div><div class="ex-vert">Voiceover B-Roll · Kitchen Documentary</div></div>
+      <div class="ex-body">No face shown. B-roll footage: slow pan across a worn kitchen table with family photos pinned on the wall behind it, then hands opening a stack of bills, then a close-up of a phone screen showing a simple application form. Voiceover from a 64 year old Black woman with a soft Georgia accent at 60% energy: "I kept putting it off. Every time I thought about it I just... didn't. Then my sister called me from the hospital about her husband. I found coverage that evening. Eighteen dollars a month. No doctor. Just a phone call. Link's below."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare</div><div class="ex-vert">Voiceover B-Roll · Retirement Life</div></div>
+      <div class="ex-body">No face shown. B-roll footage: slow walking shot through a suburban neighborhood in morning light, then hands holding an open insurance card, then a close-up of a phone showing a plan comparison screen. Voiceover from a 69 year old white man with flat Midwest accent at 58% energy: "Three years on the same plan without ever looking at alternatives. My dentist asked why I wasn't using my benefits — I didn't have dental on my plan. Switched during open enrollment. Now I pay nothing extra and dental is included. Wish I'd checked sooner."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">Voiceover B-Roll · Commute</div></div>
+      <div class="ex-body">No face shown. B-roll footage: driver's perspective footage of morning highway commute, then a hand picking up an opened mail envelope with a renewal notice visible, then hands typing on a phone. Voiceover from a 37 year old Hispanic woman with Texas accent at 65% energy: "I got my renewal in the mail. Same rate, went up forty dollars again. I sat in traffic that morning thinking — I should just check. I found a site that compared every company at once. Same coverage. Seventy-three dollars less a month. I made the switch right there in the parking garage."</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE 7: POV DISCOVERY CAM -->
+<div class="section" id="r-pov">
+  <div class="s-ey">Recipe 07</div>
+  <div class="s-ti">👁 POV Discovery Cam — First-Person Reveal</div>
+  <div class="s-de">Camera IS the creator's eyes. Continuous first-person footage. Viewer experiences the discovery as it happens. Zero ad signal — looks exactly like organic content.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">Cold traffic · Discovery</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">35–45 words</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">60–85%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">Very Low</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">No</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">Price reveals, site demos</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">POV 1<br>0–4s</div><div><div class="shot-t">Stumble — Viewer enters mid-discovery</div><div class="shot-d">Camera is moving, searching. Creator voice narrates what they're doing/seeing. Handheld POV.</div></div></div>
+    <div class="shot"><div class="shot-n">POV 2<br>4–11s</div><div><div class="shot-t">Reveal — The thing they found</div><div class="shot-d">Camera lands on the key visual — a screen, a price, a letter. Voice reacts in real time.</div></div></div>
+    <div class="shot"><div class="shot-n">POV 3<br>11–15s</div><div><div class="shot-t">Share — "You have to see this"</div><div class="shot-d">Creator narrates why they're sharing. Soft link drop. No hard sell.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>Camera movement must feel purposeful but imperfect — searching, not staged</li>
+        <li>Natural ambient sound = authenticity (keyboard clicks, background noise)</li>
+        <li>The reveal moment should feel like the viewer is discovering it too</li>
+        <li>Voice should react with genuine micro-emotions — small surprise, quiet excitement</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never show the creator's face — camera IS their eyes</li>
+        <li>Never use a tripod or stabilized shot — must feel handheld</li>
+        <li>Never use a hard CTA close</li>
+        <li>Never over-narrate — let the footage do work</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">POV Discovery · Price Reveal</div></div>
+      <div class="ex-body">No face shown. First-person POV footage: camera approaches a laptop on a kitchen counter, hand types into an insurance comparison site, camera moves in to show the screen as quotes load. Voiceover from a 39 year old Black man with a Detroit accent at 75% energy: "Okay I'm just gonna — I'm just gonna show you what I'm looking at right now. I entered my zip. I entered my car. And these are the quotes I got. Look at that number. That's a real carrier. I've been paying almost double this for four years. Link's in the comments."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">Final Expense</div><div class="ex-vert">POV Discovery · Application Process</div></div>
+      <div class="ex-body">No face shown. First-person POV footage: camera shows hands picking up a phone, navigating to an application page, filling out zip code and age fields, and landing on a quote showing $18/month. Voiceover from a 61 year old white woman with a soft Tennessee accent at 65% energy: "My daughter showed me this site and I'm just gonna walk through what I did. I put my zip code in. I put my age. There are no medical questions. And this is what came up. Eighteen dollars a month. My card is already in the mail."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA Health</div><div class="ex-vert">POV Discovery · Subsidy Calculator</div></div>
+      <div class="ex-body">No face shown. First-person POV footage: hands at a desk typing annual income into a subsidy calculator, camera zooms slightly toward the screen as the estimated monthly premium appears at $0. Voiceover from a 26 year old Latina woman with a Miami accent at 80% energy: "Okay wait — I thought this was gonna say like three hundred dollars. I put in what I make — I'm freelance, so I put in my actual income — and it's saying zero dollars per month. Zero. I thought the calculator was broken. It's not broken. Link below."</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE 8: AMBIENT SLICE -->
+<div class="section" id="r-ambient">
+  <div class="s-ey">Recipe 08</div>
+  <div class="s-ti">🌿 Ambient Slice — Life In Progress</div>
+  <div class="s-de">Footage already rolling when something happens. Product is present, never presented. 20–30 words maximum. Zero ad signal. The quietest ad format. Often the highest-trust cold traffic approach.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">Cold traffic · Trust</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">20–30 words MAX</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">40–65%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">Lowest of all</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">No</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">Final Expense, lifestyle</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">Ambient 1<br>0–7s</div><div><div class="shot-t">Life happening — No awareness of camera</div><div class="shot-d">Real activity. No performance. Sound of the environment is the primary track. Creator may or may not be visible.</div></div></div>
+    <div class="shot"><div class="shot-n">Ambient 2<br>7–12s</div><div><div class="shot-t">The mention — Casually, not addressing camera</div><div class="shot-d">Creator mentions the product/result in passing. As if talking to someone else in the room, not to the camera.</div></div></div>
+    <div class="shot"><div class="shot-n">Ambient 3<br>12–15s</div><div><div class="shot-t">Return to life — No CTA, just ambient</div><div class="shot-d">Life continues. No close. No link. Product was just… there.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>The camera was already running — creator never looks at it</li>
+        <li>Sound design is everything — birds, TV in background, kitchen sounds</li>
+        <li>The mention is offhand, like talking to someone else in the room</li>
+        <li>No CTA. Zero selling. That is the selling.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never acknowledge the camera at any point</li>
+        <li>Never use direct address ("you")</li>
+        <li>Never include a CTA of any kind</li>
+        <li>Never exceed 30 words of dialogue</li>
+        <li>Never use bright frontal lighting — must feel ambient and real</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">Final Expense</div><div class="ex-vert">Ambient Slice · Porch Evening</div></div>
+      <div class="ex-body">No face shown. Camera already rolling, aimed at a peaceful back porch at dusk — wind chimes, distant lawnmower, warm golden light. A 66 year old woman with a soft Alabama drawl is heard talking to someone off-camera at 45% energy, casually: "I finally got that policy set up. Nineteen a month. The kids don't have to worry anymore." Sound of ice clinking in a glass. Camera stays on the porch view. No further dialogue.</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">Ambient Slice · Morning Kitchen</div></div>
+      <div class="ex-body">No face shown. Camera already rolling on a morning kitchen scene — coffee maker sounds, light through blinds, hands visible occasionally. A 43 year old man with a flat Kansas accent is heard talking to someone off-camera at 50% energy while pouring coffee: "Finally switched the car insurance last night. Saving about ninety a month." Sound of coffee cup set down. Life continues. No further dialogue. Camera doesn't move.</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare</div><div class="ex-vert">Ambient Slice · Living Room</div></div>
+      <div class="ex-body">No face shown. Camera already rolling on a comfortable living room — TV murmur in the background, afternoon light, a pair of reading glasses on a side table. A 70 year old woman with a soft Ohio accent is heard speaking to someone off-camera at 40% energy: "My new Medicare plan has dental. No extra cost. I don't know why it took me this long." Sound of newspaper rustling. Camera stays still. Life continues as normal.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE 9: REACTION CAM -->
+<div class="section" id="r-reaction">
+  <div class="s-ey">Recipe 09</div>
+  <div class="s-ti">😮 Reaction Cam — Witnessed Emotion</div>
+  <div class="s-de">Face in frame reacting to something off-screen. No direct address until closing shot. Micro-expressions carry all the weight. Best for price and number reveals where the reaction IS the proof.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">Cold + warm traffic</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">25–35 words</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">50–75%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">Very Low</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">Yes</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">Number reveals, price drops</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">Shot 1<br>0–5s</div><div><div class="shot-t">Open silent — Face reacting to off-screen stimulus</div><div class="shot-d">No words. Face changes. Eyes widen, jaw drops, head tilts. Viewer is curious what they're seeing.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 2<br>5–11s</div><div><div class="shot-t">Verbal reaction — Still looking off-screen</div><div class="shot-d">"Wait. That can't be right." Short reactive phrases. Still not addressing the camera directly.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 3<br>11–15s</div><div><div class="shot-t">Turn to camera — Share the moment</div><div class="shot-d">First direct address. "You need to see this." One-line recommendation. Soft link drop.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>The opening silent reaction is everything — it creates the question "what are they looking at?"</li>
+        <li>Reactions must be natural, not theatrical</li>
+        <li>Less words = more impact for this format</li>
+        <li>The turn to camera at end feels like an invitation, not a pitch</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never open with dialogue — silence first, always</li>
+        <li>Never make eye contact with camera until closing shot</li>
+        <li>Never over-direct the reaction — it must feel unplanned</li>
+        <li>Never exceed 35 words total</li>
+        <li>Never use a hard CTA — one line, soft recommendation only</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">Reaction Cam · Quote Reveal</div></div>
+      <div class="ex-body">48 year old white woman with South Jersey accent wearing casual clothes sitting at a kitchen table, phone propped facing her, looking down at another screen or paper off-camera — opens completely silent for 4 seconds with wide eyes and a disbelieving head-shake, then quietly says "No way. No way that's right." — pauses, looks more closely — then turns directly to camera with a small laugh saying "Check your rate. Link is right there."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">Final Expense</div><div class="ex-vert">Reaction Cam · Application Reveal</div></div>
+      <div class="ex-body">64 year old Black man with a calm Baltimore accent wearing a comfortable sweater, sitting in an armchair looking at a tablet off to the side — opens silent for 5 seconds, small slow nod, eyes soft, processing — then quietly says "That's it? That's the whole thing?" — another beat — then turns gently to camera and says "I'm covered. Twenty-one dollars a month. No doctor visit. Do this tonight."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare</div><div class="ex-vert">Reaction Cam · Plan Comparison</div></div>
+      <div class="ex-body">71 year old white woman with Minnesota nice accent wearing a cardigan sitting at her kitchen table looking at a laptop screen — opens completely silent for 4 seconds with a slow blink and quiet disbelief expression — then softly says "They've been charging me for this when this has been available this whole time?" — turns to camera gently and says "If you're on Medicare — just check. Number's down there."</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPE 10: UGC TESTIMONIAL ON-CAMERA -->
+<div class="section" id="r-ugctest">
+  <div class="s-ey">Recipe 10</div>
+  <div class="s-ti">🎬 UGC Testimonial On-Camera — The Full Stack</div>
+  <div class="s-de">The most complete format. Combines the best of Raw UGC authenticity with the structure of Polished Testimonial. Hook → Story → Evidence → Recommendation. The workhorse of insurance lead gen.</div>
+  <div class="recipe-meta">
+    <div class="rm"><div class="rm-l">Serves</div><div class="rm-v">All stages · All verticals</div></div>
+    <div class="rm"><div class="rm-l">Word Count</div><div class="rm-v">42–52 words</div></div>
+    <div class="rm"><div class="rm-l">Energy</div><div class="rm-v">70–90%</div></div>
+    <div class="rm"><div class="rm-l">Ad Signal</div><div class="rm-v">Medium</div></div>
+    <div class="rm"><div class="rm-l">Face Required</div><div class="rm-v">Yes</div></div>
+    <div class="rm"><div class="rm-l">Best For</div><div class="rm-v">All 4 verticals</div></div>
+  </div>
+  <div class="sect">Shot Sequence</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">Shot 1<br>0–4s</div><div><div class="shot-t">Hook — Stops the scroll</div><div class="shot-d">Pattern interrupt, bold question, or identity call-out. No greeting.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 2<br>4–9s</div><div><div class="shot-t">Story + Evidence — What happened</div><div class="shot-d">Specific numbers, specific timeline, specific result. Not "I saved money" — exact amounts.</div></div></div>
+    <div class="shot"><div class="shot-n">Shot 3<br>9–15s</div><div><div class="shot-t">Recommendation + CTA</div><div class="shot-d">Why they're sharing. One clear action. Real reason to do it now.</div></div></div>
+  </div>
+  <div class="recipe-body">
+    <div class="card">
+      <div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Chef's Notes</div>
+      <ul class="rule-list yes">
+        <li>The hook is the whole game — if it doesn't stop the scroll, nothing else matters</li>
+        <li>Specificity = credibility: name numbers, timelines, before/after amounts</li>
+        <li>The recommendation should feel like advice to a friend, not a sales pitch</li>
+        <li>Creator's setting should match their character — real life, not a backdrop</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="ctag" style="background:rgba(239,68,68,.1);color:var(--red)">Never Do</div>
+      <ul class="rule-list no">
+        <li>Never start with a greeting or intro</li>
+        <li>Never make vague claims without numbers</li>
+        <li>Never end with a weak close ("check it out maybe")</li>
+        <li>Never use hype vocabulary</li>
+        <li>Never run over 52 words</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sect">Complete Example Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">Final Expense</div><div class="ex-vert">UGC Testimonial · Rate Lock</div></div>
+      <div class="ex-body">62 year old white woman with warm Appalachian accent wearing a floral top sitting at a dining room table with good natural window light, direct sustained eye contact at 78% energy, handheld slight drift, saying "If you're over fifty and you've been putting off life insurance because you think it's too expensive or you won't qualify — I got covered last week. No medical exam. My rate is twenty-four dollars a month and it's locked in for the rest of my life. It won't go up. I did the application in nine minutes. Tap the link — it took me less time than I'm spending telling you about it."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto Insurance</div><div class="ex-vert">UGC Testimonial · Loyalty Trap</div></div>
+      <div class="ex-body">35 year old Black man with Chicago South Side accent wearing a hoodie and cap standing in his apartment, handheld medium shot at 82% energy, slightly leaning forward, saying "Insurance companies make more money from customers who don't leave. That's not a theory — that's their business model. I finally ran a comparison and found out I was paying a hundred and ninety dollars more per month than someone who just signed up. Same coverage. Same area. I switched in ten minutes. Tap below and enter your zip. See what your number actually is."</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA Health</div><div class="ex-vert">UGC Testimonial · Self-Employed</div></div>
+      <div class="ex-body">31 year old white woman with Pacific Northwest accent wearing a cozy sweater sitting at her home office desk with plants visible behind her, handheld medium frame at 75% energy, natural window light, saying "I've been freelancing for three years and I've been uninsured the whole time because every time I looked it up the prices were insane. I finally ran it through the subsidy calculator. Eighteen dollars a month. I qualify because of my income bracket and I never knew. If you're self-employed and you don't have coverage — just check what you'd actually pay. Link is there. Takes ninety seconds."</div>
+    </div>
+  </div>
+</div>
+
+<!-- PART 2 HEADER -->
+<div class="part-header">
+  <span class="part-badge" style="background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.2)">Part 2</span>
+  <span class="part-title">Ingredient Libraries</span>
+  <span class="part-count">Hooks · Bodies · CTAs · Accents · Wardrobe · Locations · Personas</span>
+</div>
+
+<!-- HOOK LIBRARY -->
+<div class="section" id="ing-hooks">
+  <div class="s-ey">Part 2 · Ingredient 1</div>
+  <div class="s-ti">Hook Library — 60+ Templates</div>
+  <div class="s-de">Pick a category, pick a template, fill the <span style="color:#a5b4fc;background:rgba(99,102,241,.12);padding:0 4px;border-radius:3px">[variables]</span>, drop it in your prompt's "saying" section.</div>
+
+  <div class="sect">🔴 Pattern Interrupt</div>
+  <div class="htmpl R"><div class="ht-type">Counter-Intuitive Reversal</div><div class="ht-tmpl">Most people think <var>[common belief]</var> means <var>[negative outcome]</var>. That's not how it works anymore.</div><div class="ht-ex">"Most people think getting coverage at 62 means you'll pay a fortune. That's not true anymore."</div></div>
+  <div class="htmpl R"><div class="ht-type">Stop Command</div><div class="ht-tmpl">Stop <var>[action they're doing]</var> until you watch this.</div><div class="ht-ex">"Stop paying your car insurance bill until you watch this. I'm serious."</div></div>
+  <div class="htmpl R"><div class="ht-type">Admission Against Interest</div><div class="ht-tmpl">I'm going to say something <var>[company/industry]</var> would hate that I'm telling you.</div><div class="ht-ex">"I'm going to say something the insurance industry would absolutely hate me for saying."</div></div>
+  <div class="htmpl R"><div class="ht-type">Industry Flip</div><div class="ht-tmpl">The <var>[industry]</var> doesn't want you knowing that <var>[favorable fact]</var>.</div><div class="ht-ex">"Insurance companies don't want you knowing you can switch in under ten minutes."</div></div>
+  <div class="htmpl R"><div class="ht-type">Mid-Sentence Open</div><div class="ht-tmpl">— and that's the part <var>[they / nobody]</var> never tells you.</div><div class="ht-ex">"— and that's the part your insurance company never tells you about your renewal."</div></div>
+
+  <div class="sect">🟡 Bold Question</div>
+  <div class="htmpl Y"><div class="ht-type">Identity Challenge</div><div class="ht-tmpl">Why are you still <var>[doing the wrong thing]</var>?</div><div class="ht-ex">"Why are you still paying over two hundred dollars a month for car insurance?"</div></div>
+  <div class="htmpl Y"><div class="ht-type">Are You Aware</div><div class="ht-tmpl">Did you know that <var>[surprising fact about their situation]</var>?</div><div class="ht-ex">"Did you know most people on Medicare qualify for plans that cover dental for free?"</div></div>
+  <div class="htmpl Y"><div class="ht-type">Qualifying Question</div><div class="ht-tmpl">Are you <var>[identity marker]</var> in <var>[state/situation]</var>? Keep watching.</div><div class="ht-ex">"Are you between 55 and 70 and still paying for original Medicare? Keep watching."</div></div>
+  <div class="htmpl Y"><div class="ht-type">Rhetorical Pain</div><div class="ht-tmpl">How long have you been dealing with <var>[specific problem]</var>?</div><div class="ht-ex">"How long have you been paying for coverage you're not even fully using?"</div></div>
+  <div class="htmpl Y"><div class="ht-type">Permission Check</div><div class="ht-tmpl">Can I show you something that's going to make you <var>[emotion]</var>?</div><div class="ht-ex">"Can I show you something that's going to make you genuinely mad at yourself for waiting?"</div></div>
+
+  <div class="sect">🟠 Urgent Warning</div>
+  <div class="htmpl O"><div class="ht-type">Current Mistake</div><div class="ht-tmpl">If you're currently <var>[doing this thing]</var>, you need to stop and listen right now.</div><div class="ht-ex">"If you're on original Medicare without a supplement, you need to hear this today."</div></div>
+  <div class="htmpl O"><div class="ht-type">Deadline Alert</div><div class="ht-tmpl"><var>[Program/opportunity]</var> is ending <var>[timeframe]</var> and most people have no idea.</div><div class="ht-ex">"Medicare open enrollment closes soon and most people don't know they can save hundreds."</div></div>
+  <div class="htmpl O"><div class="ht-type">Cost of Waiting</div><div class="ht-tmpl">The longer you wait to <var>[take action]</var>, the <var>[worse permanent outcome]</var>.</div><div class="ht-ex">"The longer you wait to get final expense coverage, the more it costs. Every year you get older."</div></div>
+  <div class="htmpl O"><div class="ht-type">Inaction Math</div><div class="ht-tmpl">Every <var>[time unit]</var> you don't <var>[action]</var>, you're leaving <var>[specific amount]</var> behind.</div><div class="ht-ex">"Every month you don't switch, you're leaving ninety dollars on the table. Every single month."</div></div>
+
+  <div class="sect">🔵 Specific Number</div>
+  <div class="htmpl B"><div class="ht-type">Overpayment Number</div><div class="ht-tmpl">The average <var>[person type]</var> overpays <var>$[amount]</var> every <var>[time period]</var>.</div><div class="ht-ex">"The average American overpays eight hundred and forty seven dollars a year on car insurance."</div></div>
+  <div class="htmpl B"><div class="ht-type">Price Drop</div><div class="ht-tmpl">I went from <var>$[high amount]</var> down to <var>$[low amount]</var>. Same coverage.</div><div class="ht-ex">"I went from two forty seven down to fifty nine a month. Same coverage. I'm still kind of mad."</div></div>
+  <div class="htmpl B"><div class="ht-type">Benefit Number</div><div class="ht-tmpl"><var>$[amount]</var> is sitting there for <var>[qualified group]</var> and most have no idea.</div><div class="ht-ex">"Eighteen hundred dollars a year is sitting there for Medicare seniors and most have no idea."</div></div>
+  <div class="htmpl B"><div class="ht-type">Time Number</div><div class="ht-tmpl">I did it in <var>[time]</var>. That's all it takes.</div><div class="ht-ex">"I did it in seven minutes. Seven. That's less time than you spend scrolling right now."</div></div>
+
+  <div class="sect">🟢 Discovery / Found It</div>
+  <div class="htmpl G"><div class="ht-type">Just Found</div><div class="ht-tmpl">I just found out about <var>[thing]</var> and I had to come on here immediately.</div><div class="ht-ex">"I just found out about this program and I literally came straight home to post this."</div></div>
+  <div class="htmpl G"><div class="ht-type">Phone Call Discovery</div><div class="ht-tmpl">I just got off the phone with <var>[source]</var> and I cannot believe what they told me.</div><div class="ht-ex">"I just got off the phone with my agent and I cannot believe what he told me."</div></div>
+  <div class="htmpl G"><div class="ht-type">Today Years Old</div><div class="ht-tmpl">I was today years old when I found out <var>[surprising fact]</var>.</div><div class="ht-ex">"I was today years old when I found out people my age can get car insurance under sixty bucks."</div></div>
+  <div class="htmpl G"><div class="ht-type">Accidental Find</div><div class="ht-tmpl">I was just <var>[mundane action]</var> when I stumbled onto <var>[discovery]</var>.</div><div class="ht-ex">"I was on my lunch break scrolling when I found this rate calculator and now I can't stop thinking about it."</div></div>
+
+  <div class="sect">🔮 Secret / Insider</div>
+  <div class="htmpl V"><div class="ht-type">Occupation Insider</div><div class="ht-tmpl">I work as a <var>[occupation]</var> and they would not want me telling you this.</div><div class="ht-ex">"I work in insurance claims and they would absolutely not want me telling customers this."</div></div>
+  <div class="htmpl V"><div class="ht-type">Nobody Talks About</div><div class="ht-tmpl">Nobody at <var>[institution]</var> is talking about this but <var>[secret]</var>.</div><div class="ht-ex">"Nobody at the Medicare office is telling people this but there's a plan that covers everything for zero a month."</div></div>
+  <div class="htmpl V"><div class="ht-type">Not Supposed To</div><div class="ht-tmpl">I'm probably not supposed to be sharing this but <var>[specific secret]</var>.</div><div class="ht-ex">"I'm probably not supposed to be sharing this but the rates right now are genuinely the lowest I've seen."</div></div>
+  <div class="htmpl V"><div class="ht-type">Buried Fact</div><div class="ht-tmpl">There's a <var>[fact/program]</var> buried in <var>[source]</var> that most <var>[people]</var> never find.</div><div class="ht-ex">"There's a subsidy provision buried in the ACA that most self-employed people never find. Worth thousands."</div></div>
+
+  <div class="sect">🩷 Social Proof Opener</div>
+  <div class="htmpl P"><div class="ht-type">Text Forward</div><div class="ht-tmpl">My <var>[relationship]</var> literally just texted me about this and I had to come on here.</div><div class="ht-ex">"My sister literally just texted me this and I had to come on here immediately."</div></div>
+  <div class="htmpl P"><div class="ht-type">Overheard</div><div class="ht-tmpl">I overheard <var>[people]</var> talking about <var>[thing]</var> and I had to ask what it was.</div><div class="ht-ex">"I overheard two coworkers talking about how much they were saving on insurance and I had to jump in."</div></div>
+  <div class="htmpl P"><div class="ht-type">Referral Chain</div><div class="ht-tmpl"><var>[Source]</var> told <var>[person]</var> who told me, and now I'm telling you.</div><div class="ht-ex">"My neighbor told my mom who told me — and now I'm telling you. This is actually affordable."</div></div>
+
+  <div class="sect">🩵 Curiosity Gap</div>
+  <div class="htmpl T"><div class="ht-type">List Tease</div><div class="ht-tmpl">There are <var>[number]</var> things <var>[group]</var> almost never get told about <var>[topic]</var>. Number <var>[#]</var> changes everything.</div><div class="ht-ex">"Three things seniors on Medicare almost never get told. Number two literally changed my mom's life."</div></div>
+  <div class="htmpl T"><div class="ht-type">Incomplete Reveal</div><div class="ht-tmpl">What I ended up paying — I'll let you see for yourself.</div><div class="ht-ex">"What I actually ended up paying for full coverage — I'll let you see for yourself. Link's below."</div></div>
+  <div class="htmpl T"><div class="ht-type">The Buried Number</div><div class="ht-tmpl">The number I got back when I ran this — you're going to want to sit down.</div><div class="ht-ex">"The monthly rate I got back when I entered my zip code — you're going to want to sit down."</div></div>
+
+  <div class="sect">🫂 Relatability / Confession</div>
+  <div class="htmpl"><div class="ht-type">Shared Situation</div><div class="ht-tmpl">If you're anything like me, you've been <var>[struggling with / ignoring / stressed about]</var> <var>[thing]</var> for too long.</div><div class="ht-ex">"If you're anything like me, you've been putting off insurance stuff because it feels like a whole thing."</div></div>
+  <div class="htmpl"><div class="ht-type">Confession Open</div><div class="ht-tmpl">I have to be honest with you. For <var>[time]</var>, I was <var>[doing the wrong thing]</var>. Until <var>[discovery]</var>.</div><div class="ht-ex">"I have to be honest — for six years I just auto-renewed my policy without ever looking at alternatives."</div></div>
+  <div class="htmpl"><div class="ht-type">Shame to Pride</div><div class="ht-tmpl">I used to be embarrassed to admit I didn't have <var>[thing]</var>. Now I tell everyone.</div><div class="ht-ex">"I used to be embarrassed to say I had no life insurance at 64. Now I tell everyone how I fixed that."</div></div>
+
+  <div class="sect">💡 Myth Bust</div>
+  <div class="htmpl"><div class="ht-type">The Wrong Belief</div><div class="ht-tmpl">Everything you've been told about <var>[topic]</var> is wrong. Here's what's actually true.</div><div class="ht-ex">"Everything you've been told about getting affordable health insurance when you're self-employed is wrong."</div></div>
+  <div class="htmpl"><div class="ht-type">The One Exception</div><div class="ht-tmpl">Most people think <var>[rule]</var>. But there's an exception almost nobody knows about.</div><div class="ht-ex">"Most people think you need a medical exam to get life insurance over 60. There's an exception almost nobody knows."</div></div>
+
+  <div class="sect">🎯 Direct Address</div>
+  <div class="htmpl"><div class="ht-type">Identity Call-Out</div><div class="ht-tmpl">If you're <var>[specific identity]</var> — this is for you.</div><div class="ht-ex">"If you're self-employed, freelance, or work a gig job — this is specifically for you."</div></div>
+  <div class="htmpl"><div class="ht-type">The Age Gate</div><div class="ht-tmpl">If you're over <var>[age]</var> and you don't have <var>[thing]</var> — this is important.</div><div class="ht-ex">"If you're over 55 and you don't have final expense coverage — this is genuinely important."</div></div>
+</div>
+
+<!-- BODY STYLES -->
+<div class="section" id="ing-body">
+  <div class="s-ey">Part 2 · Ingredient 2</div>
+  <div class="s-ti">Body Styles — 50 Middle-of-Ad Structures</div>
+  <div class="s-de">How the middle of the ad is structured. Hook got them watching. Body keeps them watching. Choose one.</div>
+  <div class="ing-list">
+    <div class="ing"><div class="ing-n">01</div><div><div class="ing-name">Problem / Solution</div><div class="ing-desc">Present the problem clearly, introduce the solution. Simple, clean, logical. Works in any vertical.</div></div></div>
+    <div class="ing"><div class="ing-n">02</div><div><div class="ing-name">Personal Narrative</div><div class="ing-desc">Story with beginning, middle, end. Viewer is transported. Empathy-based persuasion.</div></div></div>
+    <div class="ing"><div class="ing-n">03</div><div><div class="ing-name">Feature → Benefit Translation</div><div class="ing-desc">Walk through features, translate each into a viewer benefit. Not what it does — what it means for their life.</div></div></div>
+    <div class="ing"><div class="ing-n">04</div><div><div class="ing-name">Testimonial / Personal Proof</div><div class="ing-desc">Specific results with numbers, timelines, before/after states. Specificity is the credibility.</div></div></div>
+    <div class="ing"><div class="ing-n">05</div><div><div class="ing-name">Step-by-Step Process</div><div class="ing-desc">Break down how to take action in numbered steps. Reduces perceived complexity. Simplicity is the product.</div></div></div>
+    <div class="ing"><div class="ing-n">06</div><div><div class="ing-name">Before / After Contrast</div><div class="ing-desc">Life before vs. life after. The contrast does the selling.</div></div></div>
+    <div class="ing"><div class="ing-n">07</div><div><div class="ing-name">Live Demonstration</div><div class="ing-desc">Show the product in action — screen recordings, physical demos. Seeing = believing.</div></div></div>
+    <div class="ing"><div class="ing-n">08</div><div><div class="ing-name">Objection Handling Sequence</div><div class="ing-desc">Name and overcome the 2–3 most likely reasons NOT to act. Pre-empt the "but..."</div></div></div>
+    <div class="ing"><div class="ing-n">09</div><div><div class="ing-name">Emotional Journey Arc</div><div class="ing-desc">Frustration → hope → resolution. Product is the emotional turning point.</div></div></div>
+    <div class="ing"><div class="ing-n">10</div><div><div class="ing-name">Competitor Comparison</div><div class="ing-desc">This vs. the alternative. Always frame this solution as the clear winner.</div></div></div>
+    <div class="ing"><div class="ing-n">11</div><div><div class="ing-name">Educational Explanation</div><div class="ing-desc">Teach something valuable. Viewer feels informed, not sold. Authority through giving value first.</div></div></div>
+    <div class="ing"><div class="ing-n">12</div><div><div class="ing-name">Multiple Benefits List</div><div class="ing-desc">Enumerate several key advantages rapidly. Value accumulation: "all of this? for that?"</div></div></div>
+    <div class="ing"><div class="ing-n">13</div><div><div class="ing-name">Discovery Reveal Walk-Through</div><div class="ing-desc">Share how you found the solution. The journey of finding it makes the product feel earned, not sold.</div></div></div>
+    <div class="ing"><div class="ing-n">14</div><div><div class="ing-name">Social Proof Compilation</div><div class="ing-desc">Stack proof elements — reviews, numbers, results. Volume of proof creates credibility.</div></div></div>
+    <div class="ing"><div class="ing-n">15</div><div><div class="ing-name">Expert Breakdown</div><div class="ing-desc">Explain with authority why it works. Technical enough to be credible, accessible enough to use.</div></div></div>
+    <div class="ing"><div class="ing-n">16</div><div><div class="ing-name">Pain Amplification</div><div class="ing-desc">Deepen the problem before presenting the solution. Deeper pain = more valuable the relief.</div></div></div>
+    <div class="ing"><div class="ing-n">17</div><div><div class="ing-name">Transformation Story</div><div class="ing-desc">Complete arc — where you were, what changed, where you are now. Not just the result.</div></div></div>
+    <div class="ing"><div class="ing-n">18</div><div><div class="ing-name">Case Study — One Person</div><div class="ing-desc">"My mom, 67, from [city]..." Specificity makes it believable. One story beats generic claims.</div></div></div>
+    <div class="ing"><div class="ing-n">19</div><div><div class="ing-name">How-To Tutorial</div><div class="ing-desc">Walk through the exact process viewer needs to take. Action-forward, practical, empowering.</div></div></div>
+    <div class="ing"><div class="ing-n">20</div><div><div class="ing-name">Urgency / Scarcity Build</div><div class="ing-desc">Real reasons why waiting costs something. Not fake countdown — actual stakes.</div></div></div>
+    <div class="ing"><div class="ing-n">21</div><div><div class="ing-name">Myth-Busting Deep Dive</div><div class="ing-desc">"You think [wrong belief] but actually [truth]." Frees viewer from false constraint.</div></div></div>
+    <div class="ing"><div class="ing-n">22</div><div><div class="ing-name">Behind-the-Scenes Look</div><div class="ing-desc">Insider perspective not normally visible. Feeling of exclusive access even in a public ad.</div></div></div>
+    <div class="ing"><div class="ing-n">23</div><div><div class="ing-name">Vulnerability / Confession</div><div class="ing-desc">Share struggles and breakthrough. Being imperfect and honest is the persuasion.</div></div></div>
+    <div class="ing"><div class="ing-n">24</div><div><div class="ing-name">Logic / Rational Argument</div><div class="ing-desc">Systematic case with data and cause-effect. For analytical decision-makers.</div></div></div>
+    <div class="ing"><div class="ing-n">25</div><div><div class="ing-name">Sensory / Experiential Description</div><div class="ing-desc">Paint a vivid picture of the experience. Activates imagination before action.</div></div></div>
+    <div class="ing"><div class="ing-n">26</div><div><div class="ing-name">Risk Reversal</div><div class="ing-desc">"What's the worst that could happen? You check and it takes 90 seconds." Reduce the downside.</div></div></div>
+    <div class="ing"><div class="ing-n">27</div><div><div class="ing-name">Authority Stacking</div><div class="ing-desc">Layer credibility — credentials, years, specific results. Stack until doubt dissolves.</div></div></div>
+    <div class="ing"><div class="ing-n">28</div><div><div class="ing-name">Common Mistakes Breakdown</div><div class="ing-desc">Name the specific errors viewer is probably making right now. Naming their mistakes builds trust.</div></div></div>
+    <div class="ing"><div class="ing-n">29</div><div><div class="ing-name">Future-Pacing Vision</div><div class="ing-desc">Detailed picture of life after taking action. Mind begins wanting what it can clearly picture.</div></div></div>
+    <div class="ing"><div class="ing-n">30</div><div><div class="ing-name">Relatability Building</div><div class="ing-desc">"I know you know this feeling..." Identification precedes persuasion.</div></div></div>
+    <div class="ing"><div class="ing-n">31</div><div><div class="ing-name">Value Stacking</div><div class="ing-desc">Accumulate multiple value propositions until the offer feels undeniable.</div></div></div>
+    <div class="ing"><div class="ing-n">32</div><div><div class="ing-name">Simplicity Emphasis</div><div class="ing-desc">"You just enter your zip. That's it." Every complexity removed lowers the action barrier.</div></div></div>
+    <div class="ing"><div class="ing-n">33</div><div><div class="ing-name">Investment Justification</div><div class="ing-desc">Explain why cost or effort is worth it. Compare to what they already spend on less important things.</div></div></div>
+    <div class="ing"><div class="ing-n">34</div><div><div class="ing-name">Exclusivity / FOMO</div><div class="ing-desc">"This is only for people who [qualifier]." Exclusivity creates desire even for broadly available offers.</div></div></div>
+    <div class="ing"><div class="ing-n">35</div><div><div class="ing-name">Community / Belonging</div><div class="ing-desc">"Thousands in [state] already did this." Social belonging is a fundamental driver.</div></div></div>
+    <div class="ing"><div class="ing-n">36</div><div><div class="ing-name">Challenge Overcome</div><div class="ing-desc">How a specific difficulty was conquered. Creator's challenge mirrors viewer's hesitation.</div></div></div>
+    <div class="ing"><div class="ing-n">37</div><div><div class="ing-name">Results Documentation</div><div class="ing-desc">Show proof through specific numbers or evidence. Not claims — receipts.</div></div></div>
+    <div class="ing"><div class="ing-n">38</div><div><div class="ing-name">Lifestyle Integration</div><div class="ing-desc">Demonstrate how product fits naturally into daily life. Not a purchase — an upgrade to an existing routine.</div></div></div>
+    <div class="ing"><div class="ing-n">39</div><div><div class="ing-name">Permission Granting</div><div class="ing-desc">"You're allowed to want a better rate." Remove the psychological permission barrier.</div></div></div>
+    <div class="ing"><div class="ing-n">40</div><div><div class="ing-name">The Ripple Effect</div><div class="ing-desc">"When I got this covered, I stopped worrying, slept better, showed up better." Chain of benefits beyond obvious.</div></div></div>
+    <div class="ing"><div class="ing-n">41</div><div><div class="ing-name">The Peer Explanation</div><div class="ing-desc">"Okay so basically what it does is..." No jargon. How you'd explain it at a barbecue.</div></div></div>
+    <div class="ing"><div class="ing-n">42</div><div><div class="ing-name">The Industry Exposé</div><div class="ing-desc">Reveal how the industry works against the consumer. Offer = loophole or escape route.</div></div></div>
+    <div class="ing"><div class="ing-n">43</div><div><div class="ing-name">The Time Machine</div><div class="ing-desc">"If I could tell past-me one thing about [topic]..." Retroactive wisdom. Act now so future-you has no regrets.</div></div></div>
+    <div class="ing"><div class="ing-n">44</div><div><div class="ing-name">The Quiet Relief</div><div class="ing-desc">Not excitement of finding a deal — the quiet weight that lifted. Peace of mind as the product.</div></div></div>
+    <div class="ing"><div class="ing-n">45</div><div><div class="ing-name">The Speed Run</div><div class="ing-desc">Rapid-fire benefits at high pace. Density = credibility. So much value you can't cover it all.</div></div></div>
+    <div class="ing"><div class="ing-n">46</div><div><div class="ing-name">The Anchor and Reframe</div><div class="ing-desc">Name the high price first, reveal actual price. Contrast makes the real number feel like a steal.</div></div></div>
+    <div class="ing"><div class="ing-n">47</div><div><div class="ing-name">The Generational Obligation</div><div class="ing-desc">Frame the decision as something you do for family. Moves from self-interest to legacy and love.</div></div></div>
+    <div class="ing"><div class="ing-n">48</div><div><div class="ing-name">The Relief of Certainty</div><div class="ing-desc">Sells the removal of ongoing low-grade stress. Not features or price — just not having to worry anymore.</div></div></div>
+    <div class="ing"><div class="ing-n">49</div><div><div class="ing-name">The Earned Trust Close</div><div class="ing-desc">Entire body builds trust through vulnerability, specificity, or humor — so CTA lands like a friend's advice.</div></div></div>
+    <div class="ing"><div class="ing-n">50</div><div><div class="ing-name">The Skeptic's Journey</div><div class="ing-desc">Voice the viewer's own doubt, then walk through the process of overcoming it. Pre-handles objection before they have it.</div></div></div>
+  </div>
+</div>
+
+<!-- PART 3 HEADER -->
+<div class="part-header">
+  <span class="part-badge" style="background:rgba(139,92,246,.12);color:var(--purple);border:1px solid rgba(139,92,246,.2)">Part 3</span>
+  <span class="part-title">Vertical Playbooks</span>
+  <span class="part-count">Final Expense · Auto · Medicare · ACA · 5 ready-to-use prompts each</span>
+</div>
+
+<!-- FINAL EXPENSE PLAYBOOK -->
+<div class="section" id="v-fe">
+  <div class="s-ey">Part 3 · Vertical 1</div>
+  <div class="s-ti">🟣 Final Expense Insurance — Full Playbook</div>
+  <div class="pills"><span class="pill pv">Ages 50–75</span><span class="pill pv">Fixed income</span><span class="pill pv">No medical exam</span><span class="pill pv">$18–$45/mo</span><span class="pill pv">Family legacy</span><span class="pill pv">Rate lock</span></div>
+  <div class="grid g2">
+    <div class="card"><div class="ctag pv">Best Recipe Formats (Ranked)</div><ul class="colist" style="margin-top:6px"><li><span style="color:var(--yellow);font-weight:800">1.</span> Polished Testimonial — trust is primary barrier</li><li><span style="color:var(--yellow);font-weight:800">2.</span> Raw UGC — discovery lowers guard</li><li><span style="color:var(--yellow);font-weight:800">3.</span> Before/After — worry → peace arc</li><li><span style="color:var(--yellow);font-weight:800">4.</span> Voiceover B-Roll — no face, high trust</li><li><span style="color:var(--yellow);font-weight:800">5.</span> DR Hook — consequence + agitation</li><li><span style="color:var(--yellow);font-weight:800">6.</span> Ambient Slice — lowest ad signal for cold traffic</li></ul></div>
+    <div class="card"><div class="ctag pv">Best Hook Types</div><ul class="colist" style="margin-top:6px"><li>Specific number: "The average funeral costs $11,000"</li><li>Consequence warning: "Your family covers this if you don't"</li><li>Age gate: "If you're over 55 and haven't done this..."</li><li>Rate lock urgency: "Every year you wait, the rate goes up"</li><li>Confession: "I was embarrassed I hadn't handled this at 64"</li></ul></div>
+    <div class="card"><div class="ctag pv">Objection Handles</div><ul class="colist" style="margin-top:6px"><li>"Too expensive" → Coffee math: 60 cents/day locks in coverage forever</li><li>"Too old to qualify" → No medical exam. Age 50–85 typically accepted</li><li>"My kids will handle it" → Have you asked? Do they know the number?</li><li>"I'll do it later" → Rates increase every birthday. Today is cheapest</li><li>"Sounds like a scam" → Name real carriers. Show the locked rate</li><li>"Already have life insurance" → Different product, different purpose</li></ul></div>
+    <div class="card"><div class="ctag pv">Offer Frames (5 proven)</div><ul class="colist" style="margin-top:6px"><li>"Starting at $18/month" — lowest possible anchor</li><li>"No medical exam required" — biggest barrier removed</li><li>"Rate locked in for life — never increases" — permanence</li><li>"Coverage starts the day you apply" — immediacy</li><li>"Your family won't pay a single dollar" — gift/legacy frame</li></ul></div>
+  </div>
+  <div class="sect">5 Ready-to-Use Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">FE · 1 — Kitchen Table Grandmother</div></div><div class="ex-body">67 year old Black woman with a warm Georgia accent wearing a comfortable floral blouse and reading glasses sitting at her kitchen table with family photos on the wall behind her, warm window light at morning, genuine relieved energy at 72%, handheld medium frame with slight natural drift, saying "I was sitting at this exact table thinking about what my family would have to deal with when I'm gone. I couldn't sleep. Then my neighbor told me about this. No exam. No doctor visit. I qualified same day. My rate is twenty-one dollars a month and it's locked in for the rest of my life. I did it in under ten minutes. If you've been putting this off the way I did — tonight is the night. Link's in the comments."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">FE · 2 — DR Hook Consequence (Latino Dad)</div></div><div class="ex-body">55 year old Latino man with a Texas twang wearing a clean button-down shirt sitting at his kitchen table, tight handheld frame, direct intense eye contact at 88% energy, leaning slightly toward camera, saying "The average funeral in America costs eleven thousand dollars. Eleven thousand. If you don't have final expense coverage, that bill falls on whoever loves you most the moment you're gone. No medical exam required. Rates start at eighteen dollars a month. Your rate locks in permanently the day you apply — it will never go up. Tap the link tonight. Not this weekend. Tonight."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">FE · 3 — Worried Daughter Discovery</div></div><div class="ex-body">42 year old white woman with an Ohio neutral accent wearing casual weekend clothes sitting at her kitchen counter with a coffee mug, genuine concerned energy at 70%, handheld medium frame, saying "So I called my mom just to catch up and I happened to ask if she had any kind of life insurance set up. She didn't. Nothing. She's sixty-eight. I got on the phone for twelve minutes and got her covered for twenty-four dollars a month. No exam. No doctor. She didn't even leave the house. If your parents are over fifty and you haven't had this conversation — please have it. The link is right there. It took us less time than this video."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">FE · 4 — Before/After Porch (Voiceover)</div></div><div class="ex-body">No face shown. B-roll footage: slow pan across a back porch at dusk with wind chimes and golden light. Then hands sorting through a stack of bills at a kitchen table. Then a phone screen showing a confirmed application and $19/month rate. Voiceover from a 64 year old white woman with soft Appalachian accent at 58% energy, speaking like she's journaling: "I kept putting it off. Every time I thought about it, something came up. Then my sister called me from the hospital about her husband. That night I got it done. Eighteen dollars a month. No doctor. Just a phone call. My kids don't have to worry about a thing now. Link's below."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--purple)">FE · 5 — Active Senior (Post-Walk)</div></div><div class="ex-body">70 year old Black man with a measured Southern accent wearing a clean track jacket and walking shoes standing in his driveway just returning from a morning walk, relaxed and composed at 65% energy, handheld medium frame with soft morning light, saying "I handle my business. Always have. Got my coverage set up two years ago — twenty-three a month, rate is locked. No medical questions at my age. I want to make sure whoever's left behind doesn't have to scramble. That's not how I raised my family and that's not how I'm going out. Link's in the comments. Sixty seconds to see your rate."</div></div>
+  </div>
+</div>
+
+<!-- AUTO INSURANCE PLAYBOOK -->
+<div class="section" id="v-auto">
+  <div class="s-ey">Part 3 · Vertical 2</div>
+  <div class="s-ti">🔵 Auto Insurance — Full Playbook</div>
+  <div class="pills"><span class="pill pb">Ages 22–65</span><span class="pill pb">Any driver</span><span class="pill pb">Loyalty penalty</span><span class="pill pb">2-min comparison</span><span class="pill pb">$60–$200 savings</span></div>
+  <div class="grid g2">
+    <div class="card"><div class="ctag pb">Best Recipe Formats (Ranked)</div><ul class="colist" style="margin-top:6px"><li><span style="color:var(--yellow);font-weight:800">1.</span> DR Hook — urgency + loss framing hits hard</li><li><span style="color:var(--yellow);font-weight:800">2.</span> Raw UGC — price drop discovery</li><li><span style="color:var(--yellow);font-weight:800">3.</span> UGC Testimonial — loyalty trap + rate comparison</li><li><span style="color:var(--yellow);font-weight:800">4.</span> Before/After — before: stressed renewal / after: savings</li><li><span style="color:var(--yellow);font-weight:800">5.</span> POV Discovery Cam — live quote reveal</li><li><span style="color:var(--yellow);font-weight:800">6.</span> Reaction Cam — price drop face reaction</li></ul></div>
+    <div class="card"><div class="ctag pb">Best Hook Types</div><ul class="colist" style="margin-top:6px"><li>Price drop specific: "I went from $247 to $59. Same coverage."</li><li>Loyalty trap: "Insurance companies charge loyal customers MORE"</li><li>Overpayment number: "Average driver overpays $847/year"</li><li>Stop command: "Stop paying your renewal before checking this"</li><li>Break day: "I'm on lunch. I just saved $90/month in 7 minutes."</li></ul></div>
+    <div class="card"><div class="ctag pb">Objection Handles</div><ul class="colist" style="margin-top:6px"><li>"Switching is a hassle" → Takes 10 minutes, old policy auto-cancels</li><li>"I might lose my coverage" → Same carriers, same coverage, lower rate</li><li>"I've been with them for years" → Loyalty penalty is real, years = higher rate</li><li>"My rate is fine" → How long since you compared? Run the check first</li><li>"What if I'm in an accident mid-switch?" → Coverage is continuous</li></ul></div>
+    <div class="card"><div class="ctag pb">Offer Frames (5 proven)</div><ul class="colist" style="margin-top:6px"><li>"Compare 40+ carriers at once" — comprehensiveness</li><li>"2-minute comparison, no commitment" — zero friction</li><li>"Same exact coverage, lower rate" — no sacrifice</li><li>"Save $X per month, $X per year" — annualize the win</li><li>"Enter your zip, see real quotes in seconds" — specificity</li></ul></div>
+  </div>
+  <div class="sect">5 Ready-to-Use Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto · 1 — Delivery Driver Van (Working Class)</div></div><div class="ex-body">37 year old Hispanic man with a Texas accent wearing an Amazon delivery uniform blue polo sitting in the back of his delivery van on his break, phone propped up, genuine disbelief energy at 85%, slightly shaky handheld selfie frame, saying "I'm on break right now and I just have to tell somebody. I've been paying two hundred and forty dollars a month for car insurance. I checked this comparison site on my lunch break — I am now paying sixty-seven dollars. Same exact coverage. Same exact carrier. I kid you not. I'm kind of mad it took me this long. Link is below. Takes literally two minutes."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto · 2 — Loyalty Trap DR Hook (Chicago Man)</div></div><div class="ex-body">41 year old Black man with a Chicago South Side accent wearing a hoodie and cap standing in his apartment, handheld medium shot at 88% energy, leaning toward camera with direct intensity, saying "Insurance companies make more money from customers who don't leave. That is not a theory — that is their business model. The longer you stay, the more they charge. I ran a comparison after nine years with my carrier and found out I was paying a hundred and ninety dollars more per month than a new customer would pay. Same coverage. Same zip code. I switched in ten minutes. Tap below and enter your zip. See what your actual number is."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto · 3 — Reaction Cam Quote Reveal</div></div><div class="ex-body">48 year old white woman with a South Jersey accent wearing casual home clothes sitting at a kitchen table, phone propped facing her, looking down at a laptop off-camera — opens completely silent for 4 seconds with wide eyes and a disbelieving slow head shake — then quietly says "No way. That cannot be right." — looks more closely at the screen — then turns directly to camera with a small surprised laugh saying "I've been overpaying for four years. Run the comparison. Link is right there. Two minutes."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto · 4 — Commute Voiceover B-Roll</div></div><div class="ex-body">No face shown. First-person driver's perspective b-roll of a morning highway commute with traffic, then hands opening a renewal notice envelope showing a rate increase, then hands typing a zip code into a comparison site on a phone. Voiceover from a 39 year old Latina woman with a Miami accent at 65% energy: "I got my renewal in the mail. Rate went up again — forty dollars more. I sat in traffic that morning thinking I should just check. I found a site that compared every carrier in my state at once. Same coverage. Seventy-three dollars less a month. I switched right there in the parking garage before I even went inside."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--blue)">Auto · 5 — Gas Station Confession (Rideshare Driver)</div></div><div class="ex-body">33 year old white man with a flat Kansas accent wearing casual street clothes pumping gas at a gas station, phone propped on the car, candid energy at 75%, handheld wide-medium frame, saying "I drive for Uber, so my car is literally how I make money. I've been paying two-sixty a month because I assumed rideshare required some special expensive policy. Turns out it doesn't for personal coverage. Ran a comparison this morning. A hundred and twelve dollars a month. Same coverage I had. I don't know why I waited this long to look. Tap the link. See your number."</div></div>
+  </div>
+</div>
+
+<!-- MEDICARE PLAYBOOK -->
+<div class="section" id="v-medicare">
+  <div class="s-ey">Part 3 · Vertical 3</div>
+  <div class="s-ti">🟢 Medicare — Full Playbook</div>
+  <div class="pills"><span class="pill pg">Ages 65+</span><span class="pill pg">Open enrollment Oct–Dec</span><span class="pill pg">$0 premium plans</span><span class="pill pg">Dental + vision</span><span class="pill pg">Supplement gap fills</span></div>
+  <div class="grid g2">
+    <div class="card"><div class="ctag pg">Best Recipe Formats (Ranked)</div><ul class="colist" style="margin-top:6px"><li><span style="color:var(--yellow);font-weight:800">1.</span> Polished Testimonial — dignity + authority for senior audience</li><li><span style="color:var(--yellow);font-weight:800">2.</span> Raw UGC — neighbor-to-neighbor discovery</li><li><span style="color:var(--yellow);font-weight:800">3.</span> Voiceover B-Roll — lifestyle visual, soft narration</li><li><span style="color:var(--yellow);font-weight:800">4.</span> Reaction Cam — benefit revelation reaction</li><li><span style="color:var(--yellow);font-weight:800">5.</span> Ambient Slice — zero ad signal for cold senior traffic</li></ul></div>
+    <div class="card"><div class="ctag pg">Best Hook Types</div><ul class="colist" style="margin-top:6px"><li>Benefit reveal: "Dental, vision, gym — all included, zero premium"</li><li>Gap expose: "Original Medicare has NO cap on hospital costs"</li><li>Myth bust: "You CAN switch plans without losing your doctors"</li><li>Neighbor discovery: "My neighbor mentioned something and I almost cried"</li><li>Years wasted: "I've been overpaying for three years. No one told me."</li></ul></div>
+    <div class="card"><div class="ctag pg">Objection Handles</div><ul class="colist" style="margin-top:6px"><li>"I'll lose my doctors" → Same network doctors in most Advantage plans</li><li>"Switching is complicated" → Agent walks you through it for free</li><li>"I've had this plan for years" → And overpaid every year — comparison is free</li><li>"I make too much for $0 plans" → Most seniors qualify — income bar is high</li><li>"I don't trust change" → You can switch back during next enrollment</li></ul></div>
+    <div class="card"><div class="ctag pg">Offer Frames (5 proven)</div><ul class="colist" style="margin-top:6px"><li>"$0 premium plans available in your zip code"</li><li>"Covers things original Medicare doesn't: dental, vision, hearing"</li><li>"Licensed advisor walks you through it for free"</li><li>"You can switch during open enrollment — no penalty"</li><li>"Same doctors, lower or zero premium"</li></ul></div>
+  </div>
+  <div class="sect">5 Ready-to-Use Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare · 1 — Kitchen Discovery (Minnesota Grandma)</div></div><div class="ex-body">68 year old white woman with a warm Minnesota nice accent wearing a cozy fleece pullover standing in her kitchen holding a piece of mail, slightly shaky handheld frame, genuine excited energy at 70%, saying "Okay so I literally just got off the phone and I cannot believe I've been paying for this plan for three years when I could've had dental, vision, and gym membership included for zero dollars a month. Zero. My neighbor mentioned it casually at church. I called that afternoon. If you're on Medicare and you have not reviewed your plan this year — please do it today. I'll put the number in the comments."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare · 2 — Polished Testimonial (Switched Plans)</div></div><div class="ex-body">71 year old white man with a calm measured Midwest accent wearing a neat collared shirt sitting at a clean dining room table, direct sustained eye contact at 68% energy, locked-off medium shot with natural window light from left, saying "I was on original Medicare for four years before my neighbor mentioned that plans existed that could cover dental and vision with no monthly premium at all. I called that afternoon. My premium went to zero. I kept the same doctors. I genuinely wish someone had told me this years earlier — I would have saved thousands of dollars. A licensed advisor can look at your specific situation for free. Number is below."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare · 3 — Reaction Cam Benefit Reveal</div></div><div class="ex-body">71 year old Black woman with a soft Carolina accent wearing a cardigan sitting at her kitchen table looking at a laptop screen — completely silent for 5 seconds, slow disbelieving blink, processing — then quietly says "They've been charging me for this entire time... when this has been available this whole time." — turns gently toward camera and says "If you are on Medicare — just call. The number is right there. It's a free call."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare · 4 — Active Senior Post-Walk</div></div><div class="ex-body">67 year old Asian-American man with a calm Pacific Northwest accent wearing a track jacket and walking shoes returning from a morning walk, slightly catching his breath, recording casually on phone in his driveway at 62% energy, saying "I walk four miles every morning. I take care of myself. And part of that is making sure my health coverage is actually doing its job. I switched my Medicare plan last open enrollment. Dental and vision now included. Premium went to zero. Same primary care doctor. Takes one phone call with a licensed advisor — it's free. Number's in the comments."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--green)">Medicare · 5 — Voiceover B-Roll (Retirement Life)</div></div><div class="ex-body">No face shown. B-roll footage: slow walking shot through a quiet suburban neighborhood in morning light, then a close-up of hands holding an insurance card, then a phone screen showing a plan comparison with dental and vision benefits highlighted. Voiceover from a 69 year old white man with a flat Midwest accent at 55% energy: "Three years on the same Medicare plan. Never looked at alternatives. My dentist asked why I wasn't using dental benefits — I didn't have them on my plan. Switched during open enrollment. Zero premium now. Dental included. Wish I'd asked sooner."</div></div>
+  </div>
+</div>
+
+<!-- ACA PLAYBOOK -->
+<div class="section" id="v-aca">
+  <div class="s-ey">Part 3 · Vertical 4</div>
+  <div class="s-ti">🟡 ACA Health Insurance — Full Playbook</div>
+  <div class="pills"><span class="pill py">Ages 18–64</span><span class="pill py">Self-employed</span><span class="pill py">Gig workers</span><span class="pill py">Subsidies available</span><span class="pill py">Open enrollment Oct–Dec</span><span class="pill py">SEP anytime</span></div>
+  <div class="grid g2">
+    <div class="card"><div class="ctag py">Best Recipe Formats (Ranked)</div><ul class="colist" style="margin-top:6px"><li><span style="color:var(--yellow);font-weight:800">1.</span> Raw UGC — discovery + price shock is perfect fit</li><li><span style="color:var(--yellow);font-weight:800">2.</span> Branded Lifestyle — organic integration for young audience</li><li><span style="color:var(--yellow);font-weight:800">3.</span> DR Hook — urgency + enrollment deadline</li><li><span style="color:var(--yellow);font-weight:800">4.</span> Before/After — uninsured → covered</li><li><span style="color:var(--yellow);font-weight:800">5.</span> POV Discovery — subsidy calculator reveal</li></ul></div>
+    <div class="card"><div class="ctag py">Best Hook Types</div><ul class="colist" style="margin-top:6px"><li>$0 reveal: "I'm paying zero dollars a month. Zero."</li><li>Myth bust: "ACA isn't just for low income people"</li><li>Self-employed identity: "I work for myself and I'm fully covered"</li><li>Discovery: "I didn't know I qualified for a subsidy until I ran the calculator"</li><li>Deadline warning: "Open enrollment closes and most people miss it"</li></ul></div>
+    <div class="card"><div class="ctag py">Objection Handles</div><ul class="colist" style="margin-top:6px"><li>"ACA is expensive" → Subsidies make it $0–$30 for many self-employed</li><li>"I'm self-employed, I don't qualify" → Self-employed is exactly who this is built for</li><li>"I'm healthy, I don't need it" → One accident or diagnosis changes everything</li><li>"I make too much to qualify" → Income threshold is higher than most think</li><li>"Too complicated to sign up" → Marketplace + navigator = 10-minute process</li></ul></div>
+    <div class="card"><div class="ctag py">Offer Frames (5 proven)</div><ul class="colist" style="margin-top:6px"><li>"$0/month plans available for your income bracket"</li><li>"Self-employed? This is built for people exactly like you"</li><li>"90-second subsidy calculator — see what you'd actually pay"</li><li>"Open enrollment closes [date] — check before it's gone"</li><li>"Real carriers, real coverage, subsidized price"</li></ul></div>
+  </div>
+  <div class="sect">5 Ready-to-Use Input Prompts</div>
+  <div class="examples">
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA · 1 — WFH Freelancer Discovery</div></div><div class="ex-body">27 year old white woman with a Pacific Northwest accent wearing a cozy oversized sweater sitting cross-legged on her couch with a coffee mug and laptop, morning light through the window, relaxed 65% energy, handheld casual frame, saying "I've been freelancing for two years and I literally just found out I'm paying less than twenty-five dollars a month for real health insurance. I thought it would be like four hundred. I had no idea I qualified for a subsidy at my income level. My friends think I'm lying. Link's in my bio if you want to run the calculator — it takes ninety seconds."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA · 2 — Gig Worker DR Hook (DoorDash Driver)</div></div><div class="ex-body">28 year old Black woman with an Atlanta accent wearing casual street clothes sitting in her car between DoorDash deliveries, direct intensity at 85% energy, tight handheld frame, saying "If you are doing gig work — DoorDash, Instacart, Uber, Lyft — and you don't have health insurance because you think you can't afford it, you're working off wrong information. I'm paying eighteen dollars a month. Eighteen. There is a subsidy built into the ACA specifically for people in our income bracket and most people have no idea it exists. Open enrollment is closing. Tap the link. See what you'd actually pay."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA · 3 — POV Subsidy Calculator Reveal</div></div><div class="ex-body">No face shown. First-person POV footage: hands at a home desk typing annual freelance income into a government subsidy calculator, camera slowly zooms toward the screen as the estimated monthly premium result appears showing $0/month. Voiceover from a 25 year old Latina woman with a Miami accent at 78% energy: "Okay wait. I thought this was going to say like three hundred and fifty dollars. I put in what I actually make — I'm freelance so I put in my real number — and it's showing me zero dollars per month. Zero. I refreshed it twice. It wasn't broken. Link below."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA · 4 — Before/After (Finally Covered)</div></div><div class="ex-body">24 year old white woman with a Valley California accent wearing casual clothes, BEFORE shot: sitting on her apartment floor looking at laptop with a closed defeated expression at 40% energy, saying "I've been uninsured for two years. Every time I look it up I just close the tab because the price is always like three or four hundred and I just can't." — HARD CUT — AFTER shot: same woman at her desk, upright, visibly relieved at 82% energy, saying "Twenty-two dollars a month. I qualified for a subsidy I did not know existed. I have real health insurance now. If you've been putting this off because of price — just check. The calculator is free and takes two minutes. Link's below."</div></div>
+    <div class="ex-block"><div class="ex-head"><div class="ex-lbl" style="color:var(--yellow)">ACA · 5 — Small Business Owner Testimonial</div></div><div class="ex-body">44 year old Latino man with a San Antonio bilingual cadence wearing a neat casual button-down sitting at a small business office desk with his company name visible behind him, direct sustained eye contact at 72% energy, locked-off medium frame with good natural light, saying "I opened my own shop eight years ago. The hardest part was figuring out health insurance for myself and my family. I was paying over six hundred a month through a private plan. When the ACA marketplace opened I ran the numbers — one hundred and forty dollars. Same coverage level. I don't know why nobody told me to check earlier. If you're self-employed and haven't compared — do it this week. Number's below."</div></div>
+  </div>
+</div>
+
+<!-- PART 4 HEADER -->
+<div class="part-header">
+  <span class="part-badge" style="background:rgba(99,102,241,.12);color:var(--accent);border:1px solid rgba(99,102,241,.2)">Part 4</span>
+  <span class="part-title">Quick Reference</span>
+  <span class="part-count">Format Picker · How to Build · Combination Math</span>
+</div>
+
+<!-- FORMAT PICKER -->
+<div class="section" id="qr-picker">
+  <div class="s-ey">Part 4 · Quick Ref 1</div>
+  <div class="s-ti">Format Picker — Which Recipe Should I Use?</div>
+  <div class="tw"><table>
+    <tr><th>Format</th><th>Ad Signal</th><th>Face?</th><th>Words</th><th>Energy</th><th>Best Vertical</th><th>Best Use Case</th></tr>
+    <tr><td>Raw UGC</td><td><span style="color:var(--yellow)">Medium</span></td><td class="c">✓</td><td>40–50</td><td>70–100%</td><td>All</td><td>Cold traffic discovery</td></tr>
+    <tr><td>DR Hook</td><td><span style="color:var(--red)">High</span></td><td class="c">✓</td><td>42–52</td><td>80–100%</td><td>Auto, ACA</td><td>Retargeting, urgency</td></tr>
+    <tr><td>Branded Lifestyle</td><td><span style="color:var(--green)">Very Low</span></td><td class="c">✓</td><td>38–48</td><td>65–80%</td><td>ACA, cold</td><td>Lowest ad signal</td></tr>
+    <tr><td>Polished Testimonial</td><td><span style="color:var(--yellow)">Medium</span></td><td class="c">✓</td><td>40–50</td><td>65–85%</td><td>Medicare, FE</td><td>Trust building</td></tr>
+    <tr><td>Before/After</td><td><span style="color:var(--yellow)">Medium</span></td><td class="c">✓</td><td>38–46</td><td>40%→85%</td><td>Any transformation</td><td>Contrast + emotion</td></tr>
+    <tr><td>Voiceover B-Roll</td><td><span style="color:var(--green)">Very Low</span></td><td class="c">✗</td><td>40–50</td><td>55–75%</td><td>FE, lifestyle</td><td>No-face, cold traffic</td></tr>
+    <tr><td>POV Discovery Cam</td><td><span style="color:var(--green)">Very Low</span></td><td class="c">✗</td><td>35–45</td><td>60–85%</td><td>Auto, ACA</td><td>Price reveals</td></tr>
+    <tr><td>Ambient Slice</td><td><span style="color:var(--green)">Lowest</span></td><td class="c">✗</td><td>20–30</td><td>40–65%</td><td>FE, Medicare</td><td>Zero ad signal cold</td></tr>
+    <tr><td>Reaction Cam</td><td><span style="color:var(--green)">Very Low</span></td><td class="c">✓</td><td>25–35</td><td>50–75%</td><td>Auto, Medicare</td><td>Number reveals</td></tr>
+    <tr><td>UGC Testimonial</td><td><span style="color:var(--yellow)">Medium</span></td><td class="c">✓</td><td>42–52</td><td>70–90%</td><td>All verticals</td><td>Full-stack workhorse</td></tr>
+  </table></div>
+</div>
+
+<!-- HOW TO BUILD -->
+<div class="section" id="qr-howto">
+  <div class="s-ey">Part 4 · Quick Ref 2</div>
+  <div class="s-ti">How to Build an Input Prompt — Step by Step</div>
+  <div class="s-de">The input prompt is a single paragraph that gives the video generation system everything it needs. Follow this formula.</div>
+  <div class="shots">
+    <div class="shot"><div class="shot-n">Field 1</div><div><div class="shot-t">[Age + Ethnicity + Gender]</div><div class="shot-d">Be specific. "63 year old Black woman" not "older woman." Age range OK: "45-52 year old."</div></div></div>
+    <div class="shot"><div class="shot-n">Field 2</div><div><div class="shot-t">[Accent]</div><div class="shot-d">Always specific. "warm Georgia accent" not "Southern accent." Pull from the Accent Library.</div></div></div>
+    <div class="shot"><div class="shot-n">Field 3</div><div><div class="shot-t">[Wardrobe — 3 specific items]</div><div class="shot-d">"wearing a comfortable floral blouse, reading glasses, and a cardigan" — three specific pieces minimum.</div></div></div>
+    <div class="shot"><div class="shot-n">Field 4</div><div><div class="shot-t">[Location + Action — specific]</div><div class="shot-d">"sitting at her kitchen table with bills and family photos on the wall behind her" — location + what they're doing + what's in the environment.</div></div></div>
+    <div class="shot"><div class="shot-n">Field 5</div><div><div class="shot-t">[Camera Notes — optional but powerful]</div><div class="shot-d">"handheld medium frame with slight natural drift" or "locked-off medium shot with window light from left" — tells the system how to shoot it.</div></div></div>
+    <div class="shot"><div class="shot-n">Field 6</div><div><div class="shot-t">[Energy + Physical Behavior]</div><div class="shot-d">"genuine relieved energy at 72%" or "direct intense eye contact at 88%, leaning slightly toward camera."</div></div></div>
+    <div class="shot"><div class="shot-n">Field 7</div><div><div class="shot-t">saying "[Hook + Body + CTA as natural dialogue]"</div><div class="shot-d">Write it as natural speech, not ad copy. Hook → discovery/evidence → offer → CTA. No bullet points — one flowing natural statement.</div></div></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="ctag" style="background:rgba(99,102,241,.1);color:var(--accent)">Complete Example</div>
+    <div class="ex-body" style="margin-top:8px;font-size:12.5px;font-style:normal;color:var(--text)">"<span style="color:#a5b4fc">63 year old Black woman</span> with a <span style="color:#6ee7b7">warm Georgia accent</span> wearing a <span style="color:#fbbf24">comfortable floral blouse and reading glasses</span> sitting at <span style="color:#f9a8d4">her kitchen table with bills and family photos on the wall behind her</span>, <span style="color:#93c5fd">handheld medium frame with slight natural drift</span>, <span style="color:#fca5a5">genuine relieved energy at 72%</span>, <span style="color:#dce8f5">saying "I was sitting here stressing about what my kids would have to deal with when I'm gone and I found this. No medical exam. I qualified immediately. Starting at eighteen dollars a month my family doesn't have to handle a thing. Link's in the comments."</span>"</div>
+  </div>
+</div>
+
+<!-- COMBINATION MATH -->
+<div class="section" id="qr-math">
+  <div class="s-ey">Part 4 · Quick Ref 3</div>
+  <div class="s-ti">Combination Math — Creative Diversity at Scale</div>
+  <div class="s-de">Every combination of ingredients produces a unique creative. Here's the math on what's available in this cookbook.</div>
+  <div class="grid g2" style="margin-bottom:16px">
+    <div class="card"><div class="ctag" style="background:rgba(16,185,129,.1);color:var(--green)">Core Levers</div>
+      <div class="tw" style="margin-top:8px"><table style="min-width:0"><tr><th>Variable</th><th>Count</th></tr>
+        <tr><td>Recipe Formats</td><td>10</td></tr>
+        <tr><td>Hook Templates</td><td>60+</td></tr>
+        <tr><td>Body Styles</td><td>50</td></tr>
+        <tr><td>CTA Types</td><td>40</td></tr>
+        <tr><td>Persona Archetypes</td><td>30+</td></tr>
+        <tr><td>Accent Variations</td><td>25+</td></tr>
+        <tr><td>Wardrobe Combos</td><td>60+</td></tr>
+        <tr><td>Location Settings</td><td>70+</td></tr>
+        <tr><td>Verticals</td><td>4</td></tr>
+      </table></div>
+    </div>
+    <div class="card"><div class="ctag" style="background:rgba(99,102,241,.1);color:var(--accent)">Diversity Levers</div>
+      <ul class="colist" style="margin-top:6px">
+        <li>Age ranges (18–85 continuously variable)</li>
+        <li>Ethnicity representation (infinite variation)</li>
+        <li>Delivery energy level (40%–100% in steps)</li>
+        <li>Time of day lighting (morning / midday / golden / night)</li>
+        <li>Camera style (handheld / locked / POV / tracking)</li>
+        <li>Environmental sound design (ambient, quiet, urban, nature)</li>
+        <li>Physical behavior (posture, gesture, eye contact intensity)</li>
+        <li>Relationship to camera (direct / slight offset / profile)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="combo">
+    <div class="combo-n">69.6M+</div>
+    <div class="combo-d">Unique creative combinations before demographics, energy, lighting, and camera variables<br><span style="color:var(--muted2);font-size:11px">10 formats × 60 hooks × 50 body styles × 40 CTAs × 30 personas × 4 verticals = 1.44B+ with all levers</span></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="ctag" style="background:rgba(245,158,11,.1);color:var(--yellow)">Anti-Sameness Protocol</div>
+    <div class="cbody" style="margin-top:6px">When running batches of 10+ creatives, rotate across: different format families (face vs no-face), different hook categories, different age/ethnicity combinations, different energy levels (40% to 95%), different regions and accents, different time-of-day lighting, and different relationship types (peer / authority / neighbor / insider). Never run two consecutive creatives with the same format + hook category combination.</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>📖 UGC Creative Cookbook · Pigeonfi · Rachel · v3.0</span>
+  <span>10 recipes · 60+ hooks · 50 body styles · 40 CTAs · 4 verticals · 69.6M+ combinations</span>
+</div>
+
+</main>
+
+<script>
+const burger=document.getElementById('burger');
+const sidebar=document.getElementById('sidebar');
+const overlay=document.getElementById('overlay');
+const sbclose=document.getElementById('sbclose');
+function openSB(){sidebar.classList.add('open');overlay.classList.add('show');burger.classList.add('open');}
+function closeSB(){sidebar.classList.remove('open');overlay.classList.remove('show');burger.classList.remove('open');}
+if(burger)burger.onclick=()=>sidebar.classList.contains('open')?closeSB():openSB();
+if(sbclose)sbclose.onclick=closeSB;
+if(overlay)overlay.onclick=closeSB;
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.onclick=e=>{
+    e.preventDefault();
+    const id=a.getAttribute('href').slice(1);
+    const el=document.getElementById(id);
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    if(window.innerWidth<1060)closeSB();
+  };
+});
+</script>
+</body></html>
